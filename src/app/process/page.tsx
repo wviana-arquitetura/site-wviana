@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useLayoutEffect } from "react";
-import gsap, { ScrollTrigger } from "@/lib/gsap";
+import gsap from "@/lib/gsap";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { Void } from "@/components/ui/void";
@@ -10,50 +10,73 @@ import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
 const phases = [
   {
     index: "01",
-    title: "Descoberta & Alinhamento",
+    title: "Imersão e Diagnóstico",
     description:
-      "Workshops com o cliente, mapeamento de contexto e definição de critérios de sucesso com todos os stakeholders.",
-    duration: "1-2 semanas",
+      "Entendimento profundo da operação e identidade do cliente.",
   },
   {
     index: "02",
-    title: "Conceito & Direção Narrativa",
+    title: "Estratégia Espacial",
     description:
-      "Conceito espacial, referências visuais e linguagem de design de alto nível para aprovação.",
-    duration: "2-4 semanas",
+      "Definição de fluxos, layout e organização funcional.",
   },
   {
     index: "03",
-    title: "Desenvolvimento de Projeto",
+    title: "Conceito e Visualização",
     description:
-      "Refinamento de layout, estratégia de materiais, coordenação técnica e enquadramento de custos.",
-    duration: "4-8 semanas",
+      "Apresentação do projeto em 3D realista para validação.",
   },
   {
     index: "04",
-    title: "Documentação & Entrega",
+    title: "Projeto Executivo",
     description:
-      "Pacote executivo, suporte de aquisições e controle de qualidade durante a implementação.",
-    duration: "4-10 semanas",
+      "Documentação técnica completa para execução sem imprevistos.",
+  },
+  {
+    index: "05",
+    title: "Planejamento Orçamentário",
+    description:
+      "Orçamentação estruturada e nivelação de fornecedores.",
+  },
+  {
+    index: "06",
+    title: "Acompanhamento Técnico",
+    description:
+      "Visitas estratégicas para garantir fidelidade ao projeto.",
+  },
+  {
+    index: "07",
+    title: "Produção Final",
+    description:
+      "Refinamento do projeto concluído, para garantir a excelência do resultado final.",
   },
 ];
 
 const deliverables = [
   {
-    title: "Dossiê Estratégico",
-    description: "Análise de contexto, referências e diretrizes de projeto.",
+    title: "Layout Inteligente dos Ambientes",
+    description:
+      "Estudo estratégico da distribuição dos espaços para garantir funcionalidade, conforto, circulação eficiente e melhor aproveitamento da área.",
   },
   {
-    title: "Pranchas Conceituais",
-    description: "Linguagem visual, materialidade e volumetria aprovadas.",
+    title: "Perspectivas 3D Realistas",
+    description:
+      "Visualizações fiéis do projeto com iluminação, materiais, texturas e composição dos ambientes, permitindo que você enxergue o resultado final antes da execução da obra.",
   },
   {
-    title: "Pacote Técnico",
-    description: "Documentação executiva completa para construção.",
+    title: "Projeto Executivo de Obra",
+    description:
+      "Conjunto completo de desenhos técnicos para orientar a obra com precisão, incluindo plantas, cortes, detalhamentos e especificações necessárias para a execução.",
   },
   {
-    title: "Supervisão de Obra",
-    description: "Acompanhamento de qualidade até a entrega final.",
+    title: "Projeto Executivo de Marcenaria",
+    description:
+      "Detalhamento técnico personalizado de móveis planejados, com medidas e especificação de acabamentos pensados para cada ambiente.",
+  },
+  {
+    title: "Planilha Orçamentária",
+    description:
+      "Levantamento organizado dos custos da obra, auxiliando no planejamento financeiro e na tomada de decisões com mais segurança e previsibilidade.",
   },
 ];
 
@@ -115,11 +138,11 @@ export default function ProcessPage() {
               Processo
             </span>
             <h1 className="reveal-rise mt-6 max-w-[1000px] text-architectural font-light leading-[1.05] text-foreground">
-              Contexto. Estratégia. Materialidade. Execução.
+              Método W.Viana. Arquitetura estruturada.
             </h1>
             <p className="reveal-illuminate mt-8 max-w-[600px] text-body-lg text-muted-foreground">
-              Nosso processo é intencionalmente estruturado para manter a direção
-              criativa forte enquanto garante precisão de entrega em cada fase.
+              Nosso método foi estruturado para que você tenha clareza,
+              previsibilidade e tranquilidade do início ao fim.
             </p>
             <div
               className="reveal-draw mt-12 h-px w-full"
@@ -190,15 +213,6 @@ export default function ProcessPage() {
                   <p className="mt-6 max-w-[440px] text-body-lg text-muted-foreground">
                     {phase.description}
                   </p>
-                  <span
-                    className="mt-8 inline-block border px-3 py-1 text-micro uppercase tracking-[0.22em]"
-                    style={{
-                      color: "hsl(var(--accent))",
-                      borderColor: "hsl(var(--accent) / 0.25)",
-                    }}
-                  >
-                    {phase.duration}
-                  </span>
                 </div>
               </div>
             ))}

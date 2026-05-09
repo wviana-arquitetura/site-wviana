@@ -7,44 +7,9 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { Void } from "@/components/ui/void";
 import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
 
-const timeline = [
-  {
-    year: "2018",
-    title: "Fundação",
-    description:
-      "Nasce a W.VIANA em Fortaleza, CE — com a premissa de criar espaços que traduzem a identidade de quem os habita.",
-  },
-  {
-    year: "2019",
-    title: "Primeiro projeto residencial",
-    description:
-      "Entrega da primeira residência completa, consolidando a linguagem de contenção e materialidade que define a prática.",
-  },
-  {
-    year: "2021",
-    title: "Expansão de atuação",
-    description:
-      "Entrada nos segmentos comercial e de hospitalidade, aplicando a mesma disciplina projetual em escalas maiores.",
-  },
-  {
-    year: "2023",
-    title: "30+ projetos concluídos",
-    description:
-      "Marco de três dezenas de projetos entregues, com atuação em diversas tipologias e regiões do Brasil.",
-  },
-  {
-    year: "2025",
-    title: "Referência em interiores",
-    description:
-      "Consolidação como referência em arquitetura de interiores no Ceará, com reconhecimento em publicações e premiações.",
-  },
-];
-
 const capabilities = [
   "Projeto Arquitetônico",
   "Interiores & Materialidade",
-  "Integração Marca-Espaço",
-  "Supervisão de Obra",
 ];
 
 export default function StudioPage() {
@@ -55,8 +20,8 @@ export default function StudioPage() {
     <div className="min-h-screen bg-background text-foreground">
       <SiteHeader />
       <main ref={rootRef}>
-        {/* 1. Hero — cabe em 100svh (menos header); foto + texto sem estourar a dobra */}
-        <section className="relative flex h-[var(--svh)] min-h-0 flex-col overflow-hidden pt-12 md:pt-14">
+        {/* 1. Hero */}
+        <section className="relative flex min-h-[var(--svh)] flex-col overflow-hidden pt-20 md:pt-24">
           <span
             aria-hidden="true"
             className="pointer-events-none absolute right-[4%] top-[48%] z-0 hidden -translate-y-1/2 select-none font-extrabold leading-none md:block"
@@ -69,24 +34,25 @@ export default function StudioPage() {
             W
           </span>
 
-          <div className="relative z-10 grid min-h-0 flex-1 grid-rows-[minmax(0,38vh)_minmax(0,1fr)] md:grid-cols-2 md:grid-rows-1">
-            <div className="reveal-curtain relative min-h-0 w-full overflow-hidden md:h-full">
+          <div className="relative z-10 grid flex-1 grid-cols-1 gap-8 px-6 py-8 md:grid-cols-2 md:gap-12 md:px-12 md:py-12 lg:px-16">
+            <div className="reveal-curtain relative flex w-full items-start justify-center md:items-center">
               <Image
-                src="/images/team/wellington-viana/retrato.png"
+                src="/images/team/wellington-viana/retrato.webp"
                 alt="Wellington Viana"
-                fill
+                width={1200}
+                height={1500}
                 priority
                 sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover object-left"
+                className="h-auto w-full max-w-[520px] object-contain"
               />
             </div>
 
-            <div className="relative z-10 flex min-h-0 flex-col justify-center overflow-y-auto overscroll-contain px-6 py-4 md:px-12 md:py-6 lg:px-16">
+            <div className="relative z-10 flex flex-col justify-center">
               <span
                 className="reveal-illuminate text-micro uppercase tracking-[0.22em]"
                 style={{ color: "hsl(var(--accent))" }}
               >
-                Quem somos
+                Sobre
               </span>
               <h1 className="reveal-rise mt-2 text-2xl font-extralight leading-tight tracking-tight text-foreground md:mt-3 md:text-3xl lg:text-[clamp(1.75rem,2.5vw,2.75rem)]">
                 Wellington Viana
@@ -95,7 +61,7 @@ export default function StudioPage() {
                 className="reveal-illuminate mt-2 text-micro uppercase tracking-[0.22em]"
                 style={{ color: "hsl(var(--accent))" }}
               >
-                Arquiteto & Urbanista / Fundador
+                Fundador
               </p>
               <div
                 className="reveal-draw mt-4 h-px w-full md:mt-5"
@@ -103,15 +69,34 @@ export default function StudioPage() {
               />
               <div className="mt-4 space-y-3 md:mt-5 md:space-y-3.5">
                 <p className="reveal-illuminate text-sm leading-snug text-muted-foreground md:text-base md:leading-relaxed">
-                  Formado em Arquitetura e Urbanismo, Wellington Viana fundou a
-                  W.VIANA com a convicção de que cada espaço deve ser uma
-                  resposta precisa ao contexto — humano, material e emocional —
-                  de quem o habita.
+                  Formado em Arquitetura e Urbanismo pela Universidade de
+                  Fortaleza, Wellington Viana atua há mais de 8 anos
+                  transformando espaços em experiências únicas. À frente do
+                  seu escritório, construiu uma trajetória marcada pela
+                  sensibilidade estética, pela atenção aos detalhes e pela
+                  criação de projetos que refletem, de forma autêntica, a
+                  essência de cada cliente.
                 </p>
                 <p className="reveal-illuminate text-sm leading-snug text-muted-foreground md:text-base md:leading-relaxed">
-                  A prática prioriza contenção, detalhe e clareza acima do ruído
-                  visual. Cada decisão projetual é avaliada pela função,
-                  longevidade e relevância emocional.
+                  Com uma assinatura contemporânea, elegante e atemporal,
+                  Wellington acredita que a arquitetura vai muito além da
+                  estética: ela precisa traduzir personalidade, despertar
+                  sensações e proporcionar bem-estar em cada ambiente. Seus
+                  projetos unem funcionalidade, sofisticação e identidade,
+                  criando espaços que equilibram conforto, beleza e
+                  exclusividade.
+                </p>
+                <p className="reveal-illuminate text-sm leading-snug text-muted-foreground md:text-base md:leading-relaxed">
+                  Cada projeto nasce de uma escuta cuidadosa e de um olhar
+                  estratégico sobre o estilo de vida de quem irá vivê-lo. O
+                  resultado são ambientes personalizados, pensados nos mínimos
+                  detalhes, onde materiais, iluminação, texturas e composição
+                  dialogam de forma harmônica para criar experiências únicas.
+                </p>
+                <p className="reveal-illuminate text-sm leading-snug text-muted-foreground md:text-base md:leading-relaxed">
+                  Mais do que projetar espaços, Wellington entrega arquitetura
+                  com propósito — ambientes que contam histórias, valorizam
+                  vivências e permanecem atuais ao longo do tempo.
                 </p>
               </div>
             </div>
@@ -120,56 +105,7 @@ export default function StudioPage() {
 
         <Void height="8vh" />
 
-        {/* 3. Timeline */}
-        <section className="px-8 py-24 md:px-16 md:py-32 lg:px-24">
-          <div className="mx-auto max-w-[1800px]">
-            <span
-              className="reveal-illuminate text-micro uppercase tracking-[0.22em]"
-              style={{ color: "hsl(var(--accent))" }}
-            >
-              Trajetória
-            </span>
-
-            <div className="mt-12">
-              {timeline.map((item) => (
-                <div
-                  key={item.year}
-                  className="reveal-rise relative border-t py-8 md:py-10"
-                  style={{ borderColor: "hsl(var(--accent) / 0.15)" }}
-                >
-                  <div className="flex flex-col gap-3 md:flex-row md:items-baseline md:gap-12">
-                    <span
-                      aria-hidden="true"
-                      className="shrink-0 font-bold leading-none md:w-[180px]"
-                      style={{
-                        fontSize: "clamp(2.5rem, 5vw, 4.5rem)",
-                        color: "hsl(var(--accent) / 0.2)",
-                      }}
-                    >
-                      {item.year}
-                    </span>
-                    <div className="flex flex-col gap-1">
-                      <h3 className="text-body-lg font-bold text-foreground">
-                        {item.title}
-                      </h3>
-                      <p className="max-w-[520px] text-body-lg text-muted-foreground">
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-              <div
-                className="border-t"
-                style={{ borderColor: "hsl(var(--accent) / 0.15)" }}
-              />
-            </div>
-          </div>
-        </section>
-
-        <Void height="8vh" />
-
-        {/* 4. Números */}
+        {/* Números */}
         <section className="px-8 py-16 md:px-16 md:py-24 lg:px-24">
           <div className="mx-auto max-w-[1800px]">
             <span
@@ -181,7 +117,7 @@ export default function StudioPage() {
             <div className="mt-8 grid gap-8 md:grid-cols-3">
               {[
                 { value: "2018", label: "Fundação" },
-                { value: "48+", label: "Projetos" },
+                { value: "250+", label: "Projetos" },
                 { value: "Brasil", label: "Atuação" },
               ].map((stat, i) => (
                 <div
@@ -213,7 +149,7 @@ export default function StudioPage() {
 
         <Void height="8vh" />
 
-        {/* 5. Competências */}
+        {/* Competências */}
         <section className="px-8 md:px-16 lg:px-24">
           <div className="mx-auto max-w-[1800px]">
             <span
@@ -242,7 +178,7 @@ export default function StudioPage() {
 
         <Void height="8vh" />
 
-        {/* 6. Endereço */}
+        {/* Endereço */}
         <section className="px-8 pb-32 md:px-16 lg:px-24">
           <div className="mx-auto max-w-[1800px]">
             <span

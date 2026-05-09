@@ -28,13 +28,6 @@ export function ProjectCover({ project }: ProjectCoverProps) {
           {project.title}
         </h1>
       </div>
-
-      {/* Year — bottom right */}
-      <span
-        className="absolute bottom-12 right-8 text-micro uppercase tracking-[0.22em] text-white/70 md:bottom-16 md:right-16 lg:right-24"
-      >
-        {project.year}
-      </span>
     </section>
   );
 }

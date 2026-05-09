@@ -1,222 +1,391 @@
 [
   {
-    "slug": "casa-aurora",
-    "title": "Casa Aurora",
+    "slug": "residencial-tn",
+    "title": "Residencial TN",
     "category": "Residencial",
     "typology": "Residencial",
     "status": "Concluído",
-    "location": "São Paulo",
-    "country": "BR",
-    "year": "2026",
-    "imageSrc": "/images/gallery-01.jpg",
-    "summary": "Residência contemporânea que integra arquitetura bioclimática e materialidade natural, criando espaços que dialogam com a paisagem e priorizam o conforto humano.",
-    "scope": ["Projeto Arquitetônico", "Design de Interiores", "Acompanhamento de Obra"],
-    "client": "Família Moreira",
+    "location": "Fortaleza",
+    "country": "CE",
+    "area": "188m²",
+    "imageSrc": "/images/projects/residencial-tn/CAPA.webp",
+    "summary": "Pensado para uma família que valoriza conforto, estilo e momentos especiais. Um lar amplo e acolhedor, criado para reunir, celebrar e acompanhar o crescimento das filhas.",
+    "scope": ["Design de Interiores"],
     "chapters": [
       {
-        "title": "Contexto",
-        "content": "A família buscava uma residência que refletisse sua conexão com a natureza sem abrir mão do conforto e sofisticação contemporâneos. O terreno em aclive com vista privilegiada para o vale oferecia desafios e oportunidades únicas."
-      },
-      {
-        "title": "Resposta projetual",
-        "content": "Desenvolvemos uma volumetria escalonada que acompanha a topografia natural, utilizando concreto aparente, madeira cumaru e vidro de alto desempenho. Cada ambiente foi orientado para maximizar luz natural e ventilação cruzada."
-      },
-      {
-        "title": "Resultado",
-        "content": "A residência tornou-se referência na região pela integração entre arquitetura e paisagem, recebendo menção honrosa no prêmio IAB-SP 2026."
-      }
-    ],
-    "metrics": [
-      {
-        "label": "Área construída",
-        "value": "480m²",
-        "description": "Distribuídos em três pavimentos escalonados."
-      },
-      {
-        "label": "Redução energética",
-        "value": "-42%",
-        "description": "Comparado a residências equivalentes na região."
-      },
-      {
-        "label": "Prazo de execução",
-        "value": "18 meses",
-        "description": "Do projeto executivo à entrega das chaves."
+        "title": "",
+        "content": "Pensado para uma família que valoriza conforto, estilo e momentos especiais. Um lar amplo e acolhedor, criado para reunir, celebrar e acompanhar o crescimento das filhas."
       }
     ],
     "gallery": [
-      { "src": "/images/gallery-01.jpg", "alt": "Casa Aurora — fachada principal" },
-      { "src": "/images/gallery-02.jpg", "alt": "Casa Aurora — sala de estar integrada" },
-      { "src": "/images/gallery-03.jpg", "alt": "Casa Aurora — detalhe materialidade" }
-    ],
-    "testimonial": {
-      "quote": "O Wellington entendeu exatamente o que queríamos: uma casa que respirasse junto com a natureza. O resultado superou todas as expectativas.",
-      "author": "Ricardo Moreira",
-      "role": "Proprietário"
-    }
+      { "src": "/images/projects/residencial-tn/IMG_0882-Editar - Copia.webp", "alt": "Residencial TN" },
+      { "src": "/images/projects/residencial-tn/IMG_0992.webp", "alt": "Residencial TN" },
+      { "src": "/images/projects/residencial-tn/IMG_1076 - Copia.webp", "alt": "Residencial TN" },
+      { "src": "/images/projects/residencial-tn/IMG_1180.webp", "alt": "Residencial TN" },
+      { "src": "/images/projects/residencial-tn/IMG_1282.webp", "alt": "Residencial TN" },
+      { "src": "/images/projects/residencial-tn/IMG_1368-Editar.webp", "alt": "Residencial TN" },
+      { "src": "/images/projects/residencial-tn/IMG_1464-Editar.webp", "alt": "Residencial TN" },
+      { "src": "/images/projects/residencial-tn/IMG_1582-Editar.webp", "alt": "Residencial TN" },
+      { "src": "/images/projects/residencial-tn/IMG_1612.webp", "alt": "Residencial TN" },
+      { "src": "/images/projects/residencial-tn/IMG_1645-Editar.webp", "alt": "Residencial TN" }
+    ]
   },
   {
-    "slug": "verde-studio",
-    "title": "Verde Studio",
+    "slug": "residencial-lv",
+    "title": "Residencial LV",
+    "category": "Residencial",
+    "typology": "Residencial",
+    "status": "Concluído",
+    "location": "Fortaleza",
+    "country": "CE",
+    "area": "105m²",
+    "imageSrc": "/images/projects/residencial-lv/CAPA.webp",
+    "summary": "Apartamento contemporâneo e acolhedor, criado para uma mulher solteira que valoriza praticidade, leveza e receber bem. Integração dos ambientes, varanda gourmet e marcenaria sob medida traduzem um morar elegante, funcional e cheio de personalidade.",
+    "scope": ["Design de Interiores"],
+    "chapters": [
+      {
+        "title": "",
+        "content": "Apartamento contemporâneo e acolhedor, criado para uma mulher solteira que valoriza praticidade, leveza e receber bem. Integração dos ambientes, varanda gourmet e marcenaria sob medida traduzem um morar elegante, funcional e cheio de personalidade."
+      }
+    ],
+    "gallery": [
+      { "src": "/images/projects/residencial-lv/IMG_1574-Aprimorado-NR-Editar.webp", "alt": "Residencial LV" },
+      { "src": "/images/projects/residencial-lv/IMG_1597-Aprimorado-NR-Editar.webp", "alt": "Residencial LV" },
+      { "src": "/images/projects/residencial-lv/IMG_1607-Aprimorado-NR-Editar.webp", "alt": "Residencial LV" },
+      { "src": "/images/projects/residencial-lv/IMG_1612-Aprimorado-NR-Editar.webp", "alt": "Residencial LV" },
+      { "src": "/images/projects/residencial-lv/IMG_1768-Aprimorado-NR-Editar.webp", "alt": "Residencial LV" },
+      { "src": "/images/projects/residencial-lv/IMG_1788-Aprimorado-NR-Editar.webp", "alt": "Residencial LV" },
+      { "src": "/images/projects/residencial-lv/IMG_1806-Aprimorado-NR-Editar.webp", "alt": "Residencial LV" },
+      { "src": "/images/projects/residencial-lv/IMG_1840-Aprimorado-NR-Editar.webp", "alt": "Residencial LV" },
+      { "src": "/images/projects/residencial-lv/IMG_1878-Aprimorado-NR-Editar.webp", "alt": "Residencial LV" },
+      { "src": "/images/projects/residencial-lv/IMG_1916-Aprimorado-NR.webp", "alt": "Residencial LV" }
+    ]
+  },
+  {
+    "slug": "residencial-ml",
+    "title": "Residencial ML",
+    "category": "Residencial",
+    "typology": "Residencial",
+    "status": "Concluído",
+    "location": "Fortaleza",
+    "country": "CE",
+    "area": "94m²",
+    "imageSrc": "/images/projects/residencial-ml/CAPA.webp",
+    "summary": "Reforma integral que transformou o apartamento em um espaço fluido, com living, varanda e cozinha totalmente integrados para ampliar convivência e circulação. A base clara e contemporânea ganha personalidade com detalhes em madeira e pontos de cor.",
+    "scope": ["Design de Interiores"],
+    "chapters": [
+      {
+        "title": "",
+        "content": "Reforma integral que transformou o apartamento em um espaço fluido, com living, varanda e cozinha totalmente integrados para ampliar convivência e circulação. A base clara e contemporânea ganha personalidade com detalhes em madeira e pontos de cor."
+      }
+    ],
+    "gallery": [
+      { "src": "/images/projects/residencial-ml/01.webp", "alt": "Residencial ML" },
+      { "src": "/images/projects/residencial-ml/IMG_2112-HDR-Aprimorado-NR-Editar.webp", "alt": "Residencial ML" },
+      { "src": "/images/projects/residencial-ml/IMG_2218-Aprimorado-NR.webp", "alt": "Residencial ML" },
+      { "src": "/images/projects/residencial-ml/IMG_2400-Aprimorado-NR.webp", "alt": "Residencial ML" },
+      { "src": "/images/projects/residencial-ml/IMG_2497-Aprimorado-NR.webp", "alt": "Residencial ML" },
+      { "src": "/images/projects/residencial-ml/IMG_2662-Aprimorado-NR.webp", "alt": "Residencial ML" },
+      { "src": "/images/projects/residencial-ml/IMG_2860-Aprimorado-NR-Editar.webp", "alt": "Residencial ML" },
+      { "src": "/images/projects/residencial-ml/IMG_2879-Aprimorado-NR-Editar.webp", "alt": "Residencial ML" },
+      { "src": "/images/projects/residencial-ml/IMG_2885-Aprimorado-NR.webp", "alt": "Residencial ML" }
+    ]
+  },
+  {
+    "slug": "residencial-rc",
+    "title": "Residencial RC",
+    "category": "Residencial",
+    "typology": "Residencial",
+    "status": "Concluído",
+    "location": "Fortaleza",
+    "country": "CE",
+    "area": "105m²",
+    "imageSrc": "/images/projects/residencial-rc/CAPA.webp",
+    "summary": "Um apartamento redesenhado para ampliar a convivência, com ambientes integrados, funcionais e cheios de conforto. O projeto transforma a planta original em um lar contemporâneo, acolhedor e perfeitamente alinhado à rotina do casal.",
+    "scope": ["Design de Interiores"],
+    "chapters": [
+      {
+        "title": "",
+        "content": "Um apartamento redesenhado para ampliar a convivência, com ambientes integrados, funcionais e cheios de conforto. O projeto transforma a planta original em um lar contemporâneo, acolhedor e perfeitamente alinhado à rotina do casal."
+      }
+    ],
+    "gallery": [
+      { "src": "/images/projects/residencial-rc/IMG_7742.webp", "alt": "Residencial RC" },
+      { "src": "/images/projects/residencial-rc/IMG_7752.webp", "alt": "Residencial RC" },
+      { "src": "/images/projects/residencial-rc/IMG_7767.webp", "alt": "Residencial RC" },
+      { "src": "/images/projects/residencial-rc/IMG_7817-Editar.webp", "alt": "Residencial RC" },
+      { "src": "/images/projects/residencial-rc/IMG_7835-Editar.webp", "alt": "Residencial RC" },
+      { "src": "/images/projects/residencial-rc/IMG_7837-Editar.webp", "alt": "Residencial RC" },
+      { "src": "/images/projects/residencial-rc/IMG_7842.webp", "alt": "Residencial RC" },
+      { "src": "/images/projects/residencial-rc/IMG_7851.webp", "alt": "Residencial RC" },
+      { "src": "/images/projects/residencial-rc/IMG_7882.webp", "alt": "Residencial RC" },
+      { "src": "/images/projects/residencial-rc/IMG_7944.webp", "alt": "Residencial RC" }
+    ]
+  },
+  {
+    "slug": "residencial-pl",
+    "title": "Residencial PL",
+    "category": "Residencial",
+    "typology": "Residencial",
+    "status": "Concluído",
+    "location": "Fortaleza",
+    "country": "CE",
+    "area": "170m²",
+    "imageSrc": "/images/projects/residencial-pl/CAPA.webp",
+    "summary": "Repaginado para um casal com dois filhos, o apartamento mantém a estética contemporânea com mais sofisticação, materiais nobres e soluções modernas.",
+    "scope": ["Design de Interiores"],
+    "chapters": [
+      {
+        "title": "",
+        "content": "Repaginado para um casal com dois filhos, o apartamento mantém a estética contemporânea com mais sofisticação, materiais nobres e soluções modernas."
+      }
+    ],
+    "gallery": [
+      { "src": "/images/projects/residencial-pl/IMG_8752-Editar.webp", "alt": "Residencial PL" },
+      { "src": "/images/projects/residencial-pl/IMG_8781.webp", "alt": "Residencial PL" },
+      { "src": "/images/projects/residencial-pl/IMG_8802.webp", "alt": "Residencial PL" },
+      { "src": "/images/projects/residencial-pl/IMG_8816.webp", "alt": "Residencial PL" },
+      { "src": "/images/projects/residencial-pl/IMG_8862-Editar.webp", "alt": "Residencial PL" },
+      { "src": "/images/projects/residencial-pl/IMG_8868-Editar.webp", "alt": "Residencial PL" },
+      { "src": "/images/projects/residencial-pl/IMG_8900.webp", "alt": "Residencial PL" },
+      { "src": "/images/projects/residencial-pl/IMG_8914.webp", "alt": "Residencial PL" },
+      { "src": "/images/projects/residencial-pl/IMG_8933.webp", "alt": "Residencial PL" }
+    ]
+  },
+  {
+    "slug": "residencial-jo",
+    "title": "Residencial JO",
+    "category": "Residencial",
+    "typology": "Residencial",
+    "status": "Em andamento",
+    "location": "Eusébio",
+    "country": "CE",
+    "area": "195m²",
+    "imageSrc": "/images/projects/residencial-jo/CAPA.webp",
+    "summary": "Uma casa toda térrea, mas com uma proposta bem diferente no seu layout. Projetamos ela em formato de U com um deck e uma área gourmet no seu centro fazendo toda integração com a área de convivência.",
+    "scope": ["Projeto Arquitetônico", "Design de Interiores"],
+    "chapters": [
+      {
+        "title": "",
+        "content": "Uma casa toda térrea, mas com uma proposta bem diferente no seu layout. Projetamos ela em formato de U com um deck e uma área gourmet no seu centro fazendo toda integração com a área de convivência."
+      }
+    ],
+    "gallery": [
+      { "src": "/images/projects/residencial-jo/02.webp", "alt": "Residencial JO" },
+      { "src": "/images/projects/residencial-jo/03.webp", "alt": "Residencial JO" },
+      { "src": "/images/projects/residencial-jo/04.webp", "alt": "Residencial JO" },
+      { "src": "/images/projects/residencial-jo/05.webp", "alt": "Residencial JO" }
+    ]
+  },
+  {
+    "slug": "pardal",
+    "title": "Pardal",
     "category": "Comercial",
     "typology": "Comercial",
     "status": "Concluído",
-    "location": "Brasília",
-    "country": "BR",
-    "year": "2025",
-    "imageSrc": "/images/gallery-02.jpg",
-    "summary": "Espaço comercial que une identidade de marca e experiência sensorial, transformando o ato de comprar em uma jornada espacial memorável.",
-    "scope": ["Design de Interiores", "Projeto Luminotécnico", "Mobiliário sob medida"],
-    "client": "Verde Studio",
+    "location": "Eusébio",
+    "country": "CE",
+    "area": "105m²",
+    "imageSrc": "/images/projects/pardal/CAPA.webp",
+    "summary": "A loja conceito foi projetada para despertar sensações e criar memórias, trazendo a identidade da marca em cada detalhe.",
+    "scope": ["Projeto Arquitetônico", "Design de Interiores"],
     "chapters": [
       {
-        "title": "Desafio",
-        "content": "A marca precisava de um espaço físico que traduzisse seu posicionamento premium em uma experiência imersiva, em um ponto comercial com limitações estruturais significativas."
-      },
-      {
-        "title": "Solução",
-        "content": "Criamos um percurso sensorial com zonas de descoberta, experimentação e contemplação. Materiais naturais — pedra, linho e madeira — constroem uma atmosfera de refinamento acessível."
-      },
-      {
-        "title": "Impacto",
-        "content": "O espaço aumentou o tempo de permanência dos clientes em 60% e se tornou um destino de referência no segmento de lifestyle na cidade."
-      }
-    ],
-    "metrics": [
-      {
-        "label": "Tempo de permanência",
-        "value": "+60%",
-        "description": "Aumento médio do tempo de visita dos clientes."
-      },
-      {
-        "label": "Área projetada",
-        "value": "220m²",
-        "description": "Espaço comercial no Lago Sul, Brasília."
-      },
-      {
-        "label": "Prazo de obra",
-        "value": "4 meses",
-        "description": "Da aprovação do projeto à inauguração."
+        "title": "",
+        "content": "A loja conceito foi projetada para despertar sensações e criar memórias, trazendo a identidade da marca em cada detalhe."
       }
     ],
     "gallery": [
-      { "src": "/images/gallery-04.jpg", "alt": "Verde Studio — fachada" },
-      { "src": "/images/gallery-05.jpg", "alt": "Verde Studio — interior" },
-      { "src": "/images/gallery-06.jpg", "alt": "Verde Studio — detalhe" }
-    ],
-    "testimonial": {
-      "quote": "O espaço transformou completamente a percepção da marca. Nossos clientes comentam sobre a experiência antes mesmo dos produtos.",
-      "author": "Lucas Ferreira",
-      "role": "Fundador, Verde Studio"
-    }
+      { "src": "/images/projects/pardal/IMG_9646-Aprimorado-NR.webp", "alt": "Pardal" },
+      { "src": "/images/projects/pardal/IMG_9655-Aprimorado-NR.webp", "alt": "Pardal" },
+      { "src": "/images/projects/pardal/IMG_9667-Aprimorado-NR-Editar.webp", "alt": "Pardal" },
+      { "src": "/images/projects/pardal/IMG_9675-Aprimorado-NR.webp", "alt": "Pardal" },
+      { "src": "/images/projects/pardal/IMG_9752-Aprimorado-NR-Editar.webp", "alt": "Pardal" },
+      { "src": "/images/projects/pardal/IMG_9756-Aprimorado-NR.webp", "alt": "Pardal" },
+      { "src": "/images/projects/pardal/IMG_9759-Aprimorado-NR.webp", "alt": "Pardal" },
+      { "src": "/images/projects/pardal/IMG_9829-Aprimorado-NR.webp", "alt": "Pardal" },
+      { "src": "/images/projects/pardal/IMG_9875-Aprimorado-NR-Editar.webp", "alt": "Pardal" }
+    ]
   },
   {
-    "slug": "nero-atelier",
-    "title": "Nero Atelier",
-    "category": "Hospitalidade",
-    "typology": "Hospitalidade",
-    "status": "Em andamento",
-    "location": "Rio de Janeiro",
-    "country": "BR",
-    "year": "2025",
-    "imageSrc": "/images/gallery-03.jpg",
-    "summary": "Hotel boutique que reinterpreta a herança carioca através de uma linguagem arquitetônica contemporânea e materialidade autêntica.",
-    "scope": ["Projeto Arquitetônico", "Design de Interiores", "Consultoria de Marca Espacial"],
-    "client": "Nero Atelier",
+    "slug": "donna-evellyn",
+    "title": "Donna Evellyn",
+    "category": "Comercial",
+    "typology": "Comercial",
+    "status": "Concluído",
+    "location": "Fortaleza",
+    "country": "CE",
+    "area": "42m²",
+    "imageSrc": "/images/projects/donna-evellyn/CAPA.webp",
+    "summary": "O tom de verde, o piso amadeirado e a fórmica prata fazem o match perfeito. O uso de formas orgânicas traz movimento e fluidez ao ambiente.",
+    "scope": ["Design de Interiores"],
     "chapters": [
       {
-        "title": "Briefing",
-        "content": "O cliente buscava transformar um casarão dos anos 1940 em Santa Teresa em um hotel boutique de 12 suítes que honrasse a história do edifício enquanto oferecia uma experiência hoteleira de alto padrão."
-      },
-      {
-        "title": "Abordagem",
-        "content": "Preservamos os elementos estruturais e decorativos originais — azulejos, esquadrias de ferro e pisos hidráulicos — integrando-os a intervenções contemporâneas em aço corten, vidro e concreto pigmentado."
-      },
-      {
-        "title": "Progresso",
-        "content": "O projeto está em fase de documentação executiva, com previsão de início de obra no segundo semestre de 2025."
-      }
-    ],
-    "metrics": [
-      {
-        "label": "Suítes",
-        "value": "12",
-        "description": "Cada uma com identidade espacial única."
-      },
-      {
-        "label": "Área total",
-        "value": "1.200m²",
-        "description": "Entre áreas privativas e espaços comuns."
-      },
-      {
-        "label": "Fase atual",
-        "value": "Executivo",
-        "description": "Documentação construtiva em desenvolvimento."
+        "title": "",
+        "content": "O tom de verde, o piso amadeirado e a fórmica prata fazem o match perfeito. O uso de formas orgânicas traz movimento e fluidez ao ambiente."
       }
     ],
     "gallery": [
-      { "src": "/images/vision-01.jpg", "alt": "Nero Atelier — fachada preservada" },
-      { "src": "/images/vision-02.jpg", "alt": "Nero Atelier — lobby conceitual" },
-      { "src": "/images/vision-03.jpg", "alt": "Nero Atelier — suíte tipo" }
-    ],
-    "testimonial": {
-      "quote": "A sensibilidade do W.VIANA em equilibrar preservação e inovação nos deu total confiança no projeto.",
-      "author": "Sofia Rinaldi",
-      "role": "Diretora Criativa, Nero Atelier"
-    }
+      { "src": "/images/projects/donna-evellyn/IMG_0197-Aprimorado-NR.webp", "alt": "Donna Evellyn" },
+      { "src": "/images/projects/donna-evellyn/IMG_0330-Aprimorado-NR.webp", "alt": "Donna Evellyn" },
+      { "src": "/images/projects/donna-evellyn/IMG_0359-Aprimorado-NR.webp", "alt": "Donna Evellyn" },
+      { "src": "/images/projects/donna-evellyn/IMG_0363-Aprimorado-NR.webp", "alt": "Donna Evellyn" },
+      { "src": "/images/projects/donna-evellyn/IMG_0369-Aprimorado-NR.webp", "alt": "Donna Evellyn" },
+      { "src": "/images/projects/donna-evellyn/IMG_0372-Aprimorado-NR.webp", "alt": "Donna Evellyn" },
+      { "src": "/images/projects/donna-evellyn/IMG_0373-Aprimorado-NR.webp", "alt": "Donna Evellyn" },
+      { "src": "/images/projects/donna-evellyn/IMG_0383-Aprimorado-NR.webp", "alt": "Donna Evellyn" },
+      { "src": "/images/projects/donna-evellyn/IMG_0387-Aprimorado-NR.webp", "alt": "Donna Evellyn" },
+      { "src": "/images/projects/donna-evellyn/IMG_0448-Aprimorado-NR.webp", "alt": "Donna Evellyn" }
+    ]
   },
   {
-    "slug": "lumen-spaces",
-    "title": "Lumen Spaces",
+    "slug": "av-by-aline-vieira",
+    "title": "AV by Aline Vieira",
+    "category": "Comercial",
+    "typology": "Comercial",
+    "status": "Concluído",
+    "location": "Fortaleza",
+    "country": "CE",
+    "area": "96m²",
+    "imageSrc": "/images/projects/av-by-aline-vieira/CAPA.webp",
+    "summary": "Buscamos trazer todo o poder e a delicadeza feminina, criando um ambiente para se sentir bem, confortável e empoderada.",
+    "scope": ["Design de Interiores"],
+    "chapters": [
+      {
+        "title": "",
+        "content": "Buscamos trazer todo o poder e a delicadeza feminina, criando um ambiente para se sentir bem, confortável e empoderada."
+      }
+    ],
+    "gallery": [
+      { "src": "/images/projects/av-by-aline-vieira/IMG_1437-Aprimorado-NR.webp", "alt": "AV by Aline Vieira" },
+      { "src": "/images/projects/av-by-aline-vieira/IMG_1439-Aprimorado-NR.webp", "alt": "AV by Aline Vieira" },
+      { "src": "/images/projects/av-by-aline-vieira/IMG_1478-Aprimorado-NR.webp", "alt": "AV by Aline Vieira" },
+      { "src": "/images/projects/av-by-aline-vieira/IMG_1528-Aprimorado-NR.webp", "alt": "AV by Aline Vieira" },
+      { "src": "/images/projects/av-by-aline-vieira/IMG_1532-Aprimorado-NR.webp", "alt": "AV by Aline Vieira" },
+      { "src": "/images/projects/av-by-aline-vieira/IMG_1567-Aprimorado-NR.webp", "alt": "AV by Aline Vieira" },
+      { "src": "/images/projects/av-by-aline-vieira/IMG_1569-Aprimorado-NR.webp", "alt": "AV by Aline Vieira" },
+      { "src": "/images/projects/av-by-aline-vieira/IMG_1714-Aprimorado-NR-Editar.webp", "alt": "AV by Aline Vieira" },
+      { "src": "/images/projects/av-by-aline-vieira/IMG_1721-Aprimorado-NR.webp", "alt": "AV by Aline Vieira" }
+    ]
+  },
+  {
+    "slug": "teca",
+    "title": "Têca",
+    "category": "Comercial",
+    "typology": "Comercial",
+    "status": "Concluído",
+    "location": "Fortaleza",
+    "country": "CE",
+    "area": "38m²",
+    "imageSrc": "/images/projects/teca/CAPA.webp",
+    "summary": "Um projeto chic, cool & cheio de personalidade. Unimos a jovialidade da marca a sofisticação dos materiais.",
+    "scope": ["Design de Interiores"],
+    "chapters": [
+      {
+        "title": "",
+        "content": "Um projeto chic, cool & cheio de personalidade. Unimos a jovialidade da marca a sofisticação dos materiais."
+      }
+    ],
+    "gallery": [
+      { "src": "/images/projects/teca/IMG_4665-Aprimorado-NR-Editar.webp", "alt": "Têca" },
+      { "src": "/images/projects/teca/IMG_4669-Aprimorado-NR.webp", "alt": "Têca" },
+      { "src": "/images/projects/teca/IMG_4678-Aprimorado-NR-Editar.webp", "alt": "Têca" },
+      { "src": "/images/projects/teca/IMG_4684-Aprimorado-NR.webp", "alt": "Têca" },
+      { "src": "/images/projects/teca/IMG_4692-Aprimorado-NR-Editar.webp", "alt": "Têca" },
+      { "src": "/images/projects/teca/IMG_4694-Aprimorado-NR-Editar.webp", "alt": "Têca" },
+      { "src": "/images/projects/teca/IMG_4767-Aprimorado-NR-Editar.webp", "alt": "Têca" },
+      { "src": "/images/projects/teca/IMG_4785-Aprimorado-NR-Editar.webp", "alt": "Têca" },
+      { "src": "/images/projects/teca/IMG_4800-Aprimorado-NR.webp", "alt": "Têca" }
+    ]
+  },
+  {
+    "slug": "la-clinic",
+    "title": "La Clinic",
+    "category": "Comercial",
+    "typology": "Comercial",
+    "status": "Concluído",
+    "location": "Fortaleza",
+    "country": "CE",
+    "area": "35m²",
+    "imageSrc": "/images/projects/la-clinic/CAPA.webp",
+    "summary": "Trabalhamos essa clínica de odontologia em uma paleta de cores neutras & claras com destaque para os detalhes em dourado.",
+    "scope": ["Design de Interiores"],
+    "chapters": [
+      {
+        "title": "",
+        "content": "Trabalhamos essa clínica de odontologia em uma paleta de cores neutras & claras com destaque para os detalhes em dourado."
+      }
+    ],
+    "gallery": [
+      { "src": "/images/projects/la-clinic/IMG_1463-Aprimorado-NR.webp", "alt": "La Clinic" },
+      { "src": "/images/projects/la-clinic/IMG_1477-Aprimorado-NR-Editar.webp", "alt": "La Clinic" },
+      { "src": "/images/projects/la-clinic/IMG_1504-Aprimorado-NR-Editar.webp", "alt": "La Clinic" },
+      { "src": "/images/projects/la-clinic/IMG_1752-Aprimorado-NR-Editar.webp", "alt": "La Clinic" },
+      { "src": "/images/projects/la-clinic/IMG_1839-Aprimorado-NR.webp", "alt": "La Clinic" },
+      { "src": "/images/projects/la-clinic/IMG_1841-Aprimorado-NR-Editar.webp", "alt": "La Clinic" },
+      { "src": "/images/projects/la-clinic/IMG_1842-Aprimorado-NR-Editar.webp", "alt": "La Clinic" },
+      { "src": "/images/projects/la-clinic/IMG_1860-Aprimorado-NR-Editar.webp", "alt": "La Clinic" },
+      { "src": "/images/projects/la-clinic/IMG_2052-Aprimorado-NR-Editar.webp", "alt": "La Clinic" }
+    ]
+  },
+  {
+    "slug": "arena-carmel",
+    "title": "Arena Carmel",
+    "category": "Comercial",
+    "typology": "Comercial",
+    "status": "Concluído",
+    "location": "Fortaleza",
+    "country": "CE",
+    "area": "12.115m²",
+    "imageSrc": "/images/projects/arena-carmel/CAPA.webp",
+    "summary": "Um complexo esportivo e gastronômico, que também funciona como espaço de lazer e eventos, reunindo esporte, alimentação e convivência em um ambiente social super agradável e arborizado.",
+    "scope": ["Projeto Arquitetônico"],
+    "chapters": [
+      {
+        "title": "",
+        "content": "Um complexo esportivo e gastronômico, que também funciona como espaço de lazer e eventos, reunindo esporte, alimentação e convivência em um ambiente social super agradável e arborizado."
+      }
+    ],
+    "gallery": [
+      { "src": "/images/projects/arena-carmel/IMG_7310-Editar.webp", "alt": "Arena Carmel" },
+      { "src": "/images/projects/arena-carmel/IMG_7458.webp", "alt": "Arena Carmel" },
+      { "src": "/images/projects/arena-carmel/IMG_7480.webp", "alt": "Arena Carmel" },
+      { "src": "/images/projects/arena-carmel/IMG_7508.webp", "alt": "Arena Carmel" },
+      { "src": "/images/projects/arena-carmel/IMG_7547.webp", "alt": "Arena Carmel" },
+      { "src": "/images/projects/arena-carmel/IMG_7584.webp", "alt": "Arena Carmel" },
+      { "src": "/images/projects/arena-carmel/IMG_7594.webp", "alt": "Arena Carmel" },
+      { "src": "/images/projects/arena-carmel/IMG_7599.webp", "alt": "Arena Carmel" },
+      { "src": "/images/projects/arena-carmel/IMG_7611.webp", "alt": "Arena Carmel" }
+    ]
+  },
+  {
+    "slug": "elite-music",
+    "title": "Elite Music",
     "category": "Corporativo",
     "typology": "Corporativo",
     "status": "Concluído",
-    "location": "Curitiba",
-    "country": "BR",
-    "year": "2024",
-    "imageSrc": "/images/gallery-04.jpg",
-    "summary": "Sede corporativa que redefine o conceito de ambiente de trabalho, priorizando bem-estar, colaboração e identidade organizacional.",
-    "scope": ["Projeto Arquitetônico", "Design de Interiores", "Paisagismo"],
-    "client": "Lumen Spaces",
+    "location": "Fortaleza",
+    "country": "CE",
+    "area": "36m²",
+    "imageSrc": "/images/projects/elite-music/CAPA.webp",
+    "summary": "A sala da diretoria foi projetada para acolher clientes e parceiros em um ambiente inspirado em uma sala de estar, com conforto e sofisticação. O espaço transforma a formalidade corporativa em uma experiência intimista, leve e mais humana.",
+    "scope": ["Design de Interiores"],
     "chapters": [
       {
-        "title": "Oportunidade",
-        "content": "A empresa de tecnologia buscava uma sede que refletisse sua cultura de inovação e colaboração, substituindo o modelo tradicional de escritório por um ecossistema de trabalho flexível e humanizado."
-      },
-      {
-        "title": "Direção",
-        "content": "Projetamos um espaço fluido com zonas de concentração, colaboração e descompressão, utilizando biofilia como elemento integrador. Jardins internos, iluminação circadiana e acústica controlada criam um ambiente de alto desempenho."
-      },
-      {
-        "title": "Resultado",
-        "content": "A nova sede reduziu em 35% o absenteísmo e foi reconhecida pelo selo WELL Building Standard, tornando-se case de referência em workplace design no Brasil."
-      }
-    ],
-    "metrics": [
-      {
-        "label": "Redução absenteísmo",
-        "value": "-35%",
-        "description": "Nos primeiros 6 meses após a mudança."
-      },
-      {
-        "label": "Área projetada",
-        "value": "2.800m²",
-        "description": "Distribuídos em 4 pavimentos."
-      },
-      {
-        "label": "Certificação",
-        "value": "WELL",
-        "description": "Building Standard — nível Gold."
+        "title": "",
+        "content": "A sala da diretoria foi projetada para acolher clientes e parceiros em um ambiente inspirado em uma sala de estar, com conforto e sofisticação. O espaço transforma a formalidade corporativa em uma experiência intimista, leve e mais humana."
       }
     ],
     "gallery": [
-      { "src": "/images/gallery-05.jpg", "alt": "Lumen Spaces — recepção" },
-      { "src": "/images/gallery-06.jpg", "alt": "Lumen Spaces — área colaborativa" },
-      { "src": "/images/studio-portrait.jpg", "alt": "Lumen Spaces — jardim interno" }
-    ],
-    "testimonial": {
-      "quote": "O novo espaço transformou não só como trabalhamos, mas como nos sentimos trabalhando. A diferença é perceptível desde o primeiro dia.",
-      "author": "Mia Turner",
-      "role": "Diretora de Pessoas, Lumen Spaces"
-    }
+      { "src": "/images/projects/elite-music/02.webp", "alt": "Elite Music" },
+      { "src": "/images/projects/elite-music/03.webp", "alt": "Elite Music" },
+      { "src": "/images/projects/elite-music/04.webp", "alt": "Elite Music" },
+      { "src": "/images/projects/elite-music/05.webp", "alt": "Elite Music" },
+      { "src": "/images/projects/elite-music/06.webp", "alt": "Elite Music" },
+      { "src": "/images/projects/elite-music/07.webp", "alt": "Elite Music" },
+      { "src": "/images/projects/elite-music/08.webp", "alt": "Elite Music" },
+      { "src": "/images/projects/elite-music/09.webp", "alt": "Elite Music" },
+      { "src": "/images/projects/elite-music/IMG_8665.webp", "alt": "Elite Music" }
+    ]
   }
 ]

@@ -50,12 +50,6 @@ export function GalleryProjectCard({ project, index }: GalleryProjectCardProps) 
             >
               {project.location}, {project.country}
             </span>
-            <span
-              className="text-micro uppercase tracking-[0.22em]"
-              style={{ color: "hsl(var(--accent) / 0.85)" }}
-            >
-              {project.year}
-            </span>
           </div>
         </div>
 

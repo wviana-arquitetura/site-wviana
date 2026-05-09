@@ -1,54 +1,109 @@
 "use client";
 
-import { useRef, useLayoutEffect } from "react";
-import gsap, { ScrollTrigger } from "@/lib/gsap";
+import { useRef, useLayoutEffect, useState, useEffect } from "react";
+import gsap from "@/lib/gsap";
+
+const LOGO_SRC = "/images/logos/brand/brand-2.svg";
 
 export function ThresholdHero() {
   const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const logoContainerRef = useRef<HTMLDivElement>(null);
+  const [svgMarkup, setSvgMarkup] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch(LOGO_SRC)
+      .then((r) => r.text())
+      .then((text) => {
+        if (!cancelled) setSvgMarkup(text);
+      })
+      .catch(() => {
+        if (!cancelled) setSvgMarkup(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
-    const title = titleRef.current;
-    const subtitle = subtitleRef.current;
-    if (!section || !title || !subtitle) return;
+    const container = logoContainerRef.current;
+    if (!section || !container || !svgMarkup) return;
+
+    const svg = container.querySelector("svg");
+    if (!svg) return;
+
+    svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+    svg.style.width = "100%";
+    svg.style.height = "100%";
+    svg.style.display = "block";
+
+    const paths = Array.from(svg.querySelectorAll<SVGPathElement>("path"));
+    if (paths.length === 0) return;
 
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
+    const foregroundColor = getComputedStyle(document.documentElement)
+      .getPropertyValue("--foreground")
+      .trim();
+    const strokeColor = foregroundColor
+      ? `hsl(${foregroundColor})`
+      : "#000";
+
+    paths.forEach((p) => {
+      p.style.fill = "rgba(0,0,0,0)";
+      p.style.stroke = strokeColor;
+      p.style.strokeWidth = "1";
+      p.style.vectorEffect = "non-scaling-stroke";
+    });
+
     if (prefersReducedMotion) {
-      // Show elements immediately — they start hidden via inline styles
-      const chars = title.querySelectorAll<HTMLElement>(".hero-char");
-      chars.forEach((c) => (c.style.clipPath = "inset(0% 0 0 0)"));
-      subtitle.style.opacity = "1";
+      paths.forEach((p) => {
+        p.style.fill = strokeColor;
+        p.style.stroke = "rgba(0,0,0,0)";
+      });
       return;
     }
 
     const ctx = gsap.context(() => {
-      // Letter-by-letter reveal on load
-      const chars = title.querySelectorAll<HTMLElement>(".hero-char");
-      gsap.fromTo(
-        chars,
-        { clipPath: "inset(100% 0 0 0)", opacity: 0 },
-        {
-          clipPath: "inset(0% 0 0 0)",
+      paths.forEach((path) => {
+        const length = path.getTotalLength();
+        gsap.set(path, {
+          strokeDasharray: length,
+          strokeDashoffset: length,
           opacity: 1,
-          duration: 0.8,
-          stagger: 0.06,
-          ease: "power3.out",
-          delay: 0.2,
-        },
-      );
+        });
+      });
 
-      gsap.fromTo(
-        subtitle,
-        { autoAlpha: 0 },
-        { autoAlpha: 1, duration: 1.0, ease: "power2.out", delay: 1.4 },
-      );
+      const tl = gsap.timeline({ delay: 0.15 });
 
-      // Scroll-linked: fade out + slight scale
+      tl.to(paths, {
+        strokeDashoffset: 0,
+        duration: 1.3,
+        ease: "power2.inOut",
+        stagger: paths.length > 1 ? 0.05 : 0,
+      })
+        .to(
+          paths,
+          {
+            fill: strokeColor,
+            duration: 0.5,
+            ease: "power2.out",
+          },
+          "-=0.5",
+        )
+        .to(
+          paths,
+          {
+            stroke: "rgba(0,0,0,0)",
+            duration: 0.4,
+            ease: "power1.out",
+          },
+          "<",
+        );
+
       gsap.to(section, {
         autoAlpha: 0,
         scale: 0.96,
@@ -63,10 +118,7 @@ export function ThresholdHero() {
     }, section);
 
     return () => ctx.revert();
-  }, []);
-
-  // Dois blocos: quebra só entre "W." e "VIANA" quando falta largura (evita W.VIA / NA)
-  const titleLines = ["W.", "VIANA"] as const;
+  }, [svgMarkup]);
 
   return (
     <section
@@ -74,35 +126,20 @@ export function ThresholdHero() {
       className="relative flex h-screen flex-col items-center justify-center bg-background"
       data-section="hero"
     >
-      {/* Title */}
-      <h1
-        ref={titleRef}
-        className="text-monumental font-light uppercase text-foreground"
-        style={{ letterSpacing: "0.15em" }}
-      >
-        {titleLines.map((segment) => (
-          <span key={segment} className="inline-block max-w-full whitespace-nowrap">
-            {segment.split("").map((char, i) => (
-              <span
-                key={`${segment}-${i}`}
-                className="hero-char inline-block"
-                style={{ clipPath: "inset(100% 0 0 0)" }}
-              >
-                {char}
-              </span>
-            ))}
-          </span>
-        ))}
-      </h1>
-
-      {/* Subtitle */}
-      <p
-        ref={subtitleRef}
-        className="mt-5 text-micro uppercase tracking-[0.3em]"
-        style={{ color: "hsl(var(--accent))", opacity: 0 }}
-      >
-        Arquitetura | Interiores
-      </p>
+      <div
+        ref={logoContainerRef}
+        className="flex w-full items-center justify-center px-8 md:px-16 lg:px-24"
+        aria-label="W.VIANA — Arquitetura | Interiores"
+        role="img"
+        style={{ minHeight: "30vh" }}
+        dangerouslySetInnerHTML={
+          svgMarkup
+            ? {
+                __html: scopeSvg(svgMarkup),
+              }
+            : undefined
+        }
+      />
 
       {/* Bottom-left: scroll indicator */}
       <div className="absolute bottom-10 left-8 flex flex-col items-center gap-2 md:left-16 lg:left-24">
@@ -123,8 +160,17 @@ export function ThresholdHero() {
         className="absolute bottom-10 right-8 text-micro uppercase tracking-[0.22em] md:right-16 lg:right-24"
         style={{ color: "hsl(var(--accent))" }}
       >
-        Fortaleza, CE
+        Brasil
       </span>
     </section>
   );
+}
+
+function scopeSvg(raw: string): string {
+  return raw
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
+    .replace(
+      /<svg([^>]*)>/i,
+      `<svg$1 style="width:min(82vw,1100px); height:auto; max-height:60vh; display:block;">`,
+    );
 }

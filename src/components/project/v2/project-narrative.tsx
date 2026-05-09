@@ -25,10 +25,16 @@ export function ProjectNarrative({ chapters }: ProjectNarrativeProps) {
               </span>
 
               <div className="relative ml-0 max-w-[680px] md:ml-[20%]">
-                <h2 className="reveal-rise text-architectural font-extrabold text-foreground">
-                  {chapter.title}
-                </h2>
-                <p className="reveal-illuminate mt-6 text-body-lg leading-[1.7] text-muted-foreground">
+                {chapter.title ? (
+                  <h2 className="reveal-rise text-architectural font-light text-foreground">
+                    {chapter.title}
+                  </h2>
+                ) : null}
+                <p
+                  className={`reveal-illuminate text-body-lg leading-[1.7] text-muted-foreground ${
+                    chapter.title ? "mt-6" : ""
+                  }`}
+                >
                   {chapter.content}
                 </p>
               </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { GlobalIntroLoader } from "@/components/providers/GlobalIntroLoader";
+import { HydrationGuard } from "@/components/providers/HydrationGuard";
 import { ArchitecturalGrid } from "@/components/layout/architectural-grid";
 import "./globals.css";
 import { QueryProvider } from "@/components/providers/query-provider";
@@ -19,12 +20,13 @@ const aeonik = localFont({
   display: "swap",
 });
 
-/* Agrandir Grand — manual: títulos e destaques (Light + Heavy) */
-const agrandirGrand = localFont({
+/* Agrandir Narrow — manual: títulos e destaques */
+const agrandirNarrow = localFont({
   src: [
-    { path: "../fonts/Agrandir-GrandLight.otf", weight: "300", style: "normal" },
-    { path: "../fonts/Agrandir-GrandHeavy.otf", weight: "700", style: "normal" },
-    { path: "../fonts/Agrandir-GrandHeavy.otf", weight: "800", style: "normal" },
+    { path: "../fonts/Agrandir-Narrow.otf", weight: "300", style: "normal" },
+    { path: "../fonts/Agrandir-Narrow.otf", weight: "400", style: "normal" },
+    { path: "../fonts/Agrandir-Narrow.otf", weight: "700", style: "normal" },
+    { path: "../fonts/Agrandir-Narrow.otf", weight: "800", style: "normal" },
   ],
   variable: "--font-display",
   display: "swap",
@@ -55,38 +57,36 @@ export const metadata: Metadata = {
   },
 };
 
-const hydrationGuardScript = `
-  (() => {
-    try {
-      const clean = () => {
-        document.querySelectorAll('[bis_skin_checked]').forEach((el) => {
-          el.removeAttribute('bis_skin_checked');
-        });
-      };
-
-      // Limpeza imediata (antes da hidratação)
-      clean();
-
-      // Rodadas curtas para pegar injeções tardias de extensões
-      let runs = 0;
-      const maxRuns = 120; // ~6s
-      const timer = setInterval(() => {
-        clean();
-        runs += 1;
-        if (runs >= maxRuns) clearInterval(timer);
-      }, 50);
-
-      const observer = new MutationObserver(() => clean());
-      observer.observe(document.documentElement, {
-        attributes: true,
-        childList: true,
-        subtree: true,
-      });
-
-      // Desliga o observer depois da janela crítica de hidratação
-      setTimeout(() => observer.disconnect(), 10000);
-    } catch {}
-  })();
+const preHydrationCleanScript = `
+(function(){
+  try {
+    var ATTRS = ['bis_skin_checked','bis_use','bis_register'];
+    var PREFIXES = ['data-bis-','data-dynamic-id'];
+    function clean(){
+      var nodes = document.querySelectorAll('*');
+      for (var i = 0; i < nodes.length; i++) {
+        var el = nodes[i];
+        for (var j = 0; j < ATTRS.length; j++) {
+          if (el.hasAttribute(ATTRS[j])) el.removeAttribute(ATTRS[j]);
+        }
+        var attrs = el.attributes;
+        for (var k = attrs.length - 1; k >= 0; k--) {
+          var name = attrs[k].name;
+          for (var p = 0; p < PREFIXES.length; p++) {
+            if (name.indexOf(PREFIXES[p]) === 0) {
+              el.removeAttribute(name);
+              break;
+            }
+          }
+        }
+      }
+    }
+    clean();
+    var obs = new MutationObserver(clean);
+    obs.observe(document.documentElement, { attributes: true, childList: true, subtree: true });
+    setTimeout(function(){ obs.disconnect(); }, 8000);
+  } catch (e) {}
+})();
 `;
 
 export default function RootLayout({
@@ -96,13 +96,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: hydrationGuardScript }} />
-      </head>
       <body
         suppressHydrationWarning
-        className={`${aeonik.variable} ${agrandirGrand.variable} bg-background font-sans text-foreground antialiased`}
+        className={`${aeonik.variable} ${agrandirNarrow.variable} bg-background font-sans text-foreground antialiased`}
       >
+        <script
+          dangerouslySetInnerHTML={{ __html: preHydrationCleanScript }}
+          suppressHydrationWarning
+        />
+        <HydrationGuard />
         <GlobalIntroLoader />
         <ArchitecturalGrid />
         <QueryProvider>

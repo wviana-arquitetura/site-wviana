@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import { getAllProjects } from "@/services/projects.service";
+import { getProjectBySlug } from "@/services/projects.service";
 import { GalleryProjectCard } from "@/components/project/v2/gallery-project-card";
 import { Void } from "@/components/ui/void";
 import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
@@ -9,7 +9,9 @@ import { getLenis } from "@/lib/scroll";
 
 export function GalleryWalkSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const projects = getAllProjects();
+  const projects = ["residencial-rc", "residencial-pl", "residencial-tn"]
+    .map(getProjectBySlug)
+    .filter(Boolean);
 
   useArchitecturalReveal(sectionRef);
 

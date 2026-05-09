@@ -33,21 +33,9 @@ export default function WorksPage() {
         {/* Hero */}
         <section className="px-8 pt-36 pb-12 md:px-16 md:pt-44 md:pb-16 lg:px-24">
           <div className="mx-auto max-w-[1800px]">
-            <span
-              className="reveal-illuminate text-micro uppercase tracking-[0.22em]"
-              style={{ color: "hsl(var(--accent))" }}
-            >
-              Arquivo
-            </span>
-            <h1 className="reveal-rise mt-4 text-monumental font-extralight text-foreground">
+            <h1 className="reveal-rise text-monumental font-extralight text-foreground">
               Projetos
             </h1>
-            <p
-              className="reveal-illuminate mt-4 text-caption uppercase tracking-[0.18em]"
-              style={{ color: "hsl(var(--accent))" }}
-            >
-              Selecionados 2018—2026
-            </p>
             <div
               className="reveal-draw mt-8 h-px w-full"
               style={{ background: "hsl(var(--accent) / 0.3)" }}
@@ -149,9 +137,6 @@ function CinematicCard({ project }: { project: Project }) {
             </span>
             <span className="text-micro uppercase tracking-[0.22em]" style={{ color: "hsl(var(--accent) / 0.5)" }}>
               {project.location}
-            </span>
-            <span className="text-micro uppercase tracking-[0.22em]" style={{ color: "hsl(var(--accent) / 0.5)" }}>
-              {project.year}
             </span>
           </div>
         </div>

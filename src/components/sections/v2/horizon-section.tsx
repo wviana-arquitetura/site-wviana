@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useLayoutEffect } from "react";
-import gsap, { ScrollTrigger } from "@/lib/gsap";
+import gsap from "@/lib/gsap";
 
 export function HorizonSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -44,18 +44,22 @@ export function HorizonSection() {
   return (
     <section
       ref={sectionRef}
-      className="flex min-h-[60vh] flex-col items-center justify-center bg-background px-8 md:px-16 lg:px-24"
+      className="flex min-h-[80vh] flex-col items-center justify-center bg-background px-8 py-24 md:px-16 md:py-32 lg:px-24"
     >
       <p
-        className="text-center text-caption uppercase tracking-[0.18em]"
-        style={{ color: "hsl(var(--accent))" }}
+        className="reveal-rise max-w-[1400px] text-balance text-center font-light leading-[1.05] tracking-tight text-foreground"
+        style={{
+          fontFamily: "var(--font-display), system-ui, sans-serif",
+          fontSize: "clamp(2.5rem, 6vw, 6.5rem)",
+          letterSpacing: "-0.02em",
+        }}
       >
-        48+ projetos entregues. 7 anos de pratica.
+        250+ projetos entregues. 8 anos de mercado.
       </p>
 
       <div
         ref={lineRef}
-        className="mt-10 h-px w-full max-w-[800px]"
+        className="mt-12 h-px w-full max-w-[1000px]"
         style={{
           background: "hsl(var(--accent) / 0.4)",
           transformOrigin: "left",

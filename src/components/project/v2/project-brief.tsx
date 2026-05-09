@@ -10,10 +10,9 @@ export function ProjectBrief({ project }: ProjectBriefProps) {
       <div className="mx-auto flex max-w-[1800px] flex-col gap-12 md:flex-row md:gap-16">
         {/* Left: Metadata */}
         <div className="reveal-stagger flex flex-col gap-6 md:w-[25%]">
-          <MetaItem label="Cliente" value={project.client} />
           <MetaItem label="Tipo" value={project.typology} />
+          {project.area ? <MetaItem label="Área Projetada" value={project.area} /> : null}
           <MetaItem label="Local" value={`${project.location}, ${project.country}`} />
-          <MetaItem label="Status" value={project.status} />
           <div>
             <span
               className="text-micro uppercase tracking-[0.22em]"

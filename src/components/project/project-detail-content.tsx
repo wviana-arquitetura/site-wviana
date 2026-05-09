@@ -8,8 +8,6 @@ import { Void } from "@/components/ui/void";
 import { ProjectCover } from "./v2/project-cover";
 import { ProjectBrief } from "./v2/project-brief";
 import { ProjectNarrative } from "./v2/project-narrative";
-import { ProjectEvidence } from "./v2/project-evidence";
-import { ProjectVoice } from "./v2/project-voice";
 import { ProjectDocumentation } from "./v2/project-documentation";
 import { ProjectContinuation } from "./v2/project-continuation";
 
@@ -29,9 +27,6 @@ export function ProjectDetailContent({ project }: Readonly<ProjectDetailContentP
       <ProjectBrief project={project} />
       <Void height="8vh" />
       <ProjectNarrative chapters={project.chapters} />
-      <Void height="12vh" />
-      <ProjectEvidence metrics={project.metrics} />
-      <ProjectVoice testimonial={project.testimonial} />
       <Void height="8vh" />
       <ProjectDocumentation gallery={project.gallery} slug={project.slug} />
       <ProjectContinuation nextProject={nextProject} />

@@ -12,7 +12,6 @@ export default function Home() {
       <SiteHeader />
       <main>
         <ThresholdHero />
-        <Void height="20vh" />
         <StatementSection />
         <Void height="15vh" />
         <GalleryWalkSection />

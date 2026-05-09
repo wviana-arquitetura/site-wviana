@@ -104,7 +104,7 @@ export default function ContactPage() {
                     whatsapp
                   </span>
                   <span className="text-body-lg text-foreground">
-                    +55 85 9620-2796
+                    {BRAND.whatsappPhoneFormatted}
                   </span>
                 </Link>
 
