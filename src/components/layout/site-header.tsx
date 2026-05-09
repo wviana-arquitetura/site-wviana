@@ -59,7 +59,7 @@ export function SiteHeader() {
   }, []);
 
   const useLightForeground = isNavigationOpen || footerDarkProgress > 0.01;
-  const interactiveColor = useLightForeground ? "hsl(0 0% 100%)" : "hsl(var(--accent))";
+  const interactiveColor = useLightForeground ? "hsl(0 0% 100%)" : "hsl(var(--foreground))";
 
   const headerContent = (
     <>
@@ -138,19 +138,19 @@ export function SiteHeader() {
                 "transition-[color,background-color,border-color] duration-300",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
                 useLightForeground
-                  ? "border-white/18 bg-white/[0.04] hover:border-white/26 hover:bg-white/[0.09] focus-visible:ring-white/40"
-                  : "border-[hsl(var(--accent)/0.18)] bg-[hsl(var(--accent)/0.04)] hover:border-[hsl(var(--accent)/0.26)] hover:bg-[hsl(var(--accent)/0.09)] focus-visible:ring-[hsl(var(--accent)/0.38)]",
+                  ? "border-white/35 bg-white/[0.1] hover:border-white/55 hover:bg-white/[0.16] focus-visible:ring-white/50"
+                  : "border-[hsl(var(--foreground)/0.35)] bg-[hsl(var(--foreground)/0.06)] hover:border-[hsl(var(--foreground)/0.55)] hover:bg-[hsl(var(--foreground)/0.12)] focus-visible:ring-[hsl(var(--foreground)/0.45)]",
               ].join(" ")}
               style={{ color: interactiveColor }}
               aria-label={isNavigationOpen ? "Fechar navegação" : "Abrir navegação"}
               aria-expanded={isNavigationOpen}
               aria-controls="site-navigation-drawer"
             >
-              {/* Largura fixa pela string mais longa — evita “pulo” entre Index e Fechar */}
+              {/* Largura fixa pela string mais longa — evita “pulo” entre Menu e Fechar */}
               <span className="invisible col-start-1 row-start-1 pointer-events-none" aria-hidden>
                 [Fechar]
               </span>
-              <span className="col-start-1 row-start-1">{isNavigationOpen ? "[Fechar]" : "[Index]"}</span>
+              <span className="col-start-1 row-start-1">{isNavigationOpen ? "[Fechar]" : "[Menu]"}</span>
             </button>
           </div>
         </div>

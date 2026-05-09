@@ -19,7 +19,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="relative flex min-h-[var(--dvh)] bg-[#050505] text-[#e5e5e5] font-sans selection:bg-white selection:text-black overflow-hidden">
+    <div className="relative flex min-h-[100dvh] bg-[#050505] text-[#e5e5e5] font-sans selection:bg-white selection:text-black overflow-hidden">
       {/* Structural Grid Background */}
       <div className="absolute inset-0 pointer-events-none flex justify-center">
         <div className="w-full max-w-[1200px] h-full border-x border-white/[0.04] relative flex">
