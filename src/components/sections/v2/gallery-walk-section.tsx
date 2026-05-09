@@ -108,9 +108,12 @@ export function GalleryWalkSection() {
           <div key={project.slug}>
             <div
               data-snap
-              className="min-h-[calc(var(--dvh)-var(--header-height))]"
+              className="flex items-center md:min-h-[calc(var(--dvh)-var(--header-height))]"
             >
-              <GalleryProjectCard project={project} index={i} />
+              <GalleryProjectCard
+                project={project}
+                imageLeft={i % 2 === 0}
+              />
             </div>
             {i < projects.length - 1 && <Void height="12vh" />}
           </div>

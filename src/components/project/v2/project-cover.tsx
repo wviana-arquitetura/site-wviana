@@ -15,7 +15,7 @@ export function ProjectCover({ project }: ProjectCoverProps) {
         alt={`Capa do projeto ${project.title}`}
         fill
         sizes="100vw"
-        className="object-cover"
+        className="object-cover object-center"
         priority
       />
 

@@ -26,7 +26,7 @@ export function ProjectContinuation({ nextProject }: ProjectContinuationProps) {
           {nextProject.title}
         </h2>
 
-        <div className="mt-8 relative aspect-[21/9] w-full overflow-hidden">
+        <div className="mt-8 relative aspect-[4/5] w-full overflow-hidden">
           <Image
             src={nextProject.imageSrc}
             alt={nextProject.title}

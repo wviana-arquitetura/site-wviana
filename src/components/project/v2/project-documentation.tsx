@@ -1,13 +1,10 @@
 import Image from "next/image";
 import type { ProjectGalleryItem } from "@/types/project";
-import { Void } from "@/components/ui/void";
 
 type ProjectDocumentationProps = {
   gallery: ProjectGalleryItem[];
   slug: string;
 };
-
-const ASPECT_RATIOS = ["21/9", "16/9", "4/3"] as const;
 
 export function ProjectDocumentation({ gallery, slug }: ProjectDocumentationProps) {
   return (
@@ -22,26 +19,24 @@ export function ProjectDocumentation({ gallery, slug }: ProjectDocumentationProp
           </span>
         </div>
       </div>
-      {gallery.map((item, i) => {
-        const aspect = ASPECT_RATIOS[i % ASPECT_RATIOS.length];
-        return (
-          <div key={`${slug}-gallery-${i}`}>
+      <div className="px-8 pb-16 md:px-16 md:pb-24 lg:px-24">
+        <div className="mx-auto grid max-w-[1800px] grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
+          {gallery.map((item, i) => (
             <div
-              className="reveal-curtain relative w-full overflow-hidden"
-              style={{ aspectRatio: aspect }}
+              key={`${slug}-gallery-${i}`}
+              className="reveal-curtain relative aspect-[2/3] w-full overflow-hidden"
             >
               <Image
                 src={item.src}
                 alt={item.alt}
                 fill
-                sizes="100vw"
-                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover object-top"
               />
             </div>
-            {i < gallery.length - 1 && <Void height="4vh" />}
-          </div>
-        );
-      })}
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

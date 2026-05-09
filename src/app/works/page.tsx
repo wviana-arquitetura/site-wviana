@@ -82,13 +82,9 @@ export default function WorksPage() {
         {/* Project listing */}
         <section className="px-8 pb-32 md:px-16 lg:px-24">
           <div className="mx-auto max-w-[1800px]">
-            {filtered.map((project, i) =>
-              i % 2 === 0 ? (
-                <CinematicCard key={project.slug} project={project} />
-              ) : (
-                <SplitCard key={project.slug} project={project} index={i} />
-              ),
-            )}
+            {filtered.map((project, i) => (
+              <SplitCard key={project.slug} project={project} index={i} imageLeft={i % 2 === 0} />
+            ))}
           </div>
         </section>
 
@@ -114,62 +110,12 @@ export default function WorksPage() {
   );
 }
 
-function CinematicCard({ project }: { project: Project }) {
-  return (
-    <div className="mb-16 md:mb-24">
-      <Link href={`/projects/${project.slug}`} className="group block">
-        <div className="reveal-curtain relative aspect-[21/9] w-full overflow-hidden">
-          <Image
-            src={project.imageSrc}
-            alt={project.title}
-            fill
-            sizes="100vw"
-            className="object-cover"
-          />
-        </div>
-        <div className="mt-6 flex flex-col justify-between gap-3 md:flex-row md:items-baseline">
-          <h2 className="reveal-rise text-architectural font-extrabold text-foreground transition-opacity group-hover:opacity-60">
-            {project.title}
-          </h2>
-          <div className="reveal-stagger flex items-center gap-4">
-            <span className="text-micro uppercase tracking-[0.22em]" style={{ color: "hsl(var(--accent))" }}>
-              {project.typology}
-            </span>
-            <span className="text-micro uppercase tracking-[0.22em]" style={{ color: "hsl(var(--accent) / 0.5)" }}>
-              {project.location}
-            </span>
-          </div>
-        </div>
-        <span className="reveal-illuminate mt-4 inline-flex items-center gap-2 text-caption uppercase tracking-[0.18em] text-foreground transition-opacity group-hover:opacity-60">
-          Ver projeto
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            className="transition-transform group-hover:translate-x-1"
-          >
-            <path
-              d="M3 8h10M9 4l4 4-4 4"
-              stroke="currentColor"
-              strokeWidth="1"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </span>
-      </Link>
-      <Void height="4vh" />
-    </div>
-  );
-}
-
-function SplitCard({ project, index }: { project: Project; index: number }) {
+function SplitCard({ project, index, imageLeft = false }: { project: Project; index: number; imageLeft?: boolean }) {
   const num = String(index + 1).padStart(2, "0");
   return (
     <div className="mb-16 md:mb-24">
-      <Link href={`/projects/${project.slug}`} className="group flex flex-col gap-8 md:flex-row md:items-start">
-        {/* Left: Info */}
+      <Link href={`/projects/${project.slug}`} className={`group flex flex-col gap-8 md:flex-row md:items-start ${imageLeft ? "md:flex-row-reverse" : ""}`}>
+        {/* Info */}
         <div className="flex flex-col gap-3 md:w-[40%] md:pt-4">
           <span className="reveal-illuminate text-micro uppercase tracking-[0.22em]" style={{ color: "hsl(var(--accent) / 0.5)" }}>
             {num}
@@ -199,8 +145,8 @@ function SplitCard({ project, index }: { project: Project; index: number }) {
             </svg>
           </span>
         </div>
-        {/* Right: Image */}
-        <div className="reveal-curtain relative aspect-[4/5] overflow-hidden md:w-[55%] md:ml-auto">
+        {/* Image */}
+        <div className="reveal-curtain relative aspect-[4/5] overflow-hidden md:w-[55%]">
           <Image
             src={project.imageSrc}
             alt={project.title}

@@ -38,8 +38,8 @@ export function StatementSection() {
 
       tl.to(wordsRef.current, {
         opacity: 1,
-        duration: 1.0,
-        stagger: 0.22,
+        duration: 0.6,
+        stagger: 0.14,
         ease: "power2.out",
       });
 
