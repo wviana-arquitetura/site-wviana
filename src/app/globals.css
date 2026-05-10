@@ -27,6 +27,8 @@
     --muted-foreground: 0 0% 35%;
     --accent: 27 14% 69%;
     --accent-foreground: 0 0% 100%;
+    /* Taupe escurecido para texto micro — contraste ~4:1 sobre #F2F2F2 (WCAG AA) */
+    --accent-strong: 27 18% 50%;
     --border: 0 0% 75%;
     --input: 0 0% 75%;
     --ring: 0 0% 0%;

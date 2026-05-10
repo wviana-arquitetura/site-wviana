@@ -149,7 +149,7 @@ export function ThresholdHero() {
         />
         <span
           className="text-micro uppercase tracking-[0.22em]"
-          style={{ color: "hsl(var(--accent))" }}
+          style={{ color: "hsl(var(--accent-strong))" }}
         >
           Scroll
         </span>
@@ -158,7 +158,7 @@ export function ThresholdHero() {
       {/* Bottom-right: location */}
       <span
         className="absolute bottom-10 right-8 text-micro uppercase tracking-[0.22em] md:right-16 lg:right-24"
-        style={{ color: "hsl(var(--accent))" }}
+        style={{ color: "hsl(var(--accent-strong))" }}
       >
         Brasil
       </span>

@@ -6,8 +6,8 @@ type ProjectBriefProps = {
 
 export function ProjectBrief({ project }: ProjectBriefProps) {
   return (
-    <section className="bg-background px-8 py-24 md:px-16 md:py-32 lg:px-24">
-      <div className="mx-auto flex max-w-[1800px] flex-col gap-12 md:flex-row md:gap-16">
+    <section className="flex min-h-screen items-center bg-background px-8 py-16 md:px-16 md:py-20 lg:px-24">
+      <div className="mx-auto flex w-full max-w-[1800px] flex-col gap-12 md:flex-row md:gap-16">
         {/* Left: Metadata */}
         <div className="reveal-stagger flex flex-col gap-6 md:w-[25%]">
           <MetaItem label="Tipo" value={project.typology} />
@@ -16,7 +16,7 @@ export function ProjectBrief({ project }: ProjectBriefProps) {
           <div>
             <span
               className="text-micro uppercase tracking-[0.22em]"
-              style={{ color: "hsl(var(--accent))" }}
+              style={{ color: "hsl(var(--accent-strong))" }}
             >
               Escopo
             </span>
@@ -30,9 +30,12 @@ export function ProjectBrief({ project }: ProjectBriefProps) {
           </div>
         </div>
 
-        {/* Right: Summary */}
+        {/* Right: Summary — fontSize cap'd para caber em uma viewport mesmo em summaries longos */}
         <div className="md:w-[65%]">
-          <p className="reveal-illuminate text-architectural font-light leading-[1.1] text-foreground">
+          <p
+            className="reveal-illuminate font-light leading-[1.1] text-foreground"
+            style={{ fontSize: "clamp(2rem, 4.2vw, 5rem)" }}
+          >
             {project.summary}
           </p>
         </div>
@@ -46,7 +49,7 @@ function MetaItem({ label, value }: { label: string; value: string }) {
     <div>
       <span
         className="text-micro uppercase tracking-[0.22em]"
-        style={{ color: "hsl(var(--accent))" }}
+        style={{ color: "hsl(var(--accent-strong))" }}
       >
         {label}
       </span>

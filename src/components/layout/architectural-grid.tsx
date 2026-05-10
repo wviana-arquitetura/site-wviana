@@ -26,7 +26,7 @@ export function ArchitecturalGrid() {
         {/* Corner coordinates */}
         <span
           className="absolute left-0 top-6 font-mono text-micro uppercase tracking-[0.22em]"
-          style={{ color: "hsl(var(--accent))" }}
+          style={{ color: "hsl(var(--accent-strong))" }}
         >
           23.55 S, 46.63 W
         </span>

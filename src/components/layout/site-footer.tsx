@@ -126,7 +126,7 @@ export function SiteFooter({ hideCta = false }: SiteFooterProps) {
             <div className="flex flex-col items-start">
               <p
                 className="text-micro uppercase tracking-[0.22em]"
-                style={{ color: "hsl(var(--accent))" }}
+                style={{ color: "hsl(var(--accent-strong))" }}
               >
                 Próximo passo
               </p>
@@ -202,7 +202,7 @@ export function SiteFooter({ hideCta = false }: SiteFooterProps) {
         >
           <p
             className="text-micro uppercase tracking-[0.22em]"
-            style={{ color: "hsl(var(--accent) / 0.6)" }}
+            style={{ color: "hsl(var(--accent-strong))" }}
           >
             &copy; 2026 W.VIANA Arquitetura | Interiores
           </p>
@@ -212,7 +212,7 @@ export function SiteFooter({ hideCta = false }: SiteFooterProps) {
               target="_blank"
               rel="noopener noreferrer"
               className="text-micro uppercase tracking-[0.22em] transition-opacity hover:opacity-60"
-              style={{ color: "hsl(var(--accent) / 0.6)" }}
+              style={{ color: "hsl(var(--accent-strong))" }}
             >
               Instagram
             </Link>
@@ -221,7 +221,7 @@ export function SiteFooter({ hideCta = false }: SiteFooterProps) {
               target="_blank"
               rel="noopener noreferrer"
               className="text-micro uppercase tracking-[0.22em] transition-opacity hover:opacity-60"
-              style={{ color: "hsl(var(--accent) / 0.6)" }}
+              style={{ color: "hsl(var(--accent-strong))" }}
             >
               Pinterest
             </Link>

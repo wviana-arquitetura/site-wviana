@@ -11,7 +11,6 @@ export function SiteHeader() {
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [footerDarkProgress, setFooterDarkProgress] = useState(0);
-  const showDevReviewShortcut = process.env.NEXT_PUBLIC_SHOW_REVIEW_SHORTCUT !== "false";
   const isNavigationOpen = useUiStore((s) => s.isNavigationOpen);
   const toggleNavigation = useUiStore((s) => s.toggleNavigation);
 
@@ -59,7 +58,7 @@ export function SiteHeader() {
   }, []);
 
   const useLightForeground = isNavigationOpen || footerDarkProgress > 0.01;
-  const interactiveColor = useLightForeground ? "hsl(0 0% 100%)" : "hsl(var(--foreground))";
+  const interactiveColor = useLightForeground ? "hsl(0 0% 100%)" : "hsl(var(--accent-strong))";
 
   const headerContent = (
     <>
@@ -98,36 +97,6 @@ export function SiteHeader() {
           </Link>
 
           <div className="flex items-center gap-2">
-            {showDevReviewShortcut ? (
-              <Link
-                href="/revisao-cliente"
-                className="group relative inline-flex items-center rounded-sm border px-1.5 py-0.5 text-[8px] uppercase tracking-[0.12em] opacity-55 transition-all duration-300 hover:opacity-90 focus:opacity-100"
-                style={{
-                  color: interactiveColor,
-                  borderColor: useLightForeground ? "hsl(0 0% 100% / 0.2)" : "hsl(var(--accent) / 0.28)",
-                }}
-                aria-label="Abrir formulário de revisão"
-              >
-                rev
-                <span
-                  role="tooltip"
-                  className="pointer-events-none absolute right-0 top-[calc(100%+7px)] z-[2147483647] w-[220px] translate-y-1 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100"
-                  style={{
-                    background: useLightForeground ? "hsl(0 0% 8% / 0.95)" : "hsl(var(--foreground) / 0.9)",
-                    color: "hsl(0 0% 100%)",
-                    border: "1px solid hsl(0 0% 100% / 0.18)",
-                    padding: "6px 8px",
-                    fontSize: "8px",
-                    letterSpacing: "0.01em",
-                    textTransform: "none",
-                  }}
-                >
-                  atalho para o formulário de revisão do cliente v1.
-                  Temporário, apenas para a fase de desenvolvimento.
-                </span>
-              </Link>
-            ) : null}
-
             {/* Menu trigger — borda e fundo discretos (sem animação de movimento) */}
             <button
               onClick={toggleNavigation}
@@ -139,7 +108,7 @@ export function SiteHeader() {
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
                 useLightForeground
                   ? "border-white/35 bg-white/[0.1] hover:border-white/55 hover:bg-white/[0.16] focus-visible:ring-white/50"
-                  : "border-[hsl(var(--foreground)/0.35)] bg-[hsl(var(--foreground)/0.06)] hover:border-[hsl(var(--foreground)/0.55)] hover:bg-[hsl(var(--foreground)/0.12)] focus-visible:ring-[hsl(var(--foreground)/0.45)]",
+                  : "border-[hsl(var(--accent-strong)/0.45)] bg-[hsl(var(--accent-strong)/0.06)] hover:border-[hsl(var(--accent-strong)/0.65)] hover:bg-[hsl(var(--accent-strong)/0.12)] focus-visible:ring-[hsl(var(--accent-strong)/0.5)]",
               ].join(" ")}
               style={{ color: interactiveColor }}
               aria-label={isNavigationOpen ? "Fechar navegação" : "Abrir navegação"}

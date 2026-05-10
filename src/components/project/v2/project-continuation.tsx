@@ -10,10 +10,10 @@ export function ProjectContinuation({ nextProject }: ProjectContinuationProps) {
   if (!nextProject) return null;
 
   return (
-    <section className="bg-foreground px-8 py-24 md:px-16 md:py-32 lg:px-24">
+    <section className="flex min-h-screen flex-col bg-foreground px-8 py-16 md:px-16 md:py-20 lg:px-24">
       <Link
         href={`/projects/${nextProject.slug}`}
-        className="group mx-auto block max-w-[1800px]"
+        className="group mx-auto flex w-full max-w-[1800px] flex-1 flex-col"
       >
         <span
           className="text-micro uppercase tracking-[0.22em]"
@@ -22,17 +22,21 @@ export function ProjectContinuation({ nextProject }: ProjectContinuationProps) {
           Próximo
         </span>
 
-        <h2 className="mt-4 text-monumental font-extralight text-white transition-opacity group-hover:opacity-70">
+        <h2
+          className="mt-4 font-extralight leading-[0.95] text-white transition-opacity group-hover:opacity-70"
+          style={{ fontSize: "clamp(2.5rem, 6vw, 6rem)" }}
+        >
           {nextProject.title}
         </h2>
 
-        <div className="mt-8 relative aspect-[4/5] w-full overflow-hidden">
+        {/* Imagem ocupa o restante da viewport, sem vazar */}
+        <div className="relative mt-6 min-h-0 flex-1 overflow-hidden md:mt-8">
           <Image
             src={nextProject.imageSrc}
             alt={nextProject.title}
             fill
             sizes="100vw"
-            className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+            className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.02]"
           />
         </div>
       </Link>

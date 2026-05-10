@@ -28,7 +28,7 @@ export function ProjectVoice({ testimonial }: ProjectVoiceProps) {
         <footer className="mt-8">
           <span
             className="text-caption uppercase tracking-[0.18em]"
-            style={{ color: "hsl(var(--accent))" }}
+            style={{ color: "hsl(var(--accent-strong))" }}
           >
             {testimonial.author} — {testimonial.role}
           </span>

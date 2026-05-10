@@ -21,12 +21,22 @@ export function ProjectDetailContent({ project }: Readonly<ProjectDetailContentP
 
   useArchitecturalReveal(rootRef, project.slug);
 
+  // Filtra capítulos que apenas duplicam o summary (caso atual de todos os projetos
+  // do JSON: chapters[0].content === summary). Se sobrar algo, renderiza Narrative.
+  const meaningfulChapters = project.chapters.filter(
+    (c) => c.content.trim() !== project.summary.trim() || c.title.trim() !== "",
+  );
+
   return (
     <main ref={rootRef}>
       <ProjectCover project={project} />
       <ProjectBrief project={project} />
-      <Void height="8vh" />
-      <ProjectNarrative chapters={project.chapters} />
+      {meaningfulChapters.length > 0 ? (
+        <>
+          <Void height="8vh" />
+          <ProjectNarrative chapters={meaningfulChapters} />
+        </>
+      ) : null}
       <Void height="8vh" />
       <ProjectDocumentation gallery={project.gallery} slug={project.slug} />
       <ProjectContinuation nextProject={nextProject} />

@@ -19,6 +19,16 @@ export function ProjectCover({ project }: ProjectCoverProps) {
         priority
       />
 
+      {/* Gradient overlay — garante legibilidade do título em qualquer foto */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2"
+        style={{
+          background:
+            "linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)",
+        }}
+      />
+
       {/* Title overlay — bottom left */}
       <div className="absolute inset-x-0 bottom-0 px-8 pb-12 md:px-16 md:pb-16 lg:px-24">
         <h1

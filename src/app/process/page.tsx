@@ -103,12 +103,19 @@ export default function ProcessPage() {
 
     const ctx = gsap.context(() => {
       const totalScroll = track.scrollWidth - container.offsetWidth;
+      // Reduz a quantidade de scroll vertical necessária — o pin é mais ágil
+      // sem cortar a animação. Track ainda percorre 100% do trajeto horizontal.
+      const scrollDistance = totalScroll * 0.6;
+
+      // Garante que a progress bar cresce a partir da esquerda — gsap.set fixa o
+      // transformOrigin no estilo matrix, evitando que o transform inline seja sobrescrito
+      gsap.set(progress, { scaleX: 0, transformOrigin: "left center" });
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: container,
           start: "top top",
-          end: () => `+=${totalScroll}`,
+          end: () => `+=${scrollDistance}`,
           pin: true,
           scrub: 1,
           anticipatePin: 1,
@@ -116,7 +123,7 @@ export default function ProcessPage() {
       });
 
       tl.to(track, { x: -totalScroll, ease: "none" }, 0);
-      tl.fromTo(progress, { scaleX: 0 }, { scaleX: 1, ease: "none" }, 0);
+      tl.to(progress, { scaleX: 1, ease: "none" }, 0);
     }, container);
 
     return () => {
@@ -128,17 +135,17 @@ export default function ProcessPage() {
     <div className="min-h-screen bg-background text-foreground">
       <SiteHeader />
       <main ref={rootRef}>
-        {/* Intro */}
-        <section className="px-8 pt-36 pb-24 md:px-16 md:pt-44 md:pb-32 lg:px-24">
-          <div className="mx-auto max-w-[1800px]">
+        {/* Intro — preenche viewport, conteúdo centralizado verticalmente */}
+        <section className="flex min-h-screen items-center px-8 pt-24 pb-12 md:px-16 md:pt-28 md:pb-16 lg:px-24">
+          <div className="mx-auto w-full max-w-[1800px]">
             <span
               className="reveal-illuminate text-micro uppercase tracking-[0.22em]"
-              style={{ color: "hsl(var(--accent))" }}
+              style={{ color: "hsl(var(--accent-strong))" }}
             >
               Processo
             </span>
-            <h1 className="reveal-rise mt-6 max-w-[1000px] text-architectural font-light leading-[1.05] text-foreground">
-              Método W.Viana. Arquitetura estruturada.
+            <h1 className="reveal-rise mt-6 max-w-[1200px] text-architectural font-light leading-[1.05] text-foreground">
+              Método W. Viana. Arquitetura estruturada.
             </h1>
             <p className="reveal-illuminate mt-8 max-w-[600px] text-body-lg text-muted-foreground">
               Nosso método foi estruturado para que você tenha clareza,
@@ -151,19 +158,13 @@ export default function ProcessPage() {
           </div>
         </section>
 
-        <Void height="8vh" />
-
         {/* Horizontal scroll phases */}
         <section ref={horizontalRef} className="relative h-screen overflow-hidden">
           {/* Progress bar */}
           <div
             ref={progressRef}
             className="absolute left-0 top-0 z-10 h-[2px] w-full"
-            style={{
-              background: "hsl(var(--accent))",
-              transformOrigin: "left",
-              transform: "scaleX(0)",
-            }}
+            style={{ background: "hsl(var(--accent))" }}
           />
 
           <div
@@ -171,83 +172,95 @@ export default function ProcessPage() {
             className="flex h-full"
             style={{ width: `${phases.length * 100}vw` }}
           >
-            {phases.map((phase, i) => (
-              <div
-                key={phase.index}
-                className="relative flex h-full w-screen flex-col justify-center px-8 md:px-16 lg:px-24"
-                style={{
-                  borderRight:
-                    i < phases.length - 1
-                      ? "1px solid hsl(var(--accent) / 0.15)"
-                      : "none",
-                }}
-              >
-                {/* Watermark */}
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute left-8 top-1/2 -translate-y-1/2 select-none font-extrabold leading-none md:left-16 lg:left-24"
+            {phases.map((phase, i) => {
+              const watermarkOnLeft = i % 2 === 1;
+              return (
+                <div
+                  key={phase.index}
+                  className="relative flex h-full w-screen flex-col justify-center px-8 md:px-16 lg:px-24"
                   style={{
-                    fontSize: "clamp(6rem, 15vw, 20rem)",
-                    color: "hsl(var(--accent) / 0.06)",
+                    borderRight: "1px solid hsl(var(--accent) / 0.15)",
+                    borderLeft: i === 0 ? "1px solid hsl(var(--accent) / 0.15)" : "none",
                   }}
                 >
-                  {phase.index}
-                </span>
-
-                <div className="relative ml-0 max-w-[500px] md:ml-[15%]">
+                  {/* Watermark — alterna lado a cada fase para criar ritmo visual */}
                   <span
-                    className="text-micro uppercase tracking-[0.22em]"
-                    style={{ color: "hsl(var(--accent))" }}
+                    aria-hidden="true"
+                    className={`pointer-events-none absolute top-1/2 -translate-y-1/2 select-none font-extrabold leading-none ${
+                      watermarkOnLeft
+                        ? "left-8 md:left-16 lg:left-24"
+                        : "right-8 md:right-16 lg:right-24"
+                    }`}
+                    style={{
+                      fontSize: "clamp(8rem, 20vw, 26rem)",
+                      color: "hsl(var(--accent) / 0.28)",
+                    }}
                   >
-                    Fase {phase.index} / {TOTAL_PHASES}
+                    {phase.index}
                   </span>
 
                   <div
-                    className="mt-4 h-px w-16"
-                    style={{ background: "hsl(var(--accent) / 0.3)" }}
-                  />
+                    className={`relative max-w-[500px] ${
+                      watermarkOnLeft ? "ml-auto md:mr-[15%]" : "ml-0 md:ml-[15%]"
+                    }`}
+                  >
+                    <span
+                      className="text-micro uppercase tracking-[0.22em]"
+                      style={{ color: "hsl(var(--accent-strong))" }}
+                    >
+                      Fase {phase.index} / {TOTAL_PHASES}
+                    </span>
 
-                  <h2 className="mt-6 text-architectural font-light text-foreground">
-                    {phase.title}
-                  </h2>
-                  <p className="mt-6 max-w-[440px] text-body-lg text-muted-foreground">
-                    {phase.description}
-                  </p>
+                    <div
+                      className="mt-4 h-px w-16"
+                      style={{ background: "hsl(var(--accent) / 0.3)" }}
+                    />
+
+                    <h2 className="mt-6 text-architectural font-light text-foreground">
+                      {phase.title}
+                    </h2>
+                    <p className="mt-6 max-w-[440px] text-body-lg text-muted-foreground">
+                      {phase.description}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 
-        <Void height="15vh" />
-
-        {/* Deliverables */}
-        <section className="px-8 py-24 md:px-16 md:py-32 lg:px-24">
-          <div className="mx-auto max-w-[1800px]">
+        {/* Deliverables — cabe em 100vh, conteúdo distribuído verticalmente */}
+        <section className="flex min-h-screen flex-col px-8 py-12 md:px-16 md:py-16 lg:px-24">
+          <div className="mx-auto flex w-full max-w-[1800px] flex-1 flex-col">
             <span
               className="reveal-illuminate text-micro uppercase tracking-[0.22em]"
-              style={{ color: "hsl(var(--accent))" }}
+              style={{ color: "hsl(var(--accent-strong))" }}
             >
               Entregáveis
             </span>
-            <div className="mt-8">
+
+            {/* Lista cresce para preencher o espaço disponível */}
+            <div className="mt-6 flex flex-1 flex-col justify-between md:mt-10">
               {deliverables.map((item, i) => (
                 <div
                   key={item.title}
-                  className="reveal-rise flex items-baseline gap-6 border-t py-6 md:gap-8 md:py-8"
+                  className="reveal-rise flex items-start gap-6 border-t py-[clamp(0.75rem,1.6vh,1.5rem)] md:gap-8"
                   style={{ borderColor: "hsl(var(--accent) / 0.15)" }}
                 >
                   <span
                     className="shrink-0 text-micro uppercase tracking-[0.22em]"
-                    style={{ color: "hsl(var(--accent) / 0.5)" }}
+                    style={{ color: "hsl(var(--accent-strong))" }}
                   >
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <div className="flex flex-col gap-1 md:flex-row md:items-baseline md:gap-8">
-                    <span className="shrink-0 text-body-lg text-foreground md:w-[260px]">
+                  <div className="flex flex-col gap-2 md:flex-row md:items-start md:gap-12">
+                    <span className="shrink-0 text-body-lg leading-[1.3] text-foreground md:w-[340px]">
                       {item.title}
                     </span>
-                    <span className="text-caption text-muted-foreground md:text-body-lg">
+                    <span
+                      className="leading-[1.5] text-muted-foreground"
+                      style={{ fontSize: "clamp(0.9rem, 1.05vw, 1.05rem)" }}
+                    >
                       {item.description}
                     </span>
                   </div>

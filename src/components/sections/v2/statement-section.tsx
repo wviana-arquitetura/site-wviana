@@ -66,7 +66,7 @@ export function StatementSection() {
           <div className="flex items-center gap-4">
             <span
               className="text-micro uppercase tracking-[0.22em]"
-              style={{ color: "hsl(var(--accent))" }}
+              style={{ color: "hsl(var(--accent-strong))" }}
             >
               Manifesto
             </span>
@@ -105,7 +105,7 @@ export function StatementSection() {
                   style={{
                     opacity: 0.08,
                     fontWeight: 300,
-                    color: isUnderlined ? "hsl(var(--secondary) / 0.9)" : undefined,
+                    color: isUnderlined ? "hsl(var(--secondary))" : undefined,
                     fontStyle: isUnderlined ? "italic" : "normal",
                   }}
                   aria-hidden="true"
@@ -123,7 +123,7 @@ export function StatementSection() {
         <div className="ml-0 max-w-[1200px] md:ml-[15%]">
           <p
             className="text-caption uppercase tracking-[0.18em]"
-            style={{ color: "hsl(var(--accent))" }}
+            style={{ color: "hsl(var(--accent-strong))" }}
           >
             Wellington Viana, Fundador
           </p>

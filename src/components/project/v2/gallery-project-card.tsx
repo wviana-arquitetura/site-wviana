@@ -62,20 +62,20 @@ export function GalleryProjectCard({
         <div className="reveal-stagger flex flex-col gap-2">
           <span
             className="text-micro uppercase tracking-[0.22em]"
-            style={{ color: "hsl(var(--accent) / 0.85)" }}
+            style={{ color: "hsl(var(--accent-strong))" }}
           >
             {project.typology}
           </span>
           <span
             className="text-micro uppercase tracking-[0.22em]"
-            style={{ color: "hsl(var(--accent) / 0.85)" }}
+            style={{ color: "hsl(var(--accent-strong))" }}
           >
             {project.location}, {project.country}
           </span>
           {project.area && (
             <span
               className="text-micro uppercase tracking-[0.22em]"
-              style={{ color: "hsl(var(--accent) / 0.85)" }}
+              style={{ color: "hsl(var(--accent-strong))" }}
             >
               {project.area}
             </span>
@@ -93,7 +93,8 @@ export function GalleryProjectCard({
 
         <Link
           href={`/projects/${project.slug}`}
-          className="group/link mt-2 inline-flex items-center gap-2 text-caption uppercase tracking-[0.18em] text-foreground transition-opacity hover:opacity-60"
+          className="group/link mt-2 inline-flex items-center gap-2 text-caption uppercase tracking-[0.18em] transition-opacity hover:opacity-60"
+          style={{ color: "hsl(var(--accent-strong))" }}
         >
           Ver projeto
           <svg

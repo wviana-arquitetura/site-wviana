@@ -16,7 +16,7 @@ export function LogoWallSection() {
       <div className="mx-auto w-full max-w-[1800px] border-y border-border/60 py-14 md:py-16">
         <p
           className="text-center text-micro uppercase tracking-[0.22em]"
-          style={{ color: "hsl(var(--accent))" }}
+          style={{ color: "hsl(var(--accent-strong))" }}
         >
           Assinatura e variações da marca
         </p>

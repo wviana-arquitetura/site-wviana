@@ -77,7 +77,7 @@ export default function ClientReviewPage() {
           <div className="mx-auto w-full max-w-[1100px]">
             <span
               className="reveal-illuminate text-micro uppercase tracking-[0.22em]"
-              style={{ color: "hsl(var(--accent))" }}
+              style={{ color: "hsl(var(--accent-strong))" }}
             >
               Revisão de conteúdo
             </span>
@@ -323,7 +323,7 @@ function InputField({
       <label
         htmlFor={name}
         className="mb-2 block text-micro uppercase tracking-[0.22em]"
-        style={{ color: "hsl(var(--accent))" }}
+        style={{ color: "hsl(var(--accent-strong))" }}
       >
         {finalLabel}
       </label>
@@ -361,7 +361,7 @@ function TextAreaField({
       <label
         htmlFor={name}
         className="mb-2 block text-micro uppercase tracking-[0.22em]"
-        style={{ color: "hsl(var(--accent))" }}
+        style={{ color: "hsl(var(--accent-strong))" }}
       >
         {finalLabel}
       </label>
@@ -395,7 +395,7 @@ function SectionFeedback({
       <div>
         <p
           className="mb-2 block text-micro uppercase tracking-[0.22em]"
-          style={{ color: "hsl(var(--accent))" }}
+          style={{ color: "hsl(var(--accent-strong))" }}
         >
           Status da seção (obrigatório)
         </p>

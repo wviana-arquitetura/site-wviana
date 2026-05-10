@@ -59,7 +59,7 @@ export default function ContactPage() {
             <div className="flex flex-col justify-center">
               <span
                 className="reveal-illuminate text-micro uppercase tracking-[0.22em]"
-                style={{ color: "hsl(var(--accent))" }}
+                style={{ color: "hsl(var(--accent-strong))" }}
               >
                 Contato
               </span>
@@ -82,7 +82,7 @@ export default function ContactPage() {
                 >
                   <span
                     className="shrink-0 text-micro uppercase tracking-[0.22em]"
-                    style={{ color: "hsl(var(--accent) / 0.5)" }}
+                    style={{ color: "hsl(var(--accent-strong))" }}
                   >
                     E-mail
                   </span>
@@ -98,8 +98,8 @@ export default function ContactPage() {
                   className="reveal-illuminate group flex items-baseline gap-3 transition-opacity hover:opacity-60"
                 >
                   <span
-                    className="shrink-0 text-micro tracking-[0.22em]"
-                    style={{ color: "hsl(var(--accent) / 0.5)" }}
+                    className="shrink-0 text-micro uppercase tracking-[0.22em]"
+                    style={{ color: "hsl(var(--accent-strong))" }}
                   >
                     whatsapp
                   </span>
@@ -111,7 +111,7 @@ export default function ContactPage() {
                 <div className="reveal-illuminate flex items-baseline gap-3">
                   <span
                     className="shrink-0 text-micro uppercase tracking-[0.22em]"
-                    style={{ color: "hsl(var(--accent) / 0.5)" }}
+                    style={{ color: "hsl(var(--accent-strong))" }}
                   >
                     Localização
                   </span>
@@ -136,7 +136,7 @@ export default function ContactPage() {
                   <label
                     htmlFor="project-type"
                     className="mb-2 block text-micro uppercase tracking-[0.22em]"
-                    style={{ color: "hsl(var(--accent))" }}
+                    style={{ color: "hsl(var(--accent-strong))" }}
                   >
                     Tipo de projeto
                   </label>
@@ -163,7 +163,7 @@ export default function ContactPage() {
                   <label
                     htmlFor="message"
                     className="mb-2 block text-micro uppercase tracking-[0.22em]"
-                    style={{ color: "hsl(var(--accent))" }}
+                    style={{ color: "hsl(var(--accent-strong))" }}
                   >
                     Mensagem
                   </label>
@@ -203,7 +203,7 @@ export default function ContactPage() {
                 {submitState === "sent" ? (
                   <p
                     className="text-center text-micro uppercase tracking-[0.22em]"
-                    style={{ color: "hsl(var(--accent))" }}
+                    style={{ color: "hsl(var(--accent-strong))" }}
                   >
                     Mensagem preparada. Confira a aba do whatsapp.
                   </p>
@@ -232,7 +232,7 @@ function FormField({
       <label
         htmlFor={name}
         className="mb-2 block text-micro uppercase tracking-[0.22em]"
-        style={{ color: "hsl(var(--accent))" }}
+        style={{ color: "hsl(var(--accent-strong))" }}
       >
         {label}
       </label>

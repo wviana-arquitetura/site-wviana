@@ -10,7 +10,7 @@ export function ProjectEvidence({ metrics }: ProjectEvidenceProps) {
       <div className="mx-auto max-w-[1800px]">
         <span
           className="reveal-illuminate text-micro uppercase tracking-[0.22em]"
-          style={{ color: "hsl(var(--accent))" }}
+          style={{ color: "hsl(var(--accent-strong))" }}
         >
           Números
         </span>
@@ -33,7 +33,7 @@ export function ProjectEvidence({ metrics }: ProjectEvidenceProps) {
               </span>
               <span
                 className="text-micro uppercase tracking-[0.22em]"
-                style={{ color: "hsl(var(--accent))" }}
+                style={{ color: "hsl(var(--accent-strong))" }}
               >
                 {metric.label}
               </span>

@@ -67,7 +67,7 @@ export default async function AdminReviewsPage() {
         <div className="mx-auto w-full max-w-[1200px]">
           <span
             className="text-micro uppercase tracking-[0.22em]"
-            style={{ color: "hsl(var(--accent))" }}
+            style={{ color: "hsl(var(--accent-strong))" }}
           >
             Admin
           </span>

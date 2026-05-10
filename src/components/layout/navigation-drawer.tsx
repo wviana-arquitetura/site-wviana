@@ -189,8 +189,8 @@ export function NavigationDrawer() {
             href={BRAND.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-micro tracking-[0.22em]"
-            style={{ color: "hsl(var(--accent) / 0.5)" }}
+            className="text-micro uppercase tracking-[0.22em]"
+            style={{ color: "hsl(var(--accent))" }}
           >
             whatsapp
           </Link>
@@ -199,7 +199,7 @@ export function NavigationDrawer() {
             target="_blank"
             rel="noopener noreferrer"
             className="text-micro uppercase tracking-[0.22em]"
-            style={{ color: "hsl(var(--accent) / 0.5)" }}
+            style={{ color: "hsl(var(--accent))" }}
           >
             Instagram
           </Link>
@@ -208,7 +208,7 @@ export function NavigationDrawer() {
             target="_blank"
             rel="noopener noreferrer"
             className="text-micro uppercase tracking-[0.22em]"
-            style={{ color: "hsl(var(--accent) / 0.5)" }}
+            style={{ color: "hsl(var(--accent))" }}
           >
             Pinterest
           </Link>

@@ -51,10 +51,10 @@ export default function WorksPage() {
               className={`text-caption uppercase tracking-[0.18em] transition-colors ${
                 !filter ? "text-foreground underline underline-offset-4" : ""
               }`}
-              style={{ color: filter ? "hsl(var(--accent))" : undefined }}
+              style={{ color: filter ? "hsl(var(--accent-strong))" : undefined }}
             >
               Todos
-              <span className="ml-1 text-micro" style={{ color: "hsl(var(--accent) / 0.5)" }}>
+              <span className="ml-1 text-micro" style={{ color: "hsl(var(--accent-strong))" }}>
                 ({allProjects.length})
               </span>
             </button>
@@ -67,10 +67,10 @@ export default function WorksPage() {
                   className={`text-caption uppercase tracking-[0.18em] transition-colors ${
                     filter === typ ? "text-foreground underline underline-offset-4" : ""
                   }`}
-                  style={{ color: filter !== typ ? "hsl(var(--accent))" : undefined }}
+                  style={{ color: filter !== typ ? "hsl(var(--accent-strong))" : undefined }}
                 >
                   {typ}
-                  <span className="ml-1 text-micro" style={{ color: "hsl(var(--accent) / 0.5)" }}>
+                  <span className="ml-1 text-micro" style={{ color: "hsl(var(--accent-strong))" }}>
                     ({count})
                   </span>
                 </button>
@@ -117,7 +117,7 @@ function SplitCard({ project, index, imageLeft = false }: { project: Project; in
       <Link href={`/projects/${project.slug}`} className={`group flex flex-col gap-8 md:flex-row md:items-start ${imageLeft ? "md:flex-row-reverse" : ""}`}>
         {/* Info */}
         <div className="flex flex-col gap-3 md:w-[40%] md:pt-4">
-          <span className="reveal-illuminate text-micro uppercase tracking-[0.22em]" style={{ color: "hsl(var(--accent) / 0.5)" }}>
+          <span className="reveal-illuminate text-micro uppercase tracking-[0.22em]" style={{ color: "hsl(var(--accent-strong))" }}>
             {num}
           </span>
           <h2 className="reveal-rise text-architectural font-extrabold text-foreground transition-opacity group-hover:opacity-60">
@@ -126,7 +126,10 @@ function SplitCard({ project, index, imageLeft = false }: { project: Project; in
           <p className="reveal-illuminate max-w-[400px] text-body-lg text-muted-foreground">
             {project.summary}
           </p>
-          <span className="reveal-illuminate mt-2 inline-flex items-center gap-2 text-caption uppercase tracking-[0.18em] text-foreground transition-opacity group-hover:opacity-60">
+          <span
+            className="reveal-illuminate mt-2 inline-flex items-center gap-2 text-caption uppercase tracking-[0.18em] transition-opacity group-hover:opacity-60"
+            style={{ color: "hsl(var(--accent-strong))" }}
+          >
             Ver projeto
             <svg
               width="16"
