@@ -2,8 +2,6 @@
 
 import { FormEvent, useRef, useState } from "react";
 import Link from "next/link";
-import { SiteHeader } from "@/components/layout/site-header";
-import { SiteFooter } from "@/components/layout/site-footer";
 import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
 import { BRAND } from "@/lib/brand";
 
@@ -51,7 +49,6 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <SiteHeader />
       <main ref={rootRef}>
         <section className="px-8 pt-36 pb-24 md:px-16 md:pt-44 md:pb-32 lg:px-24">
           <div className="mx-auto grid w-full max-w-[1800px] gap-12 md:grid-cols-2 md:gap-16 lg:gap-24">
@@ -213,7 +210,6 @@ export default function ContactPage() {
           </div>
         </section>
       </main>
-      <SiteFooter hideCta />
     </div>
   );
 }

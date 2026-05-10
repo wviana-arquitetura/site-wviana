@@ -1,7 +1,5 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
-import { SiteHeader } from "@/components/layout/site-header";
-import { SiteFooter } from "@/components/layout/site-footer";
 
 type ReviewRecord = {
   id: string;
@@ -62,7 +60,6 @@ export default async function AdminReviewsPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <SiteHeader />
       <main className="px-8 pt-36 pb-24 md:px-16 md:pt-44 md:pb-32 lg:px-24">
         <div className="mx-auto w-full max-w-[1200px]">
           <span
@@ -186,7 +183,6 @@ export default async function AdminReviewsPage() {
           )}
         </div>
       </main>
-      <SiteFooter hideCta />
     </div>
   );
 }

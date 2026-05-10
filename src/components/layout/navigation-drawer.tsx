@@ -8,10 +8,10 @@ import { useUiStore } from "@/store/use-ui-store";
 import { BRAND } from "@/lib/brand";
 
 const navItems = [
-  { href: "/works", label: "Projetos", index: "01" },
-  { href: "/process", label: "Processo", index: "02" },
-  { href: "/studio", label: "Quem somos", index: "03" },
-  { href: "/contact", label: "Contato", index: "04" },
+  { href: "/projetos", label: "Projetos", index: "01" },
+  { href: "/processo", label: "Processo", index: "02" },
+  { href: "/sobre", label: "Sobre", index: "03" },
+  { href: "/contato", label: "Contato", index: "04" },
 ];
 
 export function NavigationDrawer() {
@@ -90,6 +90,11 @@ export function NavigationDrawer() {
   }, [isOpen, setNavigationOpen]);
 
   // Animate open/close
+  // - Mata a timeline anterior antes de criar a nova (evita race em toggle rápido).
+  // - Fechamento curto (~0.35s) pra terminar antes do pico da cortina taupe da
+  //   PageTransition (delay 0.15 + 0.7s) quando o close vem de uma navegação.
+  // - SiteHeader/Drawer vivem no layout.tsx (montam uma vez), então estado e
+  //   timeline GSAP persistem entre rotas — sem re-mount cortando animação.
   useEffect(() => {
     const backdrop = backdropRef.current;
     const content = contentRef.current;
@@ -97,9 +102,9 @@ export function NavigationDrawer() {
     if (!backdrop || !content || !links) return;
 
     const items = links.querySelectorAll<HTMLElement>(".nav-link-item");
+    const tl = gsap.timeline({ defaults: { ease: "power3.inOut" } });
 
     if (isOpen) {
-      const tl = gsap.timeline({ defaults: { ease: "power3.inOut" } });
       tl.set(backdrop, { display: "block" })
         .fromTo(
           backdrop,
@@ -119,20 +124,21 @@ export function NavigationDrawer() {
           "-=0.3",
         );
     } else {
-      const tl = gsap.timeline({
-        defaults: { ease: "power3.inOut" },
-        onComplete: () => {
-          gsap.set(backdrop, { display: "none" });
-        },
+      tl.eventCallback("onComplete", () => {
+        gsap.set(backdrop, { display: "none" });
       });
       tl.to(items, {
         autoAlpha: 0,
-        y: -20,
-        duration: 0.3,
-        stagger: 0.04,
+        y: -10,
+        duration: 0.18,
+        stagger: 0.02,
         ease: "power2.in",
-      }).to(backdrop, { xPercent: 100, duration: 0.6 }, "-=0.1");
+      }).to(backdrop, { xPercent: 100, duration: 0.25 }, "-=0.05");
     }
+
+    return () => {
+      tl.kill();
+    };
   }, [isOpen]);
 
   return (

@@ -3,8 +3,6 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { SiteHeader } from "@/components/layout/site-header";
-import { SiteFooter } from "@/components/layout/site-footer";
 import { Void } from "@/components/ui/void";
 import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
 import {
@@ -28,7 +26,6 @@ export default function WorksPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <SiteHeader />
       <main ref={rootRef}>
         {/* Hero */}
         <section className="px-8 pt-36 pb-12 md:px-16 md:pt-44 md:pb-16 lg:px-24">
@@ -105,7 +102,6 @@ export default function WorksPage() {
           </div>
         </section>
       </main>
-      <SiteFooter />
     </div>
   );
 }
@@ -114,7 +110,7 @@ function SplitCard({ project, index, imageLeft = false }: { project: Project; in
   const num = String(index + 1).padStart(2, "0");
   return (
     <div className="mb-16 md:mb-24">
-      <Link href={`/projects/${project.slug}`} className={`group flex flex-col gap-8 md:flex-row md:items-start ${imageLeft ? "md:flex-row-reverse" : ""}`}>
+      <Link href={`/projetos/${project.slug}`} className={`group flex flex-col gap-8 md:flex-row md:items-start ${imageLeft ? "md:flex-row-reverse" : ""}`}>
         {/* Info */}
         <div className="flex flex-col gap-3 md:w-[40%] md:pt-4">
           <span className="reveal-illuminate text-micro uppercase tracking-[0.22em]" style={{ color: "hsl(var(--accent-strong))" }}>

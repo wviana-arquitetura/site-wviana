@@ -3,9 +3,11 @@ import localFont from "next/font/local";
 import { GlobalIntroLoader } from "@/components/providers/GlobalIntroLoader";
 import { HydrationGuard } from "@/components/providers/HydrationGuard";
 import { ArchitecturalGrid } from "@/components/layout/architectural-grid";
+import { SiteChrome } from "@/components/layout/site-chrome";
 import "./globals.css";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
+import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { BRAND } from "@/lib/brand";
 
 /* Aeonik — manual: Light / Medium / Bold (TRIAL: Regular cobre 400 e 500) */
@@ -108,7 +110,10 @@ export default function RootLayout({
         <GlobalIntroLoader />
         <ArchitecturalGrid />
         <QueryProvider>
-          <SmoothScrollProvider>{children}</SmoothScrollProvider>
+          <SmoothScrollProvider>
+            <ScrollProgress />
+            <SiteChrome>{children}</SiteChrome>
+          </SmoothScrollProvider>
         </QueryProvider>
       </body>
     </html>

@@ -2,8 +2,6 @@
 
 import { useRef, useLayoutEffect } from "react";
 import gsap from "@/lib/gsap";
-import { SiteHeader } from "@/components/layout/site-header";
-import { SiteFooter } from "@/components/layout/site-footer";
 import { Void } from "@/components/ui/void";
 import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
 
@@ -133,7 +131,6 @@ export default function ProcessPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <SiteHeader />
       <main ref={rootRef}>
         {/* Intro — preenche viewport, conteúdo centralizado verticalmente */}
         <section className="flex min-h-screen items-center px-8 pt-24 pb-12 md:px-16 md:pt-28 md:pb-16 lg:px-24">
@@ -271,7 +268,6 @@ export default function ProcessPage() {
           </div>
         </section>
       </main>
-      <SiteFooter />
     </div>
   );
 }

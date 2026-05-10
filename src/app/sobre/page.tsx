@@ -2,8 +2,6 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import { SiteHeader } from "@/components/layout/site-header";
-import { SiteFooter } from "@/components/layout/site-footer";
 import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
 
 const capabilities = [
@@ -25,7 +23,6 @@ export default function StudioPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <SiteHeader />
       <main ref={rootRef}>
         {/* 1. Hero — desktop: foto horizontal + texto na parede / mobile: foto recortada + texto + W watermark */}
         <section className="relative flex flex-col overflow-hidden md:h-[var(--svh)]">
@@ -254,7 +251,6 @@ export default function StudioPage() {
           </div>
         </section>
       </main>
-      <SiteFooter />
     </div>
   );
 }

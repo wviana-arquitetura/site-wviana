@@ -1,8 +1,6 @@
 "use client";
 
 import { FormEvent, useRef, useState } from "react";
-import { SiteHeader } from "@/components/layout/site-header";
-import { SiteFooter } from "@/components/layout/site-footer";
 import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
 
 const ALIGNMENT_OPTIONS = [
@@ -71,7 +69,6 @@ export default function ClientReviewPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <SiteHeader />
       <main ref={rootRef}>
         <section className="px-8 pt-36 pb-24 md:px-16 md:pt-44 md:pb-32 lg:px-24">
           <div className="mx-auto w-full max-w-[1100px]">
@@ -294,7 +291,6 @@ export default function ClientReviewPage() {
           </div>
         </section>
       </main>
-      <SiteFooter hideCta />
     </div>
   );
 }

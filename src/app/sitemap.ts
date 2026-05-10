@@ -3,7 +3,7 @@ import { BRAND } from "@/lib/brand";
 import projects from "@/data/projects.json";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["", "/works", "/process", "/studio", "/contact"];
+  const staticRoutes = ["", "/projetos", "/processo", "/sobre", "/contato"];
 
   const staticEntries: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
     url: `${BRAND.siteUrl}${route}`,
@@ -13,7 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   const projectEntries: MetadataRoute.Sitemap = projects.map((project) => ({
-    url: `${BRAND.siteUrl}/projects/${project.slug}`,
+    url: `${BRAND.siteUrl}/projetos/${project.slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly",
     priority: 0.7,

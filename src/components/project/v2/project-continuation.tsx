@@ -12,7 +12,7 @@ export function ProjectContinuation({ nextProject }: ProjectContinuationProps) {
   return (
     <section className="flex min-h-screen flex-col bg-foreground px-8 py-16 md:px-16 md:py-20 lg:px-24">
       <Link
-        href={`/projects/${nextProject.slug}`}
+        href={`/projetos/${nextProject.slug}`}
         className="group mx-auto flex w-full max-w-[1800px] flex-1 flex-col"
       >
         <span

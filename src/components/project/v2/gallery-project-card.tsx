@@ -26,7 +26,7 @@ export function GalleryProjectCard({
       {/* Image column — foto vertical alta com título ancorado no canto inferior */}
       <div className="md:w-[42%] md:shrink-0">
         <Link
-          href={`/projects/${project.slug}`}
+          href={`/projetos/${project.slug}`}
           className="group relative block w-full"
           aria-label={`Ver projeto ${project.title}`}
         >
@@ -92,7 +92,7 @@ export function GalleryProjectCard({
         </p>
 
         <Link
-          href={`/projects/${project.slug}`}
+          href={`/projetos/${project.slug}`}
           className="group/link mt-2 inline-flex items-center gap-2 text-caption uppercase tracking-[0.18em] transition-opacity hover:opacity-60"
           style={{ color: "hsl(var(--accent-strong))" }}
         >

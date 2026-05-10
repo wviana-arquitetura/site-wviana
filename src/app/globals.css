@@ -147,10 +147,12 @@
   }
 
   /* ── v2 Page transitions — "A Cortina" ── */
+  /* z-index acima do navigation-drawer (9998) — quando navegamos com o menu
+     aberto, a cortina precisa cobrir o drawer enquanto ele fecha em paralelo. */
   .page-transition-overlay {
     position: fixed;
     inset: 0;
-    z-index: 50;
+    z-index: 9999;
     pointer-events: none;
     transform-origin: left;
     background-color: hsl(var(--accent));
