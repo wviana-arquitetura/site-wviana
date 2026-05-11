@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { GlobalIntroLoader } from "@/components/providers/GlobalIntroLoader";
 import { HydrationGuard } from "@/components/providers/HydrationGuard";
@@ -32,6 +32,10 @@ const agrandirNarrow = localFont({
   variable: "--font-display",
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   title: "W.VIANA — Arquitetura | Interiores",

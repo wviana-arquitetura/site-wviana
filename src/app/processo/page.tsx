@@ -2,7 +2,6 @@
 
 import { useRef, useLayoutEffect } from "react";
 import gsap from "@/lib/gsap";
-import { Void } from "@/components/ui/void";
 import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
 
 const phases = [
@@ -130,10 +129,10 @@ export default function ProcessPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-[var(--svh)] bg-background text-foreground">
       <main ref={rootRef}>
         {/* Intro — preenche viewport, conteúdo centralizado verticalmente */}
-        <section className="flex min-h-screen items-center px-8 pt-24 pb-12 md:px-16 md:pt-28 md:pb-16 lg:px-24">
+        <section className="flex min-h-[var(--svh)] items-center px-8 pt-24 pb-12 md:px-16 md:pt-28 md:pb-16 lg:px-24">
           <div className="mx-auto w-full max-w-[1800px]">
             <span
               className="reveal-illuminate text-micro uppercase tracking-[0.22em]"
@@ -156,7 +155,10 @@ export default function ProcessPage() {
         </section>
 
         {/* Horizontal scroll phases */}
-        <section ref={horizontalRef} className="relative h-screen overflow-hidden">
+        <section
+          ref={horizontalRef}
+          className="relative h-[var(--svh)] overflow-hidden"
+        >
           {/* Progress bar */}
           <div
             ref={progressRef}
@@ -227,7 +229,7 @@ export default function ProcessPage() {
         </section>
 
         {/* Deliverables — cabe em 100vh, conteúdo distribuído verticalmente */}
-        <section className="flex min-h-screen flex-col px-8 py-12 md:px-16 md:py-16 lg:px-24">
+        <section className="flex min-h-[var(--svh)] flex-col px-8 py-12 md:px-16 md:py-16 lg:px-24">
           <div className="mx-auto flex w-full max-w-[1800px] flex-1 flex-col">
             <span
               className="reveal-illuminate text-micro uppercase tracking-[0.22em]"

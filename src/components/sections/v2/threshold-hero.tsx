@@ -123,7 +123,7 @@ export function ThresholdHero() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex h-screen flex-col items-center justify-center bg-background"
+      className="relative flex min-h-[var(--svh)] flex-col items-center justify-center bg-background"
       data-section="hero"
     >
       <div
@@ -142,7 +142,7 @@ export function ThresholdHero() {
       />
 
       {/* Bottom-left: scroll indicator */}
-      <div className="absolute bottom-10 left-8 flex flex-col items-center gap-2 md:left-16 lg:left-24">
+      <div className="absolute bottom-[max(2.5rem,env(safe-area-inset-bottom,0px))] left-8 flex flex-col items-center gap-2 md:left-16 lg:left-24">
         <div
           className="h-10 w-px animate-pulse"
           style={{ background: "hsl(var(--accent) / 0.5)" }}
@@ -157,7 +157,7 @@ export function ThresholdHero() {
 
       {/* Bottom-right: location */}
       <span
-        className="absolute bottom-10 right-8 text-micro uppercase tracking-[0.22em] md:right-16 lg:right-24"
+        className="absolute bottom-[max(2.5rem,env(safe-area-inset-bottom,0px))] right-8 text-micro uppercase tracking-[0.22em] md:right-16 lg:right-24"
         style={{ color: "hsl(var(--accent-strong))" }}
       >
         Brasil
