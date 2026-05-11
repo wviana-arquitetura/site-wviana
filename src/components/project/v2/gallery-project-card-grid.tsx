@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "@/types/project";
@@ -9,15 +10,72 @@ type GalleryProjectCardGridProps = {
   imageLeft?: boolean;
 };
 
+const ROTATE_INTERVAL_MS = 1400;
+const CROSSFADE_MS = 600;
+
 /**
  * Variante do GalleryProjectCard para uso em grid 2-colunas (página /projetos).
- * Mantém a personalidade da home (foto vertical + título sobreposto + texto ao lado),
- * mas com altura reduzida para 2 cards caberem em 1 viewport.
+ * Mantém a personalidade da home, mas com altura reduzida para 2 cards caberem
+ * em 1 viewport. No hover (desktop) ou enquanto visível (mobile), faz auto-play
+ * cíclico entre capa + 3 fotos da galeria com cross-fade.
  */
 export function GalleryProjectCardGrid({
   project,
   imageLeft = false,
 }: GalleryProjectCardGridProps) {
+  const imageWrapperRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [shouldRotate, setShouldRotate] = useState(false);
+  const [hasLoadedExtra, setHasLoadedExtra] = useState(false);
+
+  // Lista de imagens: capa + até 3 primeiras fotos da galeria.
+  const images = [
+    project.imageSrc,
+    ...project.gallery.slice(0, 3).map((g) => g.src),
+  ];
+
+  // Detecta mobile via media query para usar IntersectionObserver em vez de hover.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const isMobile = window.matchMedia("(hover: none)").matches;
+    if (!isMobile) return;
+
+    const el = imageWrapperRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+          setShouldRotate(true);
+          setHasLoadedExtra(true);
+        } else {
+          setShouldRotate(false);
+        }
+      },
+      { threshold: [0, 0.5, 1] },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Rotação automática enquanto shouldRotate é true.
+  useEffect(() => {
+    if (!shouldRotate || images.length <= 1) return;
+    const id = window.setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % images.length);
+    }, ROTATE_INTERVAL_MS);
+    return () => window.clearInterval(id);
+  }, [shouldRotate, images.length]);
+
+  const handleMouseEnter = () => {
+    setHasLoadedExtra(true);
+    setShouldRotate(true);
+  };
+  const handleMouseLeave = () => {
+    setShouldRotate(false);
+    setActiveIndex(0);
+  };
+
   return (
     <div
       className={`flex h-full w-full flex-col gap-6 md:flex-row md:items-center md:gap-6 lg:gap-8 ${
@@ -30,19 +88,38 @@ export function GalleryProjectCardGrid({
           href={`/projetos/${project.slug}`}
           className="group relative block w-full"
           aria-label={`Ver projeto ${project.title}`}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
-          <div className="reveal-curtain relative aspect-[3/4] w-full overflow-hidden md:aspect-auto md:h-[68vh]">
-            <Image
-              src={project.imageSrc}
-              alt={project.title}
-              fill
-              className="object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
-              sizes="(max-width: 768px) 100vw, 22vw"
-            />
+          <div
+            ref={imageWrapperRef}
+            className="reveal-curtain relative aspect-[3/4] w-full overflow-hidden md:aspect-auto md:h-[68vh]"
+          >
+            {images.map((src, idx) => {
+              // Só monta o <Image> da capa de cara; as extras só quando hover ativa.
+              const shouldRender = idx === 0 || hasLoadedExtra;
+              if (!shouldRender) return null;
+              return (
+                <Image
+                  key={src}
+                  src={src}
+                  alt={project.title}
+                  fill
+                  priority={idx === 0}
+                  sizes="(max-width: 768px) 100vw, 22vw"
+                  className="object-cover object-top transition-opacity ease-out group-hover:scale-[1.03]"
+                  style={{
+                    opacity: activeIndex === idx ? 1 : 0,
+                    transitionDuration: `${CROSSFADE_MS}ms, 1200ms`,
+                    transitionProperty: "opacity, transform",
+                  }}
+                />
+              );
+            })}
 
             {/* Título sobreposto no canto inferior — mix-blend-mode adapta a contraste */}
             <h3
-              className="reveal-rise absolute inset-x-0 bottom-0 px-4 pb-4 font-extrabold leading-[0.95] md:px-5 md:pb-5"
+              className="reveal-rise pointer-events-none absolute inset-x-0 bottom-0 z-10 px-4 pb-4 font-extrabold leading-[0.95] md:px-5 md:pb-5"
               style={{
                 color: "#ffffff",
                 mixBlendMode: "difference",
@@ -55,6 +132,29 @@ export function GalleryProjectCardGrid({
             >
               {project.title}
             </h3>
+
+            {/* Indicador discreto de progresso — só aparece durante rotação */}
+            {images.length > 1 && (
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute bottom-3 right-3 z-10 flex gap-1 transition-opacity duration-300"
+                style={{ opacity: shouldRotate ? 1 : 0 }}
+              >
+                {images.map((_, idx) => (
+                  <span
+                    key={idx}
+                    className="block h-1 w-1 rounded-full"
+                    style={{
+                      background:
+                        idx === activeIndex
+                          ? "rgba(255,255,255,0.95)"
+                          : "rgba(255,255,255,0.4)",
+                      transition: "background 300ms",
+                    }}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </Link>
       </div>

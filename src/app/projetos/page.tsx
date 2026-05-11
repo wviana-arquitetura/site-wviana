@@ -8,7 +8,6 @@ import {
   getAllProjects,
   getProjectTypologies,
 } from "@/services/projects.service";
-import type { Project } from "@/types/project";
 import { BRAND } from "@/lib/brand";
 
 function chunkPairs<T>(items: T[]): T[][] {
@@ -23,17 +22,10 @@ export default function ProjetosPage() {
   const rootRef = useRef<HTMLElement>(null);
   const allProjects = getAllProjects();
   const typologies = getProjectTypologies();
-  const ARCHITECTURE_FILTER = "Arquitetura";
-  const filters = [...typologies, ARCHITECTURE_FILTER];
   const [filter, setFilter] = useState<string | null>(null);
 
-  const matchesFilter = (project: Project, value: string) =>
-    value === ARCHITECTURE_FILTER
-      ? project.scope.includes("Projeto Arquitetônico")
-      : project.typology === value;
-
   const filtered = filter
-    ? allProjects.filter((p) => matchesFilter(p, filter))
+    ? allProjects.filter((p) => p.typology === filter)
     : allProjects;
 
   useArchitecturalReveal(rootRef, filter ?? "all");
@@ -72,9 +64,8 @@ export default function ProjetosPage() {
                 ({allProjects.length})
               </span>
             </button>
-            {filters.map((typ) => {
-              const count = allProjects.filter((p) => matchesFilter(p, typ))
-                .length;
+            {typologies.map((typ) => {
+              const count = allProjects.filter((p) => p.typology === typ).length;
               return (
                 <button
                   key={typ}
