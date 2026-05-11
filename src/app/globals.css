@@ -270,7 +270,61 @@
      v3 Scroll Indicator — "Instrumento Arquitetônico"
      Régua vertical refinada + barra-mestra superior + cabeça-cápsula.
      Filosofia: instrumento de medição (escalímetro), não UI cromada.
-     ────────────────────────────────────────────────────────────── */
+
+     Adapta-se ao tema do footer: lê --footer-dark-progress (0..1)
+     e interpola entre paleta clara (preto sobre off-white) e escura
+     (branco sobre preto). Tudo via color-mix em :root abaixo. */
+
+  :root {
+    /* Tokens da régua que interpolam pela proximidade do footer escuro.
+       --footer-dark-progress vai de 0 (claro) a 1 (escuro). */
+    --scroll-ink: color-mix(
+      in oklab,
+      hsl(var(--foreground)) calc((1 - var(--footer-dark-progress, 0)) * 100%),
+      hsl(0 0% 100%)
+    );
+    --scroll-ink-soft: color-mix(
+      in oklab,
+      hsl(var(--accent-strong)) calc((1 - var(--footer-dark-progress, 0)) * 100%),
+      hsl(var(--accent))
+    );
+    --scroll-ink-faint: color-mix(
+      in oklab,
+      hsl(var(--accent) / 0.35) calc((1 - var(--footer-dark-progress, 0)) * 100%),
+      hsl(0 0% 100% / 0.22)
+    );
+    --scroll-ink-line: color-mix(
+      in oklab,
+      hsl(var(--accent) / 0.28) calc((1 - var(--footer-dark-progress, 0)) * 100%),
+      hsl(0 0% 100% / 0.22)
+    );
+    --scroll-ink-line-faint: color-mix(
+      in oklab,
+      hsl(var(--accent) / 0.18) calc((1 - var(--footer-dark-progress, 0)) * 100%),
+      hsl(0 0% 100% / 0.12)
+    );
+    --scroll-glass: color-mix(
+      in oklab,
+      hsl(var(--background) / 0.7) calc((1 - var(--footer-dark-progress, 0)) * 100%),
+      hsl(0 0% 0% / 0.55)
+    );
+    --scroll-glass-border: color-mix(
+      in oklab,
+      hsl(var(--foreground) / 0.08) calc((1 - var(--footer-dark-progress, 0)) * 100%),
+      hsl(0 0% 100% / 0.18)
+    );
+    --scroll-glow: color-mix(
+      in oklab,
+      hsl(var(--foreground) / 0.25) calc((1 - var(--footer-dark-progress, 0)) * 100%),
+      hsl(0 0% 100% / 0.45)
+    );
+    --scroll-halo: color-mix(
+      in oklab,
+      hsl(var(--foreground) / 0.06) calc((1 - var(--footer-dark-progress, 0)) * 100%),
+      hsl(0 0% 100% / 0.1)
+    );
+  }
+
 
   /* Trilho superior — fio cinemático que cruza a viewport */
   .scroll-topbar-track {
@@ -283,12 +337,13 @@
     background:
       linear-gradient(
         to right,
-        hsl(var(--accent) / 0) 0%,
-        hsl(var(--accent) / 0.14) 25%,
-        hsl(var(--accent) / 0.18) 50%,
-        hsl(var(--accent) / 0.14) 75%,
-        hsl(var(--accent) / 0) 100%
+        transparent 0%,
+        var(--scroll-ink-line-faint) 25%,
+        var(--scroll-ink-line) 50%,
+        var(--scroll-ink-line-faint) 75%,
+        transparent 100%
       );
+    transition: background 600ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .scroll-topbar-fill {
@@ -298,18 +353,22 @@
     background:
       linear-gradient(
         to right,
-        hsl(var(--accent-strong) / 0) 0%,
-        hsl(var(--accent-strong) / 0.7) 18%,
-        hsl(var(--foreground)) 70%,
-        hsl(var(--foreground)) 100%
+        transparent 0%,
+        var(--scroll-ink-soft) 18%,
+        var(--scroll-ink) 70%,
+        var(--scroll-ink) 100%
       );
     box-shadow:
-      0 0 8px hsl(var(--foreground) / 0.18),
-      0 0 1px hsl(var(--foreground) / 0.4);
+      0 0 8px var(--scroll-glow),
+      0 0 1px var(--scroll-ink);
     will-change: transform;
+    transition: background 600ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 600ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  /* Flecha de luz na ponta — micro-glow que segue o avanço */
+  /* Flecha de luz na ponta — micro-glow que segue o avanço.
+     Usa multiply em fundo claro (escurece) e screen em fundo escuro
+     (clareia), via mix-blend-mode trocado por var. */
   .scroll-topbar-tip {
     position: absolute;
     top: -1px;
@@ -319,26 +378,29 @@
     background:
       radial-gradient(
         ellipse at right center,
-        hsl(var(--foreground) / 0.55) 0%,
-        hsl(var(--foreground) / 0) 70%
+        var(--scroll-ink) 0%,
+        transparent 70%
       );
     transform: translate3d(0, 0, 0);
     will-change: transform, opacity;
     opacity: 0;
-    transition: opacity 320ms ease;
-    mix-blend-mode: multiply;
+    transition: opacity 320ms ease,
+      background 600ms cubic-bezier(0.22, 1, 0.36, 1);
+    /* Em fundo escuro o multiply some — usa plus-lighter via mix-blend
+       trocado por opacity. Aqui simplificamos: sem blend mode, deixa o
+       gradiente já bem-formado fazer o trabalho. */
   }
 
   /* Régua vertical — wrapper */
   .scroll-rail {
     position: fixed;
-    right: 1.5rem;
+    right: 0.75rem;
     top: 50%;
     z-index: 2147483641;
     pointer-events: none;
     transform: translateY(-50%);
-    height: 46vh;
-    width: 56px;
+    height: 32vh;
+    width: 40px;
     transition:
       opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
       transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -346,23 +408,23 @@
 
   @media (min-width: 768px) {
     .scroll-rail {
-      right: 1.75rem;
+      right: 1rem;
     }
   }
 
   @media (min-width: 1024px) {
     .scroll-rail {
-      right: 2.25rem;
+      right: 1.25rem;
     }
   }
 
   .scroll-rail[data-idle="true"] {
-    opacity: 0.28;
-    transform: translateY(-50%) translateX(8px); 
+    opacity: 0.18;
+    transform: translateY(-50%) translateX(6px);
   }
 
   .scroll-rail[data-idle="false"] {
-    opacity: 1;
+    opacity: 0.78;
     transform: translateY(-50%) translateX(0);
   }
 
@@ -377,12 +439,13 @@
     background:
       linear-gradient(
         to bottom,
-        hsl(var(--accent) / 0) 0%,
-        hsl(var(--accent) / 0.18) 8%,
-        hsl(var(--accent) / 0.28) 50%,
-        hsl(var(--accent) / 0.18) 92%,
-        hsl(var(--accent) / 0) 100%
+        transparent 0%,
+        var(--scroll-ink-line-faint) 8%,
+        var(--scroll-ink-line) 50%,
+        var(--scroll-ink-line-faint) 92%,
+        transparent 100%
       );
+    transition: background 600ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   /* Preenchimento da linha — gradiente foreground */
@@ -394,14 +457,16 @@
     background:
       linear-gradient(
         to bottom,
-        hsl(var(--foreground)) 0%,
-        hsl(var(--foreground)) 60%,
-        hsl(var(--accent-strong)) 100%
+        var(--scroll-ink) 0%,
+        var(--scroll-ink) 60%,
+        var(--scroll-ink-soft) 100%
       );
     box-shadow:
-      0 0 10px hsl(var(--foreground) / 0.12),
-      0 0 1px hsl(var(--foreground) / 0.5);
+      0 0 10px var(--scroll-glow),
+      0 0 1px var(--scroll-ink);
     will-change: transform;
+    transition: background 600ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 600ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   /* Halo difuso atrás da linha — dá profundidade premium */
@@ -416,11 +481,12 @@
     background:
       radial-gradient(
         ellipse at center,
-        hsl(var(--foreground) / 0.06) 0%,
-        hsl(var(--foreground) / 0) 70%
+        var(--scroll-halo) 0%,
+        transparent 70%
       );
     opacity: 0;
-    transition: opacity 600ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: opacity 600ms cubic-bezier(0.22, 1, 0.36, 1),
+      background 600ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .scroll-rail[data-idle="false"] .scroll-rail-halo {
@@ -440,43 +506,45 @@
   }
 
   .scroll-tick[data-major="1"] {
-    width: 11px;
-    background: hsl(var(--accent-strong) / 0.45);
+    width: 8px;
+    background: var(--scroll-ink-soft);
+    opacity: 0.5;
   }
 
   .scroll-tick[data-major="0"] {
-    width: 5px;
-    background: hsl(var(--accent) / 0.35);
+    width: 4px;
+    background: var(--scroll-ink-faint);
   }
 
   .scroll-tick[data-filled="1"] {
-    background: hsl(var(--foreground)) !important;
-    width: 14px !important;
-    box-shadow: 0 0 6px hsl(var(--foreground) / 0.25);
+    background: var(--scroll-ink) !important;
+    opacity: 1 !important;
+    width: 10px !important;
+    box-shadow: 0 0 4px var(--scroll-glow);
   }
 
   /* Rótulos numéricos junto aos ticks principais */
   .scroll-tick-label {
     position: absolute;
-    left: -22px;
+    left: -18px;
     top: 50%;
     transform: translateY(-50%);
     font-family: var(--font-display), system-ui, sans-serif;
-    font-size: 0.5rem;
+    font-size: 0.42rem;
     font-weight: 400;
     letter-spacing: 0.14em;
-    color: hsl(var(--accent-strong) / 0.5);
+    color: var(--scroll-ink-soft);
+    opacity: 0;
     pointer-events: none;
     transition: color 380ms ease, opacity 380ms ease;
-    opacity: 0;
   }
 
   .scroll-rail[data-idle="false"] .scroll-tick-label {
-    opacity: 1;
+    opacity: 0.6;
   }
 
   .scroll-tick[data-filled="1"] .scroll-tick-label {
-    color: hsl(var(--foreground));
+    color: var(--scroll-ink);
     opacity: 1;
   }
 
@@ -506,10 +574,11 @@
   .scroll-head-tick {
     display: block;
     height: 1px;
-    width: 18px;
-    background: hsl(var(--foreground));
-    box-shadow: 0 0 4px hsl(var(--foreground) / 0.3);
+    width: 12px;
+    background: var(--scroll-ink);
+    box-shadow: 0 0 3px var(--scroll-glow);
     flex-shrink: 0;
+    transition: background 600ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .scroll-head-capsule {
@@ -517,53 +586,52 @@
     align-items: baseline;
     gap: 0.18rem;
     padding: 0.18rem 0.42rem;
-    background: hsl(var(--background) / 0.7);
-    backdrop-filter: blur(10px) saturate(140%);
-    -webkit-backdrop-filter: blur(10px) saturate(140%);
-    border: 1px solid hsl(var(--foreground) / 0.08);
-    box-shadow:
-      0 1px 0 hsl(var(--background) / 0.6) inset,
-      0 8px 24px -12px hsl(var(--foreground) / 0.18);
+    background: transparent;
+    border: none;
+    box-shadow: none;
   }
 
   .scroll-head-num {
     font-family: var(--font-display), system-ui, sans-serif;
-    font-size: 0.78rem;
+    font-size: 0.62rem;
     font-weight: 500;
     letter-spacing: 0.04em;
     line-height: 1;
-    color: hsl(var(--foreground));
+    color: var(--scroll-ink);
     font-variant-numeric: tabular-nums;
+    transition: color 600ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .scroll-head-pct {
     font-family: var(--font-body), system-ui, sans-serif;
-    font-size: 0.46rem;
+    font-size: 0.4rem;
     font-weight: 400;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: hsl(var(--accent-strong));
+    color: var(--scroll-ink-soft);
     line-height: 1;
+    transition: color 600ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   /* Caps superior e inferior — pontos terminais da régua */
   .scroll-rail-cap {
     position: absolute;
     left: 50%;
-    width: 7px;
-    height: 7px;
+    width: 5px;
+    height: 5px;
     transform: translateX(-50%) rotate(45deg);
-    border: 1px solid hsl(var(--accent-strong) / 0.4);
-    background: hsl(var(--background));
-    transition: border-color 380ms ease, background 380ms ease;
+    border: 1px solid var(--scroll-ink-soft);
+    background: transparent;
+    transition: border-color 600ms cubic-bezier(0.22, 1, 0.36, 1),
+      background 600ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .scroll-rail-cap[data-position="top"] { top: -4px; }
-  .scroll-rail-cap[data-position="bottom"] { bottom: -4px; }
+  .scroll-rail-cap[data-position="top"] { top: -3px; }
+  .scroll-rail-cap[data-position="bottom"] { bottom: -3px; }
 
   .scroll-rail[data-idle="false"] .scroll-rail-cap[data-position="top"] {
-    border-color: hsl(var(--foreground));
-    background: hsl(var(--foreground));
+    border-color: var(--scroll-ink);
+    background: var(--scroll-ink);
   }
 
   /* Reduce motion fallback */
