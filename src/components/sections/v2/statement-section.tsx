@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useLayoutEffect, useMemo } from "react";
-import gsap from "@/lib/gsap";
+import gsap, { ScrollTrigger } from "@/lib/gsap";
 
 const SENTENCES = [
   "Não projetamos apenas espaços.",
@@ -34,20 +34,20 @@ export function StatementSection() {
     }
 
     const ctx = gsap.context(() => {
-      // Scrub real: cada palavra interpola entre 0.08 → 1 conforme
-      // a seção atravessa o viewport. Tempo confortável de leitura.
-      gsap.set(wordsRef.current, { opacity: 0.08 });
+      const tl = gsap.timeline({ paused: true });
 
-      gsap.to(wordsRef.current, {
+      tl.to(wordsRef.current, {
         opacity: 1,
-        ease: "none",
-        stagger: { each: 1, from: "start" },
-        scrollTrigger: {
-          trigger: section,
-          start: "top 70%",
-          end: "bottom 40%",
-          scrub: 0.8,
-        },
+        duration: 0.6,
+        stagger: 0.14,
+        ease: "power2.out",
+      });
+
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 75%",
+        once: true,
+        onEnter: () => tl.play(),
       });
     }, section);
 

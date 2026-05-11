@@ -1,12 +1,11 @@
 "use client";
 
-import { useRef, useEffect, useLayoutEffect } from "react";
+import { useRef, useEffect } from "react";
 import { getProjectBySlug } from "@/services/projects.service";
 import { GalleryProjectCard } from "@/components/project/v2/gallery-project-card";
 import { Void } from "@/components/ui/void";
 import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
 import { getLenis } from "@/lib/scroll";
-import gsap from "@/lib/gsap";
 
 export function GalleryWalkSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -16,9 +15,6 @@ export function GalleryWalkSection() {
 
   useArchitecturalReveal(sectionRef);
 
-  // Snap inteligente — respeita interrupção do usuário (wheel/touch
-  // cancelam qualquer animação programática em curso, evitando "luta"
-  // com o Lenis).
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
@@ -27,7 +23,6 @@ export function GalleryWalkSection() {
     let timer: ReturnType<typeof setTimeout>;
     let prevScrollY = window.scrollY;
     let dir: "down" | "up" = "down";
-    let userInterrupted = false;
 
     const getHeaderH = () =>
       parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-height")) *
@@ -37,22 +32,21 @@ export function GalleryWalkSection() {
       const headerH = getHeaderH();
       const target = window.scrollY + top - headerH;
       if (Math.abs(top - headerH) <= 24) return;
-      userInterrupted = false;
       getLenis()?.scrollTo(target, {
-        duration: 1.1,
-        // easeOutExpo — chega cinematográfico, sem sobrepasso
-        easing: (t: number) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
+        duration: 1.2,
+        easing: (t: number) => 1 - Math.pow(1 - t, 4),
       });
     };
 
     const handleScrollEnd = () => {
-      if (userInterrupted) return;
       const viewH = window.innerHeight;
       const headerH = getHeaderH();
       const els = Array.from(section.querySelectorAll<HTMLElement>("[data-snap]"));
 
       if (dir === "down") {
+        // Card cruzou 20% da tela → snapa pra ele
         let arrivingTop: number | null = null;
+        // Card peeking (< 20%) → snapa de volta, esconde ele na borda inferior
         let peekingTop: number | null = null;
 
         els.forEach((el) => {
@@ -67,13 +61,15 @@ export function GalleryWalkSection() {
         if (arrivingTop !== null) {
           snap(arrivingTop);
         } else if (peekingTop !== null) {
+          // Coloca o topo do card peeking exatamente na borda inferior da viewport
           const target = window.scrollY + peekingTop - viewH;
           getLenis()?.scrollTo(target, {
-            duration: 0.9,
-            easing: (t: number) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
+            duration: 1.0,
+            easing: (t: number) => 1 - Math.pow(1 - t, 4),
           });
         }
       } else {
+        // Só snapa pra cima: card voltando do topo que cruzou a header vindo de cima
         let bestTop: number | null = null;
         els.forEach((el) => {
           const top = el.getBoundingClientRect().top;
@@ -92,86 +88,13 @@ export function GalleryWalkSection() {
       if (y !== prevScrollY) dir = y > prevScrollY ? "down" : "up";
       prevScrollY = y;
       clearTimeout(timer);
-      timer = setTimeout(handleScrollEnd, 180);
-    };
-
-    const onUserInput = () => {
-      userInterrupted = true;
-      const lenis = getLenis();
-      lenis?.stop();
-      lenis?.start();
+      timer = setTimeout(handleScrollEnd, 160);
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("wheel", onUserInput, { passive: true });
-    window.addEventListener("touchstart", onUserInput, { passive: true });
-
     return () => {
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("wheel", onUserInput);
-      window.removeEventListener("touchstart", onUserInput);
       clearTimeout(timer);
-    };
-  }, []);
-
-  // Velocity skew — cards reagem sutilmente à velocidade do scroll.
-  // Detalhe premium clássico (Apple, Igloo Inc., Locomotive).
-  useLayoutEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const cards = gsap.utils.toArray<HTMLElement>(
-      section.querySelectorAll("[data-snap] > *"),
-    );
-    if (cards.length === 0) return;
-
-    cards.forEach((card) => card.classList.add("scroll-velocity-target"));
-
-    let rafId: number | null = null;
-    let currentSkew = 0;
-    let lastY = window.scrollY;
-    let lastTime = performance.now();
-    let velocity = 0;
-
-    const tick = () => {
-      const now = performance.now();
-      const dt = Math.max(1, now - lastTime);
-      const lenis = getLenis();
-      const y = lenis ? lenis.scroll : window.scrollY;
-      const instantV = (y - lastY) / dt;
-      velocity = velocity * 0.78 + instantV * 0.22;
-      lastY = y;
-      lastTime = now;
-
-      const targetSkew = gsap.utils.clamp(-2.5, 2.5, velocity * 2.4);
-      currentSkew += (targetSkew - currentSkew) * 0.12;
-
-      if (Math.abs(currentSkew) > 0.05) {
-        cards.forEach((card) => {
-          card.style.setProperty(
-            "transform",
-            `skewY(${currentSkew.toFixed(3)}deg)`,
-          );
-        });
-      } else if (currentSkew !== 0) {
-        currentSkew = 0;
-        cards.forEach((card) => {
-          card.style.removeProperty("transform");
-        });
-      }
-
-      rafId = requestAnimationFrame(tick);
-    };
-
-    rafId = requestAnimationFrame(tick);
-
-    return () => {
-      if (rafId !== null) cancelAnimationFrame(rafId);
-      cards.forEach((card) => {
-        card.classList.remove("scroll-velocity-target");
-        card.style.removeProperty("transform");
-      });
     };
   }, []);
 

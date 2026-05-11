@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { GlobalIntroLoader } from "@/components/providers/GlobalIntroLoader";
 import { HydrationGuard } from "@/components/providers/HydrationGuard";
-import { ArchitecturalGrid } from "@/components/layout/architectural-grid";
 import { SiteChrome } from "@/components/layout/site-chrome";
 import "./globals.css";
 import { QueryProvider } from "@/components/providers/query-provider";
@@ -108,7 +107,6 @@ export default function RootLayout({
         />
         <HydrationGuard />
         <GlobalIntroLoader />
-        <ArchitecturalGrid />
         <QueryProvider>
           <SmoothScrollProvider>
             <ScrollProgress />

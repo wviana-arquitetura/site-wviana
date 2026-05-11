@@ -8,8 +8,6 @@ const LOGO_SRC = "/images/logos/brand/brand-2.svg";
 export function ThresholdHero() {
   const sectionRef = useRef<HTMLElement>(null);
   const logoContainerRef = useRef<HTMLDivElement>(null);
-  const bottomLeftRef = useRef<HTMLDivElement>(null);
-  const bottomRightRef = useRef<HTMLSpanElement>(null);
   const [svgMarkup, setSvgMarkup] = useState<string | null>(null);
 
   useEffect(() => {
@@ -106,22 +104,9 @@ export function ThresholdHero() {
           "<",
         );
 
-      // Parallax: logo sobe ~12% conforme rola, criando profundidade
-      // contra o fundo estático.
-      gsap.to(container, {
-        yPercent: -12,
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
-
       gsap.to(section, {
         autoAlpha: 0,
-        scale: 0.94,
+        scale: 0.96,
         ease: "none",
         scrollTrigger: {
           trigger: section,
@@ -130,26 +115,6 @@ export function ThresholdHero() {
           scrub: 1,
         },
       });
-
-      // Bottom UI: drift mais lento para profundidade adicional
-      const bottomLeft = bottomLeftRef.current;
-      const bottomRight = bottomRightRef.current;
-      const bottomTargets = [bottomLeft, bottomRight].filter(
-        (el): el is HTMLElement => el !== null,
-      );
-      if (bottomTargets.length) {
-        gsap.to(bottomTargets, {
-          y: 40,
-          autoAlpha: 0,
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: "50% top",
-            scrub: 1,
-          },
-        });
-      }
     }, section);
 
     return () => ctx.revert();
@@ -177,10 +142,7 @@ export function ThresholdHero() {
       />
 
       {/* Bottom-left: scroll indicator */}
-      <div
-        ref={bottomLeftRef}
-        className="absolute bottom-10 left-8 flex flex-col items-center gap-2 md:left-16 lg:left-24"
-      >
+      <div className="absolute bottom-10 left-8 flex flex-col items-center gap-2 md:left-16 lg:left-24">
         <div
           className="h-10 w-px animate-pulse"
           style={{ background: "hsl(var(--accent) / 0.5)" }}
@@ -195,7 +157,6 @@ export function ThresholdHero() {
 
       {/* Bottom-right: location */}
       <span
-        ref={bottomRightRef}
         className="absolute bottom-10 right-8 text-micro uppercase tracking-[0.22em] md:right-16 lg:right-24"
         style={{ color: "hsl(var(--accent-strong))" }}
       >
