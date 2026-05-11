@@ -28,7 +28,7 @@ export default function ProjetosPage() {
     ? allProjects.filter((p) => p.typology === filter)
     : allProjects;
 
-  useArchitecturalReveal(rootRef, filter ?? "all");
+  useArchitecturalReveal(rootRef);
 
   return (
     <div className="min-h-screen bg-background text-foreground">

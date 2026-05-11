@@ -38,6 +38,22 @@ export const metadata: Metadata = {
   description:
     "Escritório de arquitetura e interiores fundado por Wellington Viana. Soluções personalizadas que elevam experiências e expectativas.",
   metadataBase: new URL(BRAND.siteUrl),
+  icons: {
+    icon: [
+      {
+        url: "/icon-light.svg",
+        media: "(prefers-color-scheme: light)",
+        type: "image/svg+xml",
+      },
+      {
+        url: "/icon-dark.svg",
+        media: "(prefers-color-scheme: dark)",
+        type: "image/svg+xml",
+      },
+      { url: "/favicon-legacy.ico", sizes: "any" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png" }],
+  },
   alternates: {
     canonical: "/",
   },
