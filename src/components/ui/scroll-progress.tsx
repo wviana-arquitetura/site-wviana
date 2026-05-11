@@ -24,8 +24,8 @@
 import { useEffect, useRef } from "react";
 import { getLenis } from "@/lib/scroll";
 
-const TICK_COUNT = 20; // marcações a cada 5%
-const MAJOR_EVERY = 5; // major tick a cada 25%
+const TICK_COUNT = 20; // marcações a cada 10%
+const MAJOR_EVERY = 5; // major tick (com rótulo) a cada 50%
 const IDLE_MS = 1400;
 
 export function ScrollProgress() {

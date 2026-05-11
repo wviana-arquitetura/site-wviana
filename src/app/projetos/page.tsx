@@ -1,9 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { Void } from "@/components/ui/void";
+import { GalleryProjectCardGrid } from "@/components/project/v2/gallery-project-card-grid";
 import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
 import {
   getAllProjects,
@@ -12,14 +11,29 @@ import {
 import type { Project } from "@/types/project";
 import { BRAND } from "@/lib/brand";
 
-export default function WorksPage() {
+function chunkPairs<T>(items: T[]): T[][] {
+  const rows: T[][] = [];
+  for (let i = 0; i < items.length; i += 2) {
+    rows.push(items.slice(i, i + 2));
+  }
+  return rows;
+}
+
+export default function ProjetosPage() {
   const rootRef = useRef<HTMLElement>(null);
   const allProjects = getAllProjects();
   const typologies = getProjectTypologies();
+  const ARCHITECTURE_FILTER = "Arquitetura";
+  const filters = [...typologies, ARCHITECTURE_FILTER];
   const [filter, setFilter] = useState<string | null>(null);
 
+  const matchesFilter = (project: Project, value: string) =>
+    value === ARCHITECTURE_FILTER
+      ? project.scope.includes("Projeto Arquitetônico")
+      : project.typology === value;
+
   const filtered = filter
-    ? allProjects.filter((p) => p.typology === filter)
+    ? allProjects.filter((p) => matchesFilter(p, filter))
     : allProjects;
 
   useArchitecturalReveal(rootRef, filter ?? "all");
@@ -51,23 +65,35 @@ export default function WorksPage() {
               style={{ color: filter ? "hsl(var(--accent-strong))" : undefined }}
             >
               Todos
-              <span className="ml-1 text-micro" style={{ color: "hsl(var(--accent-strong))" }}>
+              <span
+                className="ml-1 text-micro"
+                style={{ color: "hsl(var(--accent-strong))" }}
+              >
                 ({allProjects.length})
               </span>
             </button>
-            {typologies.map((typ) => {
-              const count = allProjects.filter((p) => p.typology === typ).length;
+            {filters.map((typ) => {
+              const count = allProjects.filter((p) => matchesFilter(p, typ))
+                .length;
               return (
                 <button
                   key={typ}
                   onClick={() => setFilter(typ)}
                   className={`text-caption uppercase tracking-[0.18em] transition-colors ${
-                    filter === typ ? "text-foreground underline underline-offset-4" : ""
+                    filter === typ
+                      ? "text-foreground underline underline-offset-4"
+                      : ""
                   }`}
-                  style={{ color: filter !== typ ? "hsl(var(--accent-strong))" : undefined }}
+                  style={{
+                    color:
+                      filter !== typ ? "hsl(var(--accent-strong))" : undefined,
+                  }}
                 >
                   {typ}
-                  <span className="ml-1 text-micro" style={{ color: "hsl(var(--accent-strong))" }}>
+                  <span
+                    className="ml-1 text-micro"
+                    style={{ color: "hsl(var(--accent-strong))" }}
+                  >
                     ({count})
                   </span>
                 </button>
@@ -76,11 +102,23 @@ export default function WorksPage() {
           </div>
         </section>
 
-        {/* Project listing */}
-        <section className="px-8 pb-32 md:px-16 lg:px-24">
+        {/* Project listing — 2 projetos por linha, cada linha cabe em 1 viewport */}
+        <section className="bg-background px-8 pb-24 md:px-16 md:pb-32 lg:px-24">
           <div className="mx-auto max-w-[1800px]">
-            {filtered.map((project, i) => (
-              <SplitCard key={project.slug} project={project} index={i} imageLeft={i % 2 === 0} />
+            {chunkPairs(filtered).map((row, rowIdx) => (
+              <div
+                key={`row-${rowIdx}`}
+                data-snap
+                className="grid grid-cols-1 items-center gap-y-16 py-12 md:grid-cols-2 md:gap-x-12 md:min-h-[calc(var(--dvh)-var(--header-height))] md:py-0 lg:gap-x-16"
+              >
+                {row.map((project, colIdx) => (
+                  <GalleryProjectCardGrid
+                    key={project.slug}
+                    project={project}
+                    imageLeft={colIdx === 0}
+                  />
+                ))}
+              </div>
             ))}
           </div>
         </section>
@@ -95,67 +133,16 @@ export default function WorksPage() {
               href={`mailto:${BRAND.email}`}
               className="reveal-illuminate group mt-2 inline-block text-architectural font-light text-foreground opacity-80 transition-opacity hover:opacity-100"
             >
-              <span className="border-b pb-2 transition-colors" style={{ borderColor: "hsl(var(--accent) / 0.4)" }}>
+              <span
+                className="border-b pb-2 transition-colors"
+                style={{ borderColor: "hsl(var(--accent) / 0.4)" }}
+              >
                 {BRAND.email}
               </span>
             </Link>
           </div>
         </section>
       </main>
-    </div>
-  );
-}
-
-function SplitCard({ project, index, imageLeft = false }: { project: Project; index: number; imageLeft?: boolean }) {
-  const num = String(index + 1).padStart(2, "0");
-  return (
-    <div className="mb-16 md:mb-24">
-      <Link href={`/projetos/${project.slug}`} className={`group flex flex-col gap-8 md:flex-row md:items-start ${imageLeft ? "md:flex-row-reverse" : ""}`}>
-        {/* Info */}
-        <div className="flex flex-col gap-3 md:w-[40%] md:pt-4">
-          <span className="reveal-illuminate text-micro uppercase tracking-[0.22em]" style={{ color: "hsl(var(--accent-strong))" }}>
-            {num}
-          </span>
-          <h2 className="reveal-rise text-architectural font-extrabold text-foreground transition-opacity group-hover:opacity-60">
-            {project.title}
-          </h2>
-          <p className="reveal-illuminate max-w-[400px] text-body-lg text-muted-foreground">
-            {project.summary}
-          </p>
-          <span
-            className="reveal-illuminate mt-2 inline-flex items-center gap-2 text-caption uppercase tracking-[0.18em] transition-opacity group-hover:opacity-60"
-            style={{ color: "hsl(var(--accent-strong))" }}
-          >
-            Ver projeto
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              className="transition-transform group-hover:translate-x-1"
-            >
-              <path
-                d="M3 8h10M9 4l4 4-4 4"
-                stroke="currentColor"
-                strokeWidth="1"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-        </div>
-        {/* Image */}
-        <div className="reveal-curtain relative aspect-[4/5] overflow-hidden md:w-[55%]">
-          <Image
-            src={project.imageSrc}
-            alt={project.title}
-            fill
-            sizes="(max-width: 768px) 100vw, 55vw"
-            className="object-cover"
-          />
-        </div>
-      </Link>
-      <Void height="4vh" />
     </div>
   );
 }

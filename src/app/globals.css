@@ -506,21 +506,28 @@
   }
 
   .scroll-tick[data-major="1"] {
-    width: 8px;
+    width: 12px;
     background: var(--scroll-ink-soft);
-    opacity: 0.5;
+    opacity: 0.7;
   }
 
   .scroll-tick[data-major="0"] {
-    width: 4px;
+    width: 3px;
     background: var(--scroll-ink-faint);
+    opacity: 0.6;
   }
 
-  .scroll-tick[data-filled="1"] {
+  .scroll-tick[data-filled="1"][data-major="1"] {
     background: var(--scroll-ink) !important;
     opacity: 1 !important;
-    width: 10px !important;
+    width: 14px !important;
     box-shadow: 0 0 4px var(--scroll-glow);
+  }
+
+  .scroll-tick[data-filled="1"][data-major="0"] {
+    background: var(--scroll-ink) !important;
+    opacity: 1 !important;
+    width: 5px !important;
   }
 
   /* Rótulos numéricos junto aos ticks principais */
