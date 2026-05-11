@@ -15,7 +15,7 @@ There are no automated tests in this project.
 
 ## Architecture
 
-**Next.js 16 App Router** project for the W.VIANA architecture studio portfolio.
+**Next.js 16 App Router** project for the W.VIANA architecture office public website (institutional: home, projects, process, about, contact).
 
 ### Data Layer
 Projects are stored as static JSON in `src/data/projects.json`. The data flows:

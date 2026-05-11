@@ -195,7 +195,7 @@ export default function ClientReviewPage() {
                 <SectionFeedback
                   sectionLabel="Projetos"
                   sectionKey="projects"
-                  hint="Portfólio: curadoria, narrativa dos cases e leitura das imagens."
+                  hint="Projetos: curadoria, narrativa dos cases e leitura das imagens."
                 />
                 <SectionFeedback
                   sectionLabel="Contato"

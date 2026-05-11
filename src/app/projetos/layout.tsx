@@ -4,7 +4,7 @@ import { pageMeta } from "@/lib/seo";
 export const metadata: Metadata = pageMeta({
   title: "Projetos",
   description:
-    "Portfólio de arquitetura e interiores: projetos residenciais e comerciais assinados pelo escritório W.VIANA.",
+    "Projetos de arquitetura e interiores do escritório W.VIANA: obras residenciais e comerciais com assinatura autoral.",
   path: "/projetos",
 });
 
