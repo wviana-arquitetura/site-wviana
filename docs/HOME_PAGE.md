@@ -52,11 +52,6 @@ Arquivos em `src/fonts/`.
 - `lagSmoothing(0)` para frame-rate independente
 - Instancia acessivel via `getLenis()` de `src/lib/scroll.ts`
 
-### Auth (`src/middleware.ts`)
-
-- Cookie `site-auth`, redireciona para `/login` se ausente
-- Ignora `/api/*`, `/_next/*`, `/favicon.ico`, `/images/*`
-
 ---
 
 ## 2. Design Tokens

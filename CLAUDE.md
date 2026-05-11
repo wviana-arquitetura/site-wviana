@@ -17,9 +17,6 @@ There are no automated tests in this project.
 
 **Next.js 16 App Router** project for the W.VIANA architecture studio portfolio.
 
-### Auth / Access Control
-The entire site is password-protected. `src/middleware.ts` redirects unauthenticated users to `/login`. Authentication uses a cookie (`site-auth`) set by the `loginAction` server action in `src/app/login/actions.ts`. The password is read from `SITE_PASSWORD` env var (default: `welldone`).
-
 ### Data Layer
 Projects are stored as static JSON in `src/data/projects.json`. The data flows:
 - `src/services/projects.service.ts` — raw access functions (getAllProjects, getProjectBySlug, getRelatedProjects, getNextProject)
@@ -48,7 +45,8 @@ Zustand (`src/store/use-ui-store.ts`) manages UI state (mobile menu open/close).
 
 ### Key Routes
 - `/` — Home page with multiple animated sections
-- `/works` — Projects listing
-- `/projects/[slug]` — Project detail
-- `/studio`, `/process`, `/contact` — Static pages
-- `/login` — Auth page
+- `/projetos` — Projects listing
+- `/projetos/[slug]` — Project detail
+- `/processo`, `/sobre`, `/contato` — Static pages
+- `/revisao-cliente` — Internal client review form (noindex)
+- `/admin/reviews` — Internal admin (noindex)

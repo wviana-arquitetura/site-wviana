@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
 import { BRAND } from "@/lib/brand";
 
-/**
- * Política de indexação: o HTML das rotas públicas continua protegido por cookie.
- * `robots.txt` e `sitemap.xml` são acessíveis sem auth (middleware) para crawlers.
- * Para ranqueamento pleno, o conteúdo precisaria ser legível sem cookie.
- */
+/** Metadados e URLs absolutas para SEO (canonical, OG, JSON-LD). */
 export function absoluteUrl(path: string): string {
   if (path.startsWith("http")) return path;
   const base = BRAND.siteUrl.replace(/\/$/, "");
