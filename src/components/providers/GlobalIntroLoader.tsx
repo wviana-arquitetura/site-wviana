@@ -104,7 +104,7 @@ export function GlobalIntroLoader() {
       >
         <div ref={logoRef} className="intro-loader-logo">
           <Image
-            src="/images/logos/brand/brand-7.svg"
+            src="/images/logos/brand/marca-variacao-07.svg"
             alt="W.VIANA"
             width={1920}
             height={1080}

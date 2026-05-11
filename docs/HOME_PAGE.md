@@ -143,7 +143,7 @@ Background scrolled:
 
 ### Logo
 
-- Imagem: `/images/logos/brand/Prancheta 7_1.svg`
+- Imagem: `/images/logos/brand/marca-logotipo-principal.svg`
 - Responsive: `w-[10rem]` / `md:w-[12rem]` / `lg:w-[14rem]`
 - z-index: `2147483647` (acima de tudo)
 - Hover: `opacity-60`
@@ -227,7 +227,7 @@ Alvos de texto: todos .footer-primary-text dentro do footer
 - Titulo: "Vamos projetar." (monumental, font-light, classe `footer-primary-text`)
 - Email: `contato@wvarq.com` (architectural, border-bottom accent)
 - WhatsApp: link externo (architectural, border-bottom accent)
-- Watermark: logo `/images/logos/brand/brand-7.svg`, opacity 16%, `filter: invert(1)`, `translateX(14%)`
+- Watermark: logo `/images/logos/brand/marca-variacao-07.svg`, opacity 16%, `filter: invert(1)`, `translateX(14%)`
 
 **Secao copyright** — border-top accent 15%:
 - "(c) 2026 W.VIANA Arquitetura | Interiores"

@@ -87,7 +87,7 @@ export function SiteHeader() {
             aria-label="W.VIANA — Início"
           >
             <Image
-              src="/images/logos/brand/Prancheta 7_1.svg"
+              src="/images/logos/brand/marca-logotipo-principal.svg"
               alt="W.VIANA Arquitetura de Interiores"
               width={1920}
               height={1080}

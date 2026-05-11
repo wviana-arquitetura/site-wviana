@@ -1,13 +1,13 @@
 import Image from "next/image";
 
 const BRAND_LOGOS = [
-  { src: "/images/logos/brand/brand-1.svg", alt: "Variação 1 da marca W.VIANA" },
-  { src: "/images/logos/brand/brand-2.svg", alt: "Variação 2 da marca W.VIANA" },
-  { src: "/images/logos/brand/brand-3.svg", alt: "Variação 3 da marca W.VIANA" },
-  { src: "/images/logos/brand/brand-4.svg", alt: "Variação 4 da marca W.VIANA" },
-  { src: "/images/logos/brand/brand-5.svg", alt: "Variação 5 da marca W.VIANA" },
-  { src: "/images/logos/brand/brand-6.svg", alt: "Variação 6 da marca W.VIANA" },
-  { src: "/images/logos/brand/brand-7.svg", alt: "Variação 7 da marca W.VIANA" },
+  { src: "/images/logos/brand/marca-variacao-01.svg", alt: "Variação 1 da marca W.VIANA" },
+  { src: "/images/logos/brand/marca-variacao-02.svg", alt: "Variação 2 da marca W.VIANA" },
+  { src: "/images/logos/brand/marca-variacao-03.svg", alt: "Variação 3 da marca W.VIANA" },
+  { src: "/images/logos/brand/marca-variacao-04.svg", alt: "Variação 4 da marca W.VIANA" },
+  { src: "/images/logos/brand/marca-variacao-05.svg", alt: "Variação 5 da marca W.VIANA" },
+  { src: "/images/logos/brand/marca-variacao-06.svg", alt: "Variação 6 da marca W.VIANA" },
+  { src: "/images/logos/brand/marca-variacao-07.svg", alt: "Variação 7 da marca W.VIANA" },
 ];
 
 export function LogoWallSection() {

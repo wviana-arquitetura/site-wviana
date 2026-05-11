@@ -8,9 +8,11 @@
     "location": "Fortaleza",
     "country": "CE",
     "area": "188m²",
-    "imageSrc": "/images/projects/residencial-tn/CAPA.webp",
+    "imageSrc": "/images/projects/residencial-tn/capa-projeto-residencial-tn.webp",
     "summary": "Pensado para uma família que valoriza conforto, estilo e momentos especiais. Um lar amplo e acolhedor, criado para reunir, celebrar e acompanhar o crescimento das filhas.",
-    "scope": ["Design de Interiores"],
+    "scope": [
+      "Design de Interiores"
+    ],
     "chapters": [
       {
         "title": "",
@@ -18,16 +20,46 @@
       }
     ],
     "gallery": [
-      { "src": "/images/projects/residencial-tn/IMG_0882-Editar - Copia.webp", "alt": "Residencial TN" },
-      { "src": "/images/projects/residencial-tn/IMG_0992.webp", "alt": "Residencial TN" },
-      { "src": "/images/projects/residencial-tn/IMG_1076 - Copia.webp", "alt": "Residencial TN" },
-      { "src": "/images/projects/residencial-tn/IMG_1180.webp", "alt": "Residencial TN" },
-      { "src": "/images/projects/residencial-tn/IMG_1282.webp", "alt": "Residencial TN" },
-      { "src": "/images/projects/residencial-tn/IMG_1368-Editar.webp", "alt": "Residencial TN" },
-      { "src": "/images/projects/residencial-tn/IMG_1464-Editar.webp", "alt": "Residencial TN" },
-      { "src": "/images/projects/residencial-tn/IMG_1582-Editar.webp", "alt": "Residencial TN" },
-      { "src": "/images/projects/residencial-tn/IMG_1612.webp", "alt": "Residencial TN" },
-      { "src": "/images/projects/residencial-tn/IMG_1645-Editar.webp", "alt": "Residencial TN" }
+      {
+        "src": "/images/projects/residencial-tn/galeria-residencial-tn-01.webp",
+        "alt": "Residencial TN"
+      },
+      {
+        "src": "/images/projects/residencial-tn/galeria-residencial-tn-02.webp",
+        "alt": "Residencial TN"
+      },
+      {
+        "src": "/images/projects/residencial-tn/galeria-residencial-tn-03.webp",
+        "alt": "Residencial TN"
+      },
+      {
+        "src": "/images/projects/residencial-tn/galeria-residencial-tn-04.webp",
+        "alt": "Residencial TN"
+      },
+      {
+        "src": "/images/projects/residencial-tn/galeria-residencial-tn-05.webp",
+        "alt": "Residencial TN"
+      },
+      {
+        "src": "/images/projects/residencial-tn/galeria-residencial-tn-06.webp",
+        "alt": "Residencial TN"
+      },
+      {
+        "src": "/images/projects/residencial-tn/galeria-residencial-tn-07.webp",
+        "alt": "Residencial TN"
+      },
+      {
+        "src": "/images/projects/residencial-tn/galeria-residencial-tn-08.webp",
+        "alt": "Residencial TN"
+      },
+      {
+        "src": "/images/projects/residencial-tn/galeria-residencial-tn-09.webp",
+        "alt": "Residencial TN"
+      },
+      {
+        "src": "/images/projects/residencial-tn/galeria-residencial-tn-10.webp",
+        "alt": "Residencial TN"
+      }
     ]
   },
   {
@@ -39,9 +71,11 @@
     "location": "Fortaleza",
     "country": "CE",
     "area": "105m²",
-    "imageSrc": "/images/projects/residencial-lv/CAPA.webp",
+    "imageSrc": "/images/projects/residencial-lv/capa-projeto-residencial-lv.webp",
     "summary": "Apartamento contemporâneo e acolhedor, criado para uma mulher solteira que valoriza praticidade, leveza e receber bem. Integração dos ambientes, varanda gourmet e marcenaria sob medida traduzem um morar elegante, funcional e cheio de personalidade.",
-    "scope": ["Design de Interiores"],
+    "scope": [
+      "Design de Interiores"
+    ],
     "chapters": [
       {
         "title": "",
@@ -49,16 +83,46 @@
       }
     ],
     "gallery": [
-      { "src": "/images/projects/residencial-lv/IMG_1574-Aprimorado-NR-Editar.webp", "alt": "Residencial LV" },
-      { "src": "/images/projects/residencial-lv/IMG_1597-Aprimorado-NR-Editar.webp", "alt": "Residencial LV" },
-      { "src": "/images/projects/residencial-lv/IMG_1607-Aprimorado-NR-Editar.webp", "alt": "Residencial LV" },
-      { "src": "/images/projects/residencial-lv/IMG_1612-Aprimorado-NR-Editar.webp", "alt": "Residencial LV" },
-      { "src": "/images/projects/residencial-lv/IMG_1768-Aprimorado-NR-Editar.webp", "alt": "Residencial LV" },
-      { "src": "/images/projects/residencial-lv/IMG_1788-Aprimorado-NR-Editar.webp", "alt": "Residencial LV" },
-      { "src": "/images/projects/residencial-lv/IMG_1806-Aprimorado-NR-Editar.webp", "alt": "Residencial LV" },
-      { "src": "/images/projects/residencial-lv/IMG_1840-Aprimorado-NR-Editar.webp", "alt": "Residencial LV" },
-      { "src": "/images/projects/residencial-lv/IMG_1878-Aprimorado-NR-Editar.webp", "alt": "Residencial LV" },
-      { "src": "/images/projects/residencial-lv/IMG_1916-Aprimorado-NR.webp", "alt": "Residencial LV" }
+      {
+        "src": "/images/projects/residencial-lv/galeria-residencial-lv-01.webp",
+        "alt": "Residencial LV"
+      },
+      {
+        "src": "/images/projects/residencial-lv/galeria-residencial-lv-02.webp",
+        "alt": "Residencial LV"
+      },
+      {
+        "src": "/images/projects/residencial-lv/galeria-residencial-lv-03.webp",
+        "alt": "Residencial LV"
+      },
+      {
+        "src": "/images/projects/residencial-lv/galeria-residencial-lv-04.webp",
+        "alt": "Residencial LV"
+      },
+      {
+        "src": "/images/projects/residencial-lv/galeria-residencial-lv-05.webp",
+        "alt": "Residencial LV"
+      },
+      {
+        "src": "/images/projects/residencial-lv/galeria-residencial-lv-06.webp",
+        "alt": "Residencial LV"
+      },
+      {
+        "src": "/images/projects/residencial-lv/galeria-residencial-lv-07.webp",
+        "alt": "Residencial LV"
+      },
+      {
+        "src": "/images/projects/residencial-lv/galeria-residencial-lv-08.webp",
+        "alt": "Residencial LV"
+      },
+      {
+        "src": "/images/projects/residencial-lv/galeria-residencial-lv-09.webp",
+        "alt": "Residencial LV"
+      },
+      {
+        "src": "/images/projects/residencial-lv/galeria-residencial-lv-10.webp",
+        "alt": "Residencial LV"
+      }
     ]
   },
   {
@@ -70,9 +134,11 @@
     "location": "Fortaleza",
     "country": "CE",
     "area": "94m²",
-    "imageSrc": "/images/projects/residencial-ml/CAPA.webp",
+    "imageSrc": "/images/projects/residencial-ml/capa-projeto-residencial-ml.webp",
     "summary": "Reforma integral que transformou o apartamento em um espaço fluido, com living, varanda e cozinha totalmente integrados para ampliar convivência e circulação. A base clara e contemporânea ganha personalidade com detalhes em madeira e pontos de cor.",
-    "scope": ["Design de Interiores"],
+    "scope": [
+      "Design de Interiores"
+    ],
     "chapters": [
       {
         "title": "",
@@ -80,15 +146,42 @@
       }
     ],
     "gallery": [
-      { "src": "/images/projects/residencial-ml/01.webp", "alt": "Residencial ML" },
-      { "src": "/images/projects/residencial-ml/IMG_2112-HDR-Aprimorado-NR-Editar.webp", "alt": "Residencial ML" },
-      { "src": "/images/projects/residencial-ml/IMG_2218-Aprimorado-NR.webp", "alt": "Residencial ML" },
-      { "src": "/images/projects/residencial-ml/IMG_2400-Aprimorado-NR.webp", "alt": "Residencial ML" },
-      { "src": "/images/projects/residencial-ml/IMG_2497-Aprimorado-NR.webp", "alt": "Residencial ML" },
-      { "src": "/images/projects/residencial-ml/IMG_2662-Aprimorado-NR.webp", "alt": "Residencial ML" },
-      { "src": "/images/projects/residencial-ml/IMG_2860-Aprimorado-NR-Editar.webp", "alt": "Residencial ML" },
-      { "src": "/images/projects/residencial-ml/IMG_2879-Aprimorado-NR-Editar.webp", "alt": "Residencial ML" },
-      { "src": "/images/projects/residencial-ml/IMG_2885-Aprimorado-NR.webp", "alt": "Residencial ML" }
+      {
+        "src": "/images/projects/residencial-ml/galeria-residencial-ml-01.webp",
+        "alt": "Residencial ML"
+      },
+      {
+        "src": "/images/projects/residencial-ml/galeria-residencial-ml-02.webp",
+        "alt": "Residencial ML"
+      },
+      {
+        "src": "/images/projects/residencial-ml/galeria-residencial-ml-03.webp",
+        "alt": "Residencial ML"
+      },
+      {
+        "src": "/images/projects/residencial-ml/galeria-residencial-ml-04.webp",
+        "alt": "Residencial ML"
+      },
+      {
+        "src": "/images/projects/residencial-ml/galeria-residencial-ml-05.webp",
+        "alt": "Residencial ML"
+      },
+      {
+        "src": "/images/projects/residencial-ml/galeria-residencial-ml-06.webp",
+        "alt": "Residencial ML"
+      },
+      {
+        "src": "/images/projects/residencial-ml/galeria-residencial-ml-07.webp",
+        "alt": "Residencial ML"
+      },
+      {
+        "src": "/images/projects/residencial-ml/galeria-residencial-ml-08.webp",
+        "alt": "Residencial ML"
+      },
+      {
+        "src": "/images/projects/residencial-ml/galeria-residencial-ml-09.webp",
+        "alt": "Residencial ML"
+      }
     ]
   },
   {
@@ -100,9 +193,11 @@
     "location": "Fortaleza",
     "country": "CE",
     "area": "105m²",
-    "imageSrc": "/images/projects/residencial-rc/CAPA.webp",
+    "imageSrc": "/images/projects/residencial-rc/capa-projeto-residencial-rc.webp",
     "summary": "Um apartamento redesenhado para ampliar a convivência, com ambientes integrados, funcionais e cheios de conforto. O projeto transforma a planta original em um lar contemporâneo, acolhedor e perfeitamente alinhado à rotina do casal.",
-    "scope": ["Design de Interiores"],
+    "scope": [
+      "Design de Interiores"
+    ],
     "chapters": [
       {
         "title": "",
@@ -110,16 +205,46 @@
       }
     ],
     "gallery": [
-      { "src": "/images/projects/residencial-rc/IMG_7742.webp", "alt": "Residencial RC" },
-      { "src": "/images/projects/residencial-rc/IMG_7752.webp", "alt": "Residencial RC" },
-      { "src": "/images/projects/residencial-rc/IMG_7767.webp", "alt": "Residencial RC" },
-      { "src": "/images/projects/residencial-rc/IMG_7817-Editar.webp", "alt": "Residencial RC" },
-      { "src": "/images/projects/residencial-rc/IMG_7835-Editar.webp", "alt": "Residencial RC" },
-      { "src": "/images/projects/residencial-rc/IMG_7837-Editar.webp", "alt": "Residencial RC" },
-      { "src": "/images/projects/residencial-rc/IMG_7842.webp", "alt": "Residencial RC" },
-      { "src": "/images/projects/residencial-rc/IMG_7851.webp", "alt": "Residencial RC" },
-      { "src": "/images/projects/residencial-rc/IMG_7882.webp", "alt": "Residencial RC" },
-      { "src": "/images/projects/residencial-rc/IMG_7944.webp", "alt": "Residencial RC" }
+      {
+        "src": "/images/projects/residencial-rc/galeria-residencial-rc-01.webp",
+        "alt": "Residencial RC"
+      },
+      {
+        "src": "/images/projects/residencial-rc/galeria-residencial-rc-02.webp",
+        "alt": "Residencial RC"
+      },
+      {
+        "src": "/images/projects/residencial-rc/galeria-residencial-rc-03.webp",
+        "alt": "Residencial RC"
+      },
+      {
+        "src": "/images/projects/residencial-rc/galeria-residencial-rc-04.webp",
+        "alt": "Residencial RC"
+      },
+      {
+        "src": "/images/projects/residencial-rc/galeria-residencial-rc-05.webp",
+        "alt": "Residencial RC"
+      },
+      {
+        "src": "/images/projects/residencial-rc/galeria-residencial-rc-06.webp",
+        "alt": "Residencial RC"
+      },
+      {
+        "src": "/images/projects/residencial-rc/galeria-residencial-rc-07.webp",
+        "alt": "Residencial RC"
+      },
+      {
+        "src": "/images/projects/residencial-rc/galeria-residencial-rc-08.webp",
+        "alt": "Residencial RC"
+      },
+      {
+        "src": "/images/projects/residencial-rc/galeria-residencial-rc-09.webp",
+        "alt": "Residencial RC"
+      },
+      {
+        "src": "/images/projects/residencial-rc/galeria-residencial-rc-10.webp",
+        "alt": "Residencial RC"
+      }
     ]
   },
   {
@@ -131,9 +256,11 @@
     "location": "Fortaleza",
     "country": "CE",
     "area": "170m²",
-    "imageSrc": "/images/projects/residencial-pl/CAPA.webp",
+    "imageSrc": "/images/projects/residencial-pl/capa-projeto-residencial-pl.webp",
     "summary": "Repaginado para um casal com dois filhos, o apartamento mantém a estética contemporânea com mais sofisticação, materiais nobres e soluções modernas.",
-    "scope": ["Design de Interiores"],
+    "scope": [
+      "Design de Interiores"
+    ],
     "chapters": [
       {
         "title": "",
@@ -141,15 +268,42 @@
       }
     ],
     "gallery": [
-      { "src": "/images/projects/residencial-pl/IMG_8752-Editar.webp", "alt": "Residencial PL" },
-      { "src": "/images/projects/residencial-pl/IMG_8781.webp", "alt": "Residencial PL" },
-      { "src": "/images/projects/residencial-pl/IMG_8802.webp", "alt": "Residencial PL" },
-      { "src": "/images/projects/residencial-pl/IMG_8816.webp", "alt": "Residencial PL" },
-      { "src": "/images/projects/residencial-pl/IMG_8862-Editar.webp", "alt": "Residencial PL" },
-      { "src": "/images/projects/residencial-pl/IMG_8868-Editar.webp", "alt": "Residencial PL" },
-      { "src": "/images/projects/residencial-pl/IMG_8900.webp", "alt": "Residencial PL" },
-      { "src": "/images/projects/residencial-pl/IMG_8914.webp", "alt": "Residencial PL" },
-      { "src": "/images/projects/residencial-pl/IMG_8933.webp", "alt": "Residencial PL" }
+      {
+        "src": "/images/projects/residencial-pl/galeria-residencial-pl-01.webp",
+        "alt": "Residencial PL"
+      },
+      {
+        "src": "/images/projects/residencial-pl/galeria-residencial-pl-02.webp",
+        "alt": "Residencial PL"
+      },
+      {
+        "src": "/images/projects/residencial-pl/galeria-residencial-pl-03.webp",
+        "alt": "Residencial PL"
+      },
+      {
+        "src": "/images/projects/residencial-pl/galeria-residencial-pl-04.webp",
+        "alt": "Residencial PL"
+      },
+      {
+        "src": "/images/projects/residencial-pl/galeria-residencial-pl-05.webp",
+        "alt": "Residencial PL"
+      },
+      {
+        "src": "/images/projects/residencial-pl/galeria-residencial-pl-06.webp",
+        "alt": "Residencial PL"
+      },
+      {
+        "src": "/images/projects/residencial-pl/galeria-residencial-pl-07.webp",
+        "alt": "Residencial PL"
+      },
+      {
+        "src": "/images/projects/residencial-pl/galeria-residencial-pl-08.webp",
+        "alt": "Residencial PL"
+      },
+      {
+        "src": "/images/projects/residencial-pl/galeria-residencial-pl-09.webp",
+        "alt": "Residencial PL"
+      }
     ]
   },
   {
@@ -161,9 +315,12 @@
     "location": "Eusébio",
     "country": "CE",
     "area": "195m²",
-    "imageSrc": "/images/projects/residencial-jo/CAPA.webp",
+    "imageSrc": "/images/projects/residencial-jo/capa-projeto-residencial-jo.webp",
     "summary": "Uma casa toda térrea, mas com uma proposta bem diferente no seu layout. Projetamos ela em formato de U com um deck e uma área gourmet no seu centro fazendo toda integração com a área de convivência.",
-    "scope": ["Projeto Arquitetônico", "Design de Interiores"],
+    "scope": [
+      "Projeto Arquitetônico",
+      "Design de Interiores"
+    ],
     "chapters": [
       {
         "title": "",
@@ -171,10 +328,22 @@
       }
     ],
     "gallery": [
-      { "src": "/images/projects/residencial-jo/02.webp", "alt": "Residencial JO" },
-      { "src": "/images/projects/residencial-jo/03.webp", "alt": "Residencial JO" },
-      { "src": "/images/projects/residencial-jo/04.webp", "alt": "Residencial JO" },
-      { "src": "/images/projects/residencial-jo/05.webp", "alt": "Residencial JO" }
+      {
+        "src": "/images/projects/residencial-jo/galeria-residencial-jo-01.webp",
+        "alt": "Residencial JO"
+      },
+      {
+        "src": "/images/projects/residencial-jo/galeria-residencial-jo-02.webp",
+        "alt": "Residencial JO"
+      },
+      {
+        "src": "/images/projects/residencial-jo/galeria-residencial-jo-03.webp",
+        "alt": "Residencial JO"
+      },
+      {
+        "src": "/images/projects/residencial-jo/galeria-residencial-jo-04.webp",
+        "alt": "Residencial JO"
+      }
     ]
   },
   {
@@ -186,9 +355,12 @@
     "location": "Eusébio",
     "country": "CE",
     "area": "105m²",
-    "imageSrc": "/images/projects/pardal/CAPA.webp",
+    "imageSrc": "/images/projects/pardal/capa-projeto-pardal.webp",
     "summary": "A loja conceito foi projetada para despertar sensações e criar memórias, trazendo a identidade da marca em cada detalhe.",
-    "scope": ["Projeto Arquitetônico", "Design de Interiores"],
+    "scope": [
+      "Projeto Arquitetônico",
+      "Design de Interiores"
+    ],
     "chapters": [
       {
         "title": "",
@@ -196,15 +368,42 @@
       }
     ],
     "gallery": [
-      { "src": "/images/projects/pardal/IMG_9646-Aprimorado-NR.webp", "alt": "Pardal" },
-      { "src": "/images/projects/pardal/IMG_9655-Aprimorado-NR.webp", "alt": "Pardal" },
-      { "src": "/images/projects/pardal/IMG_9667-Aprimorado-NR-Editar.webp", "alt": "Pardal" },
-      { "src": "/images/projects/pardal/IMG_9675-Aprimorado-NR.webp", "alt": "Pardal" },
-      { "src": "/images/projects/pardal/IMG_9752-Aprimorado-NR-Editar.webp", "alt": "Pardal" },
-      { "src": "/images/projects/pardal/IMG_9756-Aprimorado-NR.webp", "alt": "Pardal" },
-      { "src": "/images/projects/pardal/IMG_9759-Aprimorado-NR.webp", "alt": "Pardal" },
-      { "src": "/images/projects/pardal/IMG_9829-Aprimorado-NR.webp", "alt": "Pardal" },
-      { "src": "/images/projects/pardal/IMG_9875-Aprimorado-NR-Editar.webp", "alt": "Pardal" }
+      {
+        "src": "/images/projects/pardal/galeria-pardal-01.webp",
+        "alt": "Pardal"
+      },
+      {
+        "src": "/images/projects/pardal/galeria-pardal-02.webp",
+        "alt": "Pardal"
+      },
+      {
+        "src": "/images/projects/pardal/galeria-pardal-03.webp",
+        "alt": "Pardal"
+      },
+      {
+        "src": "/images/projects/pardal/galeria-pardal-04.webp",
+        "alt": "Pardal"
+      },
+      {
+        "src": "/images/projects/pardal/galeria-pardal-05.webp",
+        "alt": "Pardal"
+      },
+      {
+        "src": "/images/projects/pardal/galeria-pardal-06.webp",
+        "alt": "Pardal"
+      },
+      {
+        "src": "/images/projects/pardal/galeria-pardal-07.webp",
+        "alt": "Pardal"
+      },
+      {
+        "src": "/images/projects/pardal/galeria-pardal-08.webp",
+        "alt": "Pardal"
+      },
+      {
+        "src": "/images/projects/pardal/galeria-pardal-09.webp",
+        "alt": "Pardal"
+      }
     ]
   },
   {
@@ -216,9 +415,11 @@
     "location": "Fortaleza",
     "country": "CE",
     "area": "42m²",
-    "imageSrc": "/images/projects/donna-evellyn/CAPA.webp",
+    "imageSrc": "/images/projects/donna-evellyn/capa-projeto-donna-evellyn.webp",
     "summary": "O tom de verde, o piso amadeirado e a fórmica prata fazem o match perfeito. O uso de formas orgânicas traz movimento e fluidez ao ambiente.",
-    "scope": ["Design de Interiores"],
+    "scope": [
+      "Design de Interiores"
+    ],
     "chapters": [
       {
         "title": "",
@@ -226,16 +427,46 @@
       }
     ],
     "gallery": [
-      { "src": "/images/projects/donna-evellyn/IMG_0197-Aprimorado-NR.webp", "alt": "Donna Evellyn" },
-      { "src": "/images/projects/donna-evellyn/IMG_0330-Aprimorado-NR.webp", "alt": "Donna Evellyn" },
-      { "src": "/images/projects/donna-evellyn/IMG_0359-Aprimorado-NR.webp", "alt": "Donna Evellyn" },
-      { "src": "/images/projects/donna-evellyn/IMG_0363-Aprimorado-NR.webp", "alt": "Donna Evellyn" },
-      { "src": "/images/projects/donna-evellyn/IMG_0369-Aprimorado-NR.webp", "alt": "Donna Evellyn" },
-      { "src": "/images/projects/donna-evellyn/IMG_0372-Aprimorado-NR.webp", "alt": "Donna Evellyn" },
-      { "src": "/images/projects/donna-evellyn/IMG_0373-Aprimorado-NR.webp", "alt": "Donna Evellyn" },
-      { "src": "/images/projects/donna-evellyn/IMG_0383-Aprimorado-NR.webp", "alt": "Donna Evellyn" },
-      { "src": "/images/projects/donna-evellyn/IMG_0387-Aprimorado-NR.webp", "alt": "Donna Evellyn" },
-      { "src": "/images/projects/donna-evellyn/IMG_0448-Aprimorado-NR.webp", "alt": "Donna Evellyn" }
+      {
+        "src": "/images/projects/donna-evellyn/galeria-donna-evellyn-01.webp",
+        "alt": "Donna Evellyn"
+      },
+      {
+        "src": "/images/projects/donna-evellyn/galeria-donna-evellyn-02.webp",
+        "alt": "Donna Evellyn"
+      },
+      {
+        "src": "/images/projects/donna-evellyn/galeria-donna-evellyn-03.webp",
+        "alt": "Donna Evellyn"
+      },
+      {
+        "src": "/images/projects/donna-evellyn/galeria-donna-evellyn-04.webp",
+        "alt": "Donna Evellyn"
+      },
+      {
+        "src": "/images/projects/donna-evellyn/galeria-donna-evellyn-05.webp",
+        "alt": "Donna Evellyn"
+      },
+      {
+        "src": "/images/projects/donna-evellyn/galeria-donna-evellyn-06.webp",
+        "alt": "Donna Evellyn"
+      },
+      {
+        "src": "/images/projects/donna-evellyn/galeria-donna-evellyn-07.webp",
+        "alt": "Donna Evellyn"
+      },
+      {
+        "src": "/images/projects/donna-evellyn/galeria-donna-evellyn-08.webp",
+        "alt": "Donna Evellyn"
+      },
+      {
+        "src": "/images/projects/donna-evellyn/galeria-donna-evellyn-09.webp",
+        "alt": "Donna Evellyn"
+      },
+      {
+        "src": "/images/projects/donna-evellyn/galeria-donna-evellyn-10.webp",
+        "alt": "Donna Evellyn"
+      }
     ]
   },
   {
@@ -247,9 +478,11 @@
     "location": "Fortaleza",
     "country": "CE",
     "area": "96m²",
-    "imageSrc": "/images/projects/av-by-aline-vieira/CAPA.webp",
+    "imageSrc": "/images/projects/av-by-aline-vieira/capa-projeto-av-by-aline-vieira.webp",
     "summary": "Buscamos trazer todo o poder e a delicadeza feminina, criando um ambiente para se sentir bem, confortável e empoderada.",
-    "scope": ["Design de Interiores"],
+    "scope": [
+      "Design de Interiores"
+    ],
     "chapters": [
       {
         "title": "",
@@ -257,15 +490,42 @@
       }
     ],
     "gallery": [
-      { "src": "/images/projects/av-by-aline-vieira/IMG_1437-Aprimorado-NR.webp", "alt": "AV by Aline Vieira" },
-      { "src": "/images/projects/av-by-aline-vieira/IMG_1439-Aprimorado-NR.webp", "alt": "AV by Aline Vieira" },
-      { "src": "/images/projects/av-by-aline-vieira/IMG_1478-Aprimorado-NR.webp", "alt": "AV by Aline Vieira" },
-      { "src": "/images/projects/av-by-aline-vieira/IMG_1528-Aprimorado-NR.webp", "alt": "AV by Aline Vieira" },
-      { "src": "/images/projects/av-by-aline-vieira/IMG_1532-Aprimorado-NR.webp", "alt": "AV by Aline Vieira" },
-      { "src": "/images/projects/av-by-aline-vieira/IMG_1567-Aprimorado-NR.webp", "alt": "AV by Aline Vieira" },
-      { "src": "/images/projects/av-by-aline-vieira/IMG_1569-Aprimorado-NR.webp", "alt": "AV by Aline Vieira" },
-      { "src": "/images/projects/av-by-aline-vieira/IMG_1714-Aprimorado-NR-Editar.webp", "alt": "AV by Aline Vieira" },
-      { "src": "/images/projects/av-by-aline-vieira/IMG_1721-Aprimorado-NR.webp", "alt": "AV by Aline Vieira" }
+      {
+        "src": "/images/projects/av-by-aline-vieira/galeria-av-by-aline-vieira-01.webp",
+        "alt": "AV by Aline Vieira"
+      },
+      {
+        "src": "/images/projects/av-by-aline-vieira/galeria-av-by-aline-vieira-02.webp",
+        "alt": "AV by Aline Vieira"
+      },
+      {
+        "src": "/images/projects/av-by-aline-vieira/galeria-av-by-aline-vieira-03.webp",
+        "alt": "AV by Aline Vieira"
+      },
+      {
+        "src": "/images/projects/av-by-aline-vieira/galeria-av-by-aline-vieira-04.webp",
+        "alt": "AV by Aline Vieira"
+      },
+      {
+        "src": "/images/projects/av-by-aline-vieira/galeria-av-by-aline-vieira-05.webp",
+        "alt": "AV by Aline Vieira"
+      },
+      {
+        "src": "/images/projects/av-by-aline-vieira/galeria-av-by-aline-vieira-06.webp",
+        "alt": "AV by Aline Vieira"
+      },
+      {
+        "src": "/images/projects/av-by-aline-vieira/galeria-av-by-aline-vieira-07.webp",
+        "alt": "AV by Aline Vieira"
+      },
+      {
+        "src": "/images/projects/av-by-aline-vieira/galeria-av-by-aline-vieira-08.webp",
+        "alt": "AV by Aline Vieira"
+      },
+      {
+        "src": "/images/projects/av-by-aline-vieira/galeria-av-by-aline-vieira-09.webp",
+        "alt": "AV by Aline Vieira"
+      }
     ]
   },
   {
@@ -277,9 +537,11 @@
     "location": "Fortaleza",
     "country": "CE",
     "area": "38m²",
-    "imageSrc": "/images/projects/teca/CAPA.webp",
+    "imageSrc": "/images/projects/teca/capa-projeto-teca.webp",
     "summary": "Um projeto chic, cool & cheio de personalidade. Unimos a jovialidade da marca a sofisticação dos materiais.",
-    "scope": ["Design de Interiores"],
+    "scope": [
+      "Design de Interiores"
+    ],
     "chapters": [
       {
         "title": "",
@@ -287,15 +549,42 @@
       }
     ],
     "gallery": [
-      { "src": "/images/projects/teca/IMG_4665-Aprimorado-NR-Editar.webp", "alt": "Têca" },
-      { "src": "/images/projects/teca/IMG_4669-Aprimorado-NR.webp", "alt": "Têca" },
-      { "src": "/images/projects/teca/IMG_4678-Aprimorado-NR-Editar.webp", "alt": "Têca" },
-      { "src": "/images/projects/teca/IMG_4684-Aprimorado-NR.webp", "alt": "Têca" },
-      { "src": "/images/projects/teca/IMG_4692-Aprimorado-NR-Editar.webp", "alt": "Têca" },
-      { "src": "/images/projects/teca/IMG_4694-Aprimorado-NR-Editar.webp", "alt": "Têca" },
-      { "src": "/images/projects/teca/IMG_4767-Aprimorado-NR-Editar.webp", "alt": "Têca" },
-      { "src": "/images/projects/teca/IMG_4785-Aprimorado-NR-Editar.webp", "alt": "Têca" },
-      { "src": "/images/projects/teca/IMG_4800-Aprimorado-NR.webp", "alt": "Têca" }
+      {
+        "src": "/images/projects/teca/galeria-teca-01.webp",
+        "alt": "Têca"
+      },
+      {
+        "src": "/images/projects/teca/galeria-teca-02.webp",
+        "alt": "Têca"
+      },
+      {
+        "src": "/images/projects/teca/galeria-teca-03.webp",
+        "alt": "Têca"
+      },
+      {
+        "src": "/images/projects/teca/galeria-teca-04.webp",
+        "alt": "Têca"
+      },
+      {
+        "src": "/images/projects/teca/galeria-teca-05.webp",
+        "alt": "Têca"
+      },
+      {
+        "src": "/images/projects/teca/galeria-teca-06.webp",
+        "alt": "Têca"
+      },
+      {
+        "src": "/images/projects/teca/galeria-teca-07.webp",
+        "alt": "Têca"
+      },
+      {
+        "src": "/images/projects/teca/galeria-teca-08.webp",
+        "alt": "Têca"
+      },
+      {
+        "src": "/images/projects/teca/galeria-teca-09.webp",
+        "alt": "Têca"
+      }
     ]
   },
   {
@@ -307,9 +596,11 @@
     "location": "Fortaleza",
     "country": "CE",
     "area": "35m²",
-    "imageSrc": "/images/projects/la-clinic/CAPA.webp",
+    "imageSrc": "/images/projects/la-clinic/capa-projeto-la-clinic.webp",
     "summary": "Trabalhamos essa clínica de odontologia em uma paleta de cores neutras & claras com destaque para os detalhes em dourado.",
-    "scope": ["Design de Interiores"],
+    "scope": [
+      "Design de Interiores"
+    ],
     "chapters": [
       {
         "title": "",
@@ -317,15 +608,42 @@
       }
     ],
     "gallery": [
-      { "src": "/images/projects/la-clinic/IMG_1463-Aprimorado-NR.webp", "alt": "La Clinic" },
-      { "src": "/images/projects/la-clinic/IMG_1477-Aprimorado-NR-Editar.webp", "alt": "La Clinic" },
-      { "src": "/images/projects/la-clinic/IMG_1504-Aprimorado-NR-Editar.webp", "alt": "La Clinic" },
-      { "src": "/images/projects/la-clinic/IMG_1752-Aprimorado-NR-Editar.webp", "alt": "La Clinic" },
-      { "src": "/images/projects/la-clinic/IMG_1839-Aprimorado-NR.webp", "alt": "La Clinic" },
-      { "src": "/images/projects/la-clinic/IMG_1841-Aprimorado-NR-Editar.webp", "alt": "La Clinic" },
-      { "src": "/images/projects/la-clinic/IMG_1842-Aprimorado-NR-Editar.webp", "alt": "La Clinic" },
-      { "src": "/images/projects/la-clinic/IMG_1860-Aprimorado-NR-Editar.webp", "alt": "La Clinic" },
-      { "src": "/images/projects/la-clinic/IMG_2052-Aprimorado-NR-Editar.webp", "alt": "La Clinic" }
+      {
+        "src": "/images/projects/la-clinic/galeria-la-clinic-01.webp",
+        "alt": "La Clinic"
+      },
+      {
+        "src": "/images/projects/la-clinic/galeria-la-clinic-02.webp",
+        "alt": "La Clinic"
+      },
+      {
+        "src": "/images/projects/la-clinic/galeria-la-clinic-03.webp",
+        "alt": "La Clinic"
+      },
+      {
+        "src": "/images/projects/la-clinic/galeria-la-clinic-04.webp",
+        "alt": "La Clinic"
+      },
+      {
+        "src": "/images/projects/la-clinic/galeria-la-clinic-05.webp",
+        "alt": "La Clinic"
+      },
+      {
+        "src": "/images/projects/la-clinic/galeria-la-clinic-06.webp",
+        "alt": "La Clinic"
+      },
+      {
+        "src": "/images/projects/la-clinic/galeria-la-clinic-07.webp",
+        "alt": "La Clinic"
+      },
+      {
+        "src": "/images/projects/la-clinic/galeria-la-clinic-08.webp",
+        "alt": "La Clinic"
+      },
+      {
+        "src": "/images/projects/la-clinic/galeria-la-clinic-09.webp",
+        "alt": "La Clinic"
+      }
     ]
   },
   {
@@ -337,9 +655,11 @@
     "location": "Fortaleza",
     "country": "CE",
     "area": "12.115m²",
-    "imageSrc": "/images/projects/arena-carmel/CAPA.webp",
+    "imageSrc": "/images/projects/arena-carmel/capa-projeto-arena-carmel.webp",
     "summary": "Um complexo esportivo e gastronômico, que também funciona como espaço de lazer e eventos, reunindo esporte, alimentação e convivência em um ambiente social super agradável e arborizado.",
-    "scope": ["Projeto Arquitetônico"],
+    "scope": [
+      "Projeto Arquitetônico"
+    ],
     "chapters": [
       {
         "title": "",
@@ -347,15 +667,42 @@
       }
     ],
     "gallery": [
-      { "src": "/images/projects/arena-carmel/IMG_7310-Editar.webp", "alt": "Arena Carmel" },
-      { "src": "/images/projects/arena-carmel/IMG_7458.webp", "alt": "Arena Carmel" },
-      { "src": "/images/projects/arena-carmel/IMG_7480.webp", "alt": "Arena Carmel" },
-      { "src": "/images/projects/arena-carmel/IMG_7508.webp", "alt": "Arena Carmel" },
-      { "src": "/images/projects/arena-carmel/IMG_7547.webp", "alt": "Arena Carmel" },
-      { "src": "/images/projects/arena-carmel/IMG_7584.webp", "alt": "Arena Carmel" },
-      { "src": "/images/projects/arena-carmel/IMG_7594.webp", "alt": "Arena Carmel" },
-      { "src": "/images/projects/arena-carmel/IMG_7599.webp", "alt": "Arena Carmel" },
-      { "src": "/images/projects/arena-carmel/IMG_7611.webp", "alt": "Arena Carmel" }
+      {
+        "src": "/images/projects/arena-carmel/galeria-arena-carmel-01.webp",
+        "alt": "Arena Carmel"
+      },
+      {
+        "src": "/images/projects/arena-carmel/galeria-arena-carmel-02.webp",
+        "alt": "Arena Carmel"
+      },
+      {
+        "src": "/images/projects/arena-carmel/galeria-arena-carmel-03.webp",
+        "alt": "Arena Carmel"
+      },
+      {
+        "src": "/images/projects/arena-carmel/galeria-arena-carmel-04.webp",
+        "alt": "Arena Carmel"
+      },
+      {
+        "src": "/images/projects/arena-carmel/galeria-arena-carmel-05.webp",
+        "alt": "Arena Carmel"
+      },
+      {
+        "src": "/images/projects/arena-carmel/galeria-arena-carmel-06.webp",
+        "alt": "Arena Carmel"
+      },
+      {
+        "src": "/images/projects/arena-carmel/galeria-arena-carmel-07.webp",
+        "alt": "Arena Carmel"
+      },
+      {
+        "src": "/images/projects/arena-carmel/galeria-arena-carmel-08.webp",
+        "alt": "Arena Carmel"
+      },
+      {
+        "src": "/images/projects/arena-carmel/galeria-arena-carmel-09.webp",
+        "alt": "Arena Carmel"
+      }
     ]
   },
   {
@@ -367,9 +714,11 @@
     "location": "Fortaleza",
     "country": "CE",
     "area": "36m²",
-    "imageSrc": "/images/projects/elite-music/CAPA.webp",
+    "imageSrc": "/images/projects/elite-music/capa-projeto-elite-music.webp",
     "summary": "A sala da diretoria foi projetada para acolher clientes e parceiros em um ambiente inspirado em uma sala de estar, com conforto e sofisticação. O espaço transforma a formalidade corporativa em uma experiência intimista, leve e mais humana.",
-    "scope": ["Design de Interiores"],
+    "scope": [
+      "Design de Interiores"
+    ],
     "chapters": [
       {
         "title": "",
@@ -377,15 +726,42 @@
       }
     ],
     "gallery": [
-      { "src": "/images/projects/elite-music/02.webp", "alt": "Elite Music" },
-      { "src": "/images/projects/elite-music/03.webp", "alt": "Elite Music" },
-      { "src": "/images/projects/elite-music/04.webp", "alt": "Elite Music" },
-      { "src": "/images/projects/elite-music/05.webp", "alt": "Elite Music" },
-      { "src": "/images/projects/elite-music/06.webp", "alt": "Elite Music" },
-      { "src": "/images/projects/elite-music/07.webp", "alt": "Elite Music" },
-      { "src": "/images/projects/elite-music/08.webp", "alt": "Elite Music" },
-      { "src": "/images/projects/elite-music/09.webp", "alt": "Elite Music" },
-      { "src": "/images/projects/elite-music/IMG_8665.webp", "alt": "Elite Music" }
+      {
+        "src": "/images/projects/elite-music/galeria-elite-music-01.webp",
+        "alt": "Elite Music"
+      },
+      {
+        "src": "/images/projects/elite-music/galeria-elite-music-02.webp",
+        "alt": "Elite Music"
+      },
+      {
+        "src": "/images/projects/elite-music/galeria-elite-music-03.webp",
+        "alt": "Elite Music"
+      },
+      {
+        "src": "/images/projects/elite-music/galeria-elite-music-04.webp",
+        "alt": "Elite Music"
+      },
+      {
+        "src": "/images/projects/elite-music/galeria-elite-music-05.webp",
+        "alt": "Elite Music"
+      },
+      {
+        "src": "/images/projects/elite-music/galeria-elite-music-06.webp",
+        "alt": "Elite Music"
+      },
+      {
+        "src": "/images/projects/elite-music/galeria-elite-music-07.webp",
+        "alt": "Elite Music"
+      },
+      {
+        "src": "/images/projects/elite-music/galeria-elite-music-08.webp",
+        "alt": "Elite Music"
+      },
+      {
+        "src": "/images/projects/elite-music/galeria-elite-music-09.webp",
+        "alt": "Elite Music"
+      }
     ]
   }
 ]

@@ -29,7 +29,7 @@ export default function StudioPage() {
           {/* DESKTOP: Foto de fundo full-bleed */}
           <div className="absolute inset-0 z-0 hidden md:block">
             <Image
-              src="/images/team/wellington-viana/Gemini_Generated_Image_3ecq1a3ecq1a3ecq.png"
+              src="/images/team/wellington-viana/retrato-horizontal-wellington-viana.png"
               alt="Wellington Viana"
               fill
               priority
@@ -50,7 +50,7 @@ export default function StudioPage() {
             }}
           >
             <Image
-              src="/images/logos/brand/brand-7.svg"
+              src="/images/logos/brand/marca-variacao-07.svg"
               alt=""
               width={1000}
               height={1000}
@@ -61,7 +61,7 @@ export default function StudioPage() {
           {/* MOBILE: Foto vertical full-bleed — Wellington embaixo, espaço pra texto acima */}
           <div className="absolute inset-0 z-0 md:hidden">
             <Image
-              src="/images/team/wellington-viana/capa-vertical.png"
+              src="/images/team/wellington-viana/retrato-vertical-wellington-viana.png"
               alt="Wellington Viana"
               fill
               priority
@@ -82,7 +82,7 @@ export default function StudioPage() {
             }}
           >
             <Image
-              src="/images/logos/brand/brand-7.svg"
+              src="/images/logos/brand/marca-variacao-07.svg"
               alt=""
               width={1000}
               height={1000}

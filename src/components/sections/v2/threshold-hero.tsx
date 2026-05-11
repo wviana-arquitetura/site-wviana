@@ -3,7 +3,7 @@
 import { useRef, useLayoutEffect, useState, useEffect } from "react";
 import gsap from "@/lib/gsap";
 
-const LOGO_SRC = "/images/logos/brand/brand-2.svg";
+const LOGO_SRC = "/images/logos/brand/marca-variacao-02.svg";
 
 export function ThresholdHero() {
   const sectionRef = useRef<HTMLElement>(null);
