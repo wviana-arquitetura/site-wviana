@@ -6,12 +6,13 @@ import { GalleryProjectCard } from "@/components/project/v2/gallery-project-card
 import { Void } from "@/components/ui/void";
 import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
 import { getLenis } from "@/lib/scroll";
+import type { Project } from "@/types/project";
 
 export function GalleryWalkSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const projects = ["residencial-rc", "residencial-pl", "residencial-tn"]
     .map(getProjectBySlug)
-    .filter(Boolean);
+    .filter((p): p is Project => p !== null);
 
   useArchitecturalReveal(sectionRef);
 
