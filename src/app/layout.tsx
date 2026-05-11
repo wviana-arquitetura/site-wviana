@@ -1,13 +1,17 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { GlobalIntroLoader } from "@/components/providers/GlobalIntroLoader";
-import { HydrationGuard } from "@/components/providers/HydrationGuard";
 import { SiteChrome } from "@/components/layout/site-chrome";
 import "./globals.css";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { BRAND } from "@/lib/brand";
+import {
+  defaultDescription,
+  defaultOgDescription,
+  defaultOgImagePath,
+} from "@/lib/seo";
 
 /* Aeonik — manual: Light / Medium / Bold (TRIAL: Regular cobre 400 e 500) */
 const aeonik = localFont({
@@ -38,9 +42,11 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "W.VIANA — Arquitetura | Interiores",
-  description:
-    "Escritório de arquitetura e interiores fundado por Wellington Viana. Soluções personalizadas que elevam experiências e expectativas.",
+  title: {
+    default: "W.VIANA — Arquitetura | Interiores",
+    template: "%s | W.VIANA",
+  },
+  description: defaultDescription,
   metadataBase: new URL(BRAND.siteUrl),
   icons: {
     icon: [
@@ -58,23 +64,19 @@ export const metadata: Metadata = {
     ],
     apple: [{ url: "/apple-touch-icon.png" }],
   },
-  alternates: {
-    canonical: "/",
-  },
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: "/",
     siteName: BRAND.name,
     title: "W.VIANA — Arquitetura | Interiores",
-    description:
-      "Arquitetura sensorial, minimalista e autoral. Forma, luz e silêncio em projetos residenciais e interiores.",
+    description: defaultOgDescription,
+    images: [{ url: defaultOgImagePath, alt: BRAND.name }],
   },
   twitter: {
     card: "summary_large_image",
     title: "W.VIANA — Arquitetura | Interiores",
-    description:
-      "Arquitetura sensorial, minimalista e autoral. Forma, luz e silêncio.",
+    description: defaultOgDescription,
+    images: [defaultOgImagePath],
   },
 };
 
@@ -125,7 +127,6 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: preHydrationCleanScript }}
           suppressHydrationWarning
         />
-        <HydrationGuard />
         <GlobalIntroLoader />
         <QueryProvider>
           <SmoothScrollProvider>

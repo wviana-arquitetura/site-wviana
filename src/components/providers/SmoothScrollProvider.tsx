@@ -40,20 +40,6 @@ export function SmoothScrollProvider({
     registerLenis(lenis);
     lenis.on("scroll", ScrollTrigger.update);
 
-    // Diagnóstico: loga eventos de scroll do Lenis com a fonte (wheel/touch/programatic)
-    // Filtra ruído: só loga primeiro evento da sessão e quando muda de stopped→moving
-    let lastLoggedAt = 0;
-    lenis.on("scroll", (e: { scroll: number; velocity: number }) => {
-      const now = performance.now();
-      // Loga 1ª vez ou quando tem mais de 200ms desde o último log
-      if (now - lastLoggedAt > 200 || lastLoggedAt === 0) {
-        console.log(
-          `[ScrollDiag] 🌊 lenis scroll event: y=${Math.round(e.scroll)}px | v=${e.velocity.toFixed(2)} | t=${now.toFixed(0)}ms`,
-        );
-        lastLoggedAt = now;
-      }
-    });
-
     const update = (time: number) => {
       lenis.raf(time * 1000);
     };
@@ -80,13 +66,7 @@ export function SmoothScrollProvider({
   // 3. Chama lenis.resize() para que o Lenis recalcule as dimensões da nova página
   // 4. Repete o reset por mais alguns frames (a página pode estar montando)
   useEffect(() => {
-    const tBefore = performance.now();
-    const yBefore = window.scrollY;
-    console.log(
-      `[ScrollDiag] ▶ pathname="${pathname}" | scrollY=${yBefore}px | t=${tBefore.toFixed(0)}ms`,
-    );
-
-    const forceReset = (label: string) => {
+    const forceReset = () => {
       // Força o DOM direto — fonte mais autoritativa que o Lenis
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
@@ -98,12 +78,9 @@ export function SmoothScrollProvider({
         // resize() força o Lenis a recalcular scrollHeight da nova página
         lenis.resize();
       }
-      console.log(
-        `[ScrollDiag]   ${label}: scrollY=${window.scrollY}px | docHeight=${document.documentElement.scrollHeight}px`,
-      );
     };
 
-    forceReset("reset imediato");
+    forceReset();
 
     // Reset em múltiplos frames seguintes — o React App Router renderiza a nova
     // página de forma assíncrona, e o documento pode crescer/encolher conforme
@@ -113,17 +90,16 @@ export function SmoothScrollProvider({
       const id = requestAnimationFrame(() => {
         if (n === 1) {
           requestAnimationFrame(() => {
-            forceReset(`+${n} frame`);
+            forceReset();
           });
         } else {
-          forceReset(`+${n} frame`);
+          forceReset();
         }
       });
       rafIds.push(id);
     });
 
     ScrollTrigger.refresh();
-    console.log(`[ScrollDiag]   ScrollTrigger.refresh() chamado`);
 
     const checks: number[] = [];
     [50, 200, 500, 1000].forEach((ms) => {
@@ -131,12 +107,7 @@ export function SmoothScrollProvider({
         // Se ainda não está no topo após X ms, força de novo
         const y = window.scrollY;
         if (y > 5) {
-          console.log(
-            `[ScrollDiag]   +${ms}ms: scrollY=${y}px (NÃO ESTÁ NO TOPO, forçando)`,
-          );
-          forceReset(`reset corretivo @${ms}ms`);
-        } else {
-          console.log(`[ScrollDiag]   +${ms}ms: scrollY=${y}px ✓`);
+          forceReset();
         }
       }, ms);
       checks.push(id);

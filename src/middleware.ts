@@ -26,6 +26,6 @@ export const config = {
      * - favicon.ico (favicon file)
      * - imagens da pasta public (images/)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|images/).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|images/|robots.txt|sitemap.xml).*)',
   ],
 }

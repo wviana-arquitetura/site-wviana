@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { privateRouteRobots } from "@/lib/seo";
+
+export const metadata: Metadata = {
+  title: "Página não encontrada",
+  description: "O endereço não existe ou foi removido.",
+  robots: privateRouteRobots,
+};
 
 export default function NotFound() {
   return (

@@ -84,6 +84,11 @@ export function ScrollProgress() {
     };
 
     const tick = () => {
+      if (document.visibilityState === "hidden") {
+        rafRef.current = null;
+        return;
+      }
+
       // Rede de proteção: re-mede nos primeiros frames (até railHeight > 0)
       if (railHeight === 0 && measureCountdown < 60) {
         measure();
@@ -161,28 +166,42 @@ export function ScrollProgress() {
     };
 
     if (!reduced) {
-      setIdle(true);
-      rafRef.current = requestAnimationFrame(tick);
-    } else {
-      const onScroll = () => {
-        const max =
-          document.documentElement.scrollHeight - window.innerHeight;
-        const p = max > 0 ? window.scrollY / max : 0;
-        if (topBarRef.current) {
-          topBarRef.current.style.transform = `scaleX(${p})`;
+      const onVisibility = () => {
+        if (document.visibilityState === "hidden") {
+          if (rafRef.current !== null) {
+            cancelAnimationFrame(rafRef.current);
+            rafRef.current = null;
+          }
+          return;
+        }
+        if (rafRef.current === null) {
+          rafRef.current = requestAnimationFrame(tick);
         }
       };
-      window.addEventListener("scroll", onScroll, { passive: true });
-      onScroll();
+      document.addEventListener("visibilitychange", onVisibility);
+      setIdle(true);
+      rafRef.current = requestAnimationFrame(tick);
+
       return () => {
-        window.removeEventListener("scroll", onScroll);
+        document.removeEventListener("visibilitychange", onVisibility);
+        if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+        if (idleTimer) clearTimeout(idleTimer);
         window.removeEventListener("resize", measure);
       };
     }
 
+    const onScroll = () => {
+      const max =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const p = max > 0 ? window.scrollY / max : 0;
+      if (topBarRef.current) {
+        topBarRef.current.style.transform = `scaleX(${p})`;
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
     return () => {
-      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
-      if (idleTimer) clearTimeout(idleTimer);
+      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", measure);
     };
   }, []);

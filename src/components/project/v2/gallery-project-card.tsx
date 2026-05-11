@@ -36,7 +36,7 @@ export function GalleryProjectCard({
               alt={project.title}
               fill
               className="object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
-              sizes="(max-width: 768px) 100vw, 32vw"
+              sizes="(max-width: 768px) 100vw, 42vw"
             />
 
             {/* Título ancorado no canto inferior, sobreposto à foto */}

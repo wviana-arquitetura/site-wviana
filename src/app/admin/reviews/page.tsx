@@ -1,5 +1,7 @@
+import type { Metadata } from "next";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
+import { privateRouteRobots } from "@/lib/seo";
 
 type ReviewRecord = {
   id: string;
@@ -40,6 +42,12 @@ const ALIGNMENT_LABEL: Record<string, string> = {
   bem_alinhado: "Bem alinhado, com ajustes",
   parcial: "Parcialmente alinhado",
   pouco_alinhado: "Pouco alinhado",
+};
+
+export const metadata: Metadata = {
+  title: "Revisões",
+  description: "Painel interno de revisões do site W.VIANA.",
+  robots: privateRouteRobots,
 };
 
 export const dynamic = "force-dynamic";
