@@ -12,7 +12,7 @@ export function ProjectCover({ project }: ProjectCoverProps) {
     <section className="relative h-[var(--svh)] w-full overflow-hidden">
       <Image
         src={project.imageSrc}
-        alt={`Capa do projeto ${project.title}`}
+        alt={project.imageAlt ?? `Capa do projeto ${project.title}`}
         fill
         sizes="100vw"
         className="object-cover object-center"

@@ -2,16 +2,14 @@ import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta({
-  title: "Processo",
+  title: "Processo de arquitetura e interiores",
+  socialTitle: "Método W.VIANA",
   description:
-    "Método W.VIANA: etapas claras de arquitetura e interiores, da imersão ao projeto executivo, com previsibilidade e alinhamento.",
+    "Entenda o método W.VIANA para projetos de arquitetura e interiores em Fortaleza: imersão, conceito, executivo, orçamento e acompanhamento.",
   path: "/processo",
+  imageAlt: "Processo de projeto de arquitetura e interiores W.VIANA",
 });
 
-export default function ProcessoLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function ProcessoLayout({ children }: { children: React.ReactNode }) {
   return children;
 }

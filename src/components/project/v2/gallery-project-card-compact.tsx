@@ -8,9 +8,7 @@ type GalleryProjectCardCompactProps = {
   project: Project;
 };
 
-export function GalleryProjectCardCompact({
-  project,
-}: GalleryProjectCardCompactProps) {
+export function GalleryProjectCardCompact({ project }: GalleryProjectCardCompactProps) {
   return (
     <Link
       href={`/projetos/${project.slug}`}
@@ -22,7 +20,7 @@ export function GalleryProjectCardCompact({
       <div className="reveal-curtain relative aspect-[3/4] w-full min-h-0 overflow-hidden md:aspect-auto md:flex-1">
         <Image
           src={project.imageSrc}
-          alt={project.title}
+          alt={project.imageAlt ?? project.title}
           fill
           className="object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
           sizes="(max-width: 768px) 100vw, 50vw"
@@ -57,10 +55,7 @@ export function GalleryProjectCardCompact({
           </span>
         </div>
 
-        <div
-          className="h-px w-16"
-          style={{ background: "hsl(var(--accent) / 0.4)" }}
-        />
+        <div className="h-px w-16" style={{ background: "hsl(var(--accent) / 0.4)" }} />
 
         <p className="reveal-illuminate text-body-lg leading-[1.5] text-muted-foreground">
           {project.summary}

@@ -3,49 +3,44 @@
 import { useRef, useLayoutEffect } from "react";
 import gsap from "@/lib/gsap";
 import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
+import { getBreadcrumbJsonLd, getFaqJsonLd } from "@/lib/seo";
 
 const phases = [
   {
     index: "01",
     title: "Imersão e Diagnóstico",
-    description:
-      "Entendimento profundo da operação e identidade do cliente.",
+    description: "Entendimento profundo da operação e identidade do cliente.",
   },
   {
     index: "02",
     title: "Estratégia Espacial",
-    description:
-      "Definição de fluxos, layout e organização funcional.",
+    description: "Definição de fluxos, layout e organização funcional.",
   },
   {
     index: "03",
     title: "Conceito e Visualização",
-    description:
-      "Apresentação do projeto em 3D realista para validação.",
+    description: "Apresentação do projeto em 3D realista para validação.",
   },
   {
     index: "04",
     title: "Projeto Executivo",
-    description:
-      "Documentação técnica completa para execução sem imprevistos.",
+    description: "Documentação técnica completa para execução sem imprevistos.",
   },
   {
     index: "05",
     title: "Planejamento Orçamentário",
     description:
-      "Orçamentação estruturada e nivelação de fornecedores.",
+     "Orçamentação estruturada e nivelação de fornecedores.",
   },
   {
     index: "06",
     title: "Acompanhamento Técnico",
-    description:
-      "Visitas estratégicas para garantir fidelidade ao projeto.",
+    description: "Visitas estratégicas para garantir fidelidade ao projeto.",
   },
   {
     index: "07",
     title: "Produção Final",
-    description:
-      "Refinamento do projeto concluído, para garantir a excelência do resultado final.",
+    description: "Refinamento do projeto concluído, para garantir a excelência do resultado final.",
   },
 ];
 
@@ -77,6 +72,24 @@ const deliverables = [
   },
 ];
 
+const faqItems = [
+  {
+    question: "O escritório atende projetos fora de Fortaleza?",
+    answer:
+      "Sim. A base do escritório é em Fortaleza, mas o atendimento pode contemplar projetos no Ceará e em outras regiões do Brasil conforme escopo e disponibilidade.",
+  },
+  {
+    question: "O processo inclui projeto executivo?",
+    answer:
+      "Sim. O método prevê documentação técnica para orientar a execução da obra, incluindo desenhos, detalhamentos e especificações compatíveis com o escopo contratado.",
+  },
+  {
+    question: "É possível contratar apenas interiores?",
+    answer:
+      "Sim. O escritório desenvolve projetos de interiores, arquitetura e escopos combinados para imóveis residenciais, comerciais e corporativos.",
+  },
+];
+
 const TOTAL_PHASES = String(phases.length).padStart(2, "0");
 
 export default function ProcessPage() {
@@ -84,6 +97,11 @@ export default function ProcessPage() {
   const horizontalRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
+  const faqJsonLd = getFaqJsonLd(faqItems);
+  const breadcrumbJsonLd = getBreadcrumbJsonLd([
+    { name: "Início", path: "/" },
+    { name: "Processo", path: "/processo" },
+  ]);
 
   useArchitecturalReveal(rootRef);
 
@@ -93,9 +111,7 @@ export default function ProcessPage() {
     const progress = progressRef.current;
     if (!container || !track || !progress) return;
 
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
 
     const ctx = gsap.context(() => {
@@ -129,147 +145,188 @@ export default function ProcessPage() {
   }, []);
 
   return (
-    <div className="min-h-[var(--svh)] bg-background text-foreground">
-      <main ref={rootRef}>
-        {/* Intro — preenche viewport, conteúdo centralizado verticalmente */}
-        <section className="flex min-h-[var(--svh)] items-center px-8 pt-24 pb-12 md:px-16 md:pt-28 md:pb-16 lg:px-24">
-          <div className="mx-auto w-full max-w-[1800px]">
-            <span
-              className="reveal-illuminate text-micro uppercase tracking-[0.22em]"
-              style={{ color: "hsl(var(--accent-strong))" }}
-            >
-              Processo
-            </span>
-            <h1 className="reveal-rise mt-6 max-w-[1200px] text-architectural font-light leading-[1.05] text-foreground">
-              Método W. Viana. Arquitetura estruturada.
-            </h1>
-            <p className="reveal-illuminate mt-8 max-w-[600px] text-body-lg text-muted-foreground">
-              Nosso método foi estruturado para que você tenha clareza,
-              previsibilidade e tranquilidade do início ao fim.
-            </p>
+    <>
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <div className="min-h-[var(--svh)] bg-background text-foreground">
+        <main ref={rootRef}>
+          {/* Intro — preenche viewport, conteúdo centralizado verticalmente */}
+          <section className="flex min-h-[var(--svh)] items-center px-8 pt-24 pb-12 md:px-16 md:pt-28 md:pb-16 lg:px-24">
+            <div className="mx-auto w-full max-w-[1800px]">
+              <span
+                className="reveal-illuminate text-micro uppercase tracking-[0.22em]"
+                style={{ color: "hsl(var(--accent-strong))" }}
+              >
+                Processo
+              </span>
+              <h1 className="reveal-rise mt-6 max-w-[1200px] text-architectural font-light leading-[1.05] text-foreground">
+                Método W. Viana. Arquitetura estruturada.
+              </h1>
+              <p className="reveal-illuminate mt-8 max-w-[600px] text-body-lg text-muted-foreground">
+                Nosso método foi estruturado para que você tenha clareza, previsibilidade e
+                tranquilidade do início ao fim.
+              </p>
+              <div
+                className="reveal-draw mt-12 h-px w-full"
+                style={{ background: "hsl(var(--accent) / 0.3)" }}
+              />
+            </div>
+          </section>
+
+          {/* Horizontal scroll phases */}
+          <section ref={horizontalRef} className="relative h-[var(--svh)] overflow-hidden">
+            {/* Progress bar */}
             <div
-              className="reveal-draw mt-12 h-px w-full"
-              style={{ background: "hsl(var(--accent) / 0.3)" }}
+              ref={progressRef}
+              className="absolute left-0 top-0 z-10 h-[2px] w-full"
+              style={{ background: "hsl(var(--accent))" }}
             />
-          </div>
-        </section>
 
-        {/* Horizontal scroll phases */}
-        <section
-          ref={horizontalRef}
-          className="relative h-[var(--svh)] overflow-hidden"
-        >
-          {/* Progress bar */}
-          <div
-            ref={progressRef}
-            className="absolute left-0 top-0 z-10 h-[2px] w-full"
-            style={{ background: "hsl(var(--accent))" }}
-          />
-
-          <div
-            ref={trackRef}
-            className="flex h-full"
-            style={{ width: `${phases.length * 100}vw` }}
-          >
-            {phases.map((phase, i) => {
-              const watermarkOnLeft = i % 2 === 1;
-              return (
-                <div
-                  key={phase.index}
-                  className="relative flex h-full w-screen flex-col justify-center px-8 md:px-16 lg:px-24"
-                  style={{
-                    borderRight: "1px solid hsl(var(--accent) / 0.15)",
-                    borderLeft: i === 0 ? "1px solid hsl(var(--accent) / 0.15)" : "none",
-                  }}
-                >
-                  {/* Watermark — alterna lado a cada fase para criar ritmo visual */}
-                  <span
-                    aria-hidden="true"
-                    className={`pointer-events-none absolute top-1/2 -translate-y-1/2 select-none font-extrabold leading-none ${
-                      watermarkOnLeft
-                        ? "left-8 md:left-16 lg:left-24"
-                        : "right-8 md:right-16 lg:right-24"
-                    }`}
+            <div
+              ref={trackRef}
+              className="flex h-full"
+              style={{ width: `${phases.length * 100}vw` }}
+            >
+              {phases.map((phase, i) => {
+                const watermarkOnLeft = i % 2 === 1;
+                return (
+                  <div
+                    key={phase.index}
+                    className="relative flex h-full w-screen flex-col justify-center px-8 md:px-16 lg:px-24"
                     style={{
-                      fontSize: "clamp(8rem, 20vw, 26rem)",
-                      color: "hsl(var(--accent) / 0.28)",
+                      borderRight: "1px solid hsl(var(--accent) / 0.15)",
+                      borderLeft: i === 0 ? "1px solid hsl(var(--accent) / 0.15)" : "none",
                     }}
                   >
-                    {phase.index}
-                  </span>
-
-                  <div
-                    className={`relative max-w-[500px] ${
-                      watermarkOnLeft ? "ml-auto md:mr-[15%]" : "ml-0 md:ml-[15%]"
-                    }`}
-                  >
+                    {/* Watermark — alterna lado a cada fase para criar ritmo visual */}
                     <span
-                      className="text-micro uppercase tracking-[0.22em]"
-                      style={{ color: "hsl(var(--accent-strong))" }}
+                      aria-hidden="true"
+                      className={`pointer-events-none absolute top-1/2 -translate-y-1/2 select-none font-extrabold leading-none ${
+                        watermarkOnLeft
+                          ? "left-8 md:left-16 lg:left-24"
+                          : "right-8 md:right-16 lg:right-24"
+                      }`}
+                      style={{
+                        fontSize: "clamp(8rem, 20vw, 26rem)",
+                        color: "hsl(var(--accent) / 0.28)",
+                      }}
                     >
-                      Fase {phase.index} / {TOTAL_PHASES}
+                      {phase.index}
                     </span>
 
                     <div
-                      className="mt-4 h-px w-16"
-                      style={{ background: "hsl(var(--accent) / 0.3)" }}
-                    />
-
-                    <h2 className="mt-6 text-architectural font-light text-foreground">
-                      {phase.title}
-                    </h2>
-                    <p className="mt-6 max-w-[440px] text-body-lg text-muted-foreground">
-                      {phase.description}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* Deliverables — cabe em 100vh, conteúdo distribuído verticalmente */}
-        <section className="flex min-h-[var(--svh)] flex-col px-8 py-12 md:px-16 md:py-16 lg:px-24">
-          <div className="mx-auto flex w-full max-w-[1800px] flex-1 flex-col">
-            <span
-              className="reveal-illuminate text-micro uppercase tracking-[0.22em]"
-              style={{ color: "hsl(var(--accent-strong))" }}
-            >
-              Entregáveis
-            </span>
-
-            {/* Lista cresce para preencher o espaço disponível */}
-            <div className="mt-6 flex flex-1 flex-col justify-between md:mt-10">
-              {deliverables.map((item, i) => (
-                <div
-                  key={item.title}
-                  className="reveal-rise flex items-start gap-6 border-t py-[clamp(0.75rem,1.6vh,1.5rem)] md:gap-8"
-                  style={{ borderColor: "hsl(var(--accent) / 0.15)" }}
-                >
-                  <span
-                    className="shrink-0 text-micro uppercase tracking-[0.22em]"
-                    style={{ color: "hsl(var(--accent-strong))" }}
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div className="flex flex-col gap-2 md:flex-row md:items-start md:gap-12">
-                    <span className="shrink-0 text-body-lg leading-[1.3] text-foreground md:w-[340px]">
-                      {item.title}
-                    </span>
-                    <span
-                      className="leading-[1.5] text-muted-foreground"
-                      style={{ fontSize: "clamp(0.9rem, 1.05vw, 1.05rem)" }}
+                      className={`relative max-w-[500px] ${
+                        watermarkOnLeft ? "ml-auto md:mr-[15%]" : "ml-0 md:ml-[15%]"
+                      }`}
                     >
-                      {item.description}
-                    </span>
+                      <span
+                        className="text-micro uppercase tracking-[0.22em]"
+                        style={{ color: "hsl(var(--accent-strong))" }}
+                      >
+                        Fase {phase.index} / {TOTAL_PHASES}
+                      </span>
+
+                      <div
+                        className="mt-4 h-px w-16"
+                        style={{ background: "hsl(var(--accent) / 0.3)" }}
+                      />
+
+                      <h2 className="mt-6 text-architectural font-light text-foreground">
+                        {phase.title}
+                      </h2>
+                      <p className="mt-6 max-w-[440px] text-body-lg text-muted-foreground">
+                        {phase.description}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
-              <div className="border-t" style={{ borderColor: "hsl(var(--accent) / 0.15)" }} />
+                );
+              })}
             </div>
-          </div>
-        </section>
-      </main>
-    </div>
+          </section>
+
+          {/* Deliverables — cabe em 100vh, conteúdo distribuído verticalmente */}
+          <section className="flex min-h-[var(--svh)] flex-col px-8 py-12 md:px-16 md:py-16 lg:px-24">
+            <div className="mx-auto flex w-full max-w-[1800px] flex-1 flex-col">
+              <span
+                className="reveal-illuminate text-micro uppercase tracking-[0.22em]"
+                style={{ color: "hsl(var(--accent-strong))" }}
+              >
+                Entregáveis
+              </span>
+
+              {/* Lista cresce para preencher o espaço disponível */}
+              <div className="mt-6 flex flex-1 flex-col justify-between md:mt-10">
+                {deliverables.map((item, i) => (
+                  <div
+                    key={item.title}
+                    className="reveal-rise flex items-start gap-6 border-t py-[clamp(0.75rem,1.6vh,1.5rem)] md:gap-8"
+                    style={{ borderColor: "hsl(var(--accent) / 0.15)" }}
+                  >
+                    <span
+                      className="shrink-0 text-micro uppercase tracking-[0.22em]"
+                      style={{ color: "hsl(var(--accent-strong))" }}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div className="flex flex-col gap-2 md:flex-row md:items-start md:gap-12">
+                      <span className="shrink-0 text-body-lg leading-[1.3] text-foreground md:w-[340px]">
+                        {item.title}
+                      </span>
+                      <span
+                        className="leading-[1.5] text-muted-foreground"
+                        style={{ fontSize: "clamp(0.9rem, 1.05vw, 1.05rem)" }}
+                      >
+                        {item.description}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+                <div className="border-t" style={{ borderColor: "hsl(var(--accent) / 0.15)" }} />
+              </div>
+            </div>
+          </section>
+
+          <section className="px-8 py-20 md:px-16 md:py-24 lg:px-24">
+            <div className="mx-auto grid w-full max-w-[1800px] gap-12 md:grid-cols-[0.8fr_1.2fr] md:gap-16">
+              <div>
+                <span
+                  className="reveal-illuminate text-micro uppercase tracking-[0.22em]"
+                  style={{ color: "hsl(var(--accent-strong))" }}
+                >
+                  Dúvidas frequentes
+                </span>
+                <h2 className="reveal-rise mt-4 max-w-[520px] text-architectural font-light leading-[1.05] text-foreground">
+                  Clareza antes do primeiro traço.
+                </h2>
+              </div>
+
+              <div
+                className="flex flex-col border-t"
+                style={{ borderColor: "hsl(var(--accent) / 0.18)" }}
+              >
+                {faqItems.map((item) => (
+                  <div
+                    key={item.question}
+                    className="reveal-rise border-b py-8"
+                    style={{ borderColor: "hsl(var(--accent) / 0.18)" }}
+                  >
+                    <h3 className="text-body-lg font-medium text-foreground">{item.question}</h3>
+                    <p className="mt-3 leading-[1.6] text-muted-foreground">{item.answer}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </>
   );
 }

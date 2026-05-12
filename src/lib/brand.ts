@@ -1,6 +1,18 @@
+const CONTACT_EMAIL = "contato@wvarq.com";
+
+/** Assunto + corpo padrão (mesmo tom do link do WhatsApp). */
+const MAILTO_SUBJECT = "Contato pelo site";
+const MAILTO_BODY = `Olá,
+
+Vim pelo site e gostaria de conversar sobre um projeto.
+
+`;
+
 export const BRAND = {
   name: "W.Viana | Arquitetura",
-  email: "contato@wvarq.com",
+  email: CONTACT_EMAIL,
+  /** Link mailto com mensagem inicial para o cliente só complementar e enviar. */
+  mailtoUrl: `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(MAILTO_SUBJECT)}&body=${encodeURIComponent(MAILTO_BODY)}`,
   siteUrl: "https://wviana.com.br",
   whatsappPhone: "5585997177666",
   whatsappPhoneFormatted: "+55 85 9971-7666",

@@ -33,7 +33,7 @@ export function ProjectContinuation({ nextProject }: ProjectContinuationProps) {
         <div className="relative mt-6 min-h-0 flex-1 overflow-hidden md:mt-8">
           <Image
             src={nextProject.imageSrc}
-            alt={nextProject.title}
+            alt={nextProject.imageAlt ?? nextProject.title}
             fill
             sizes="100vw"
             className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.02]"

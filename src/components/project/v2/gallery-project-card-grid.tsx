@@ -8,10 +8,14 @@ import type { Project } from "@/types/project";
 type GalleryProjectCardGridProps = {
   project: Project;
   imageLeft?: boolean;
+  priority?: boolean;
 };
 
-const ROTATE_INTERVAL_MS = 1400;
-const CROSSFADE_MS = 600;
+const ROTATE_INTERVAL_MS = 2800;
+const CROSSFADE_MS = 1300;
+const ENTRY_SHIFT_PX = 0;
+const ENTRY_SCALE = 1.035;
+const ACTIVE_ZOOM_DURATION_MS = ROTATE_INTERVAL_MS + 300;
 
 /**
  * Variante do GalleryProjectCard para uso em grid 2-colunas (página /projetos).
@@ -22,22 +26,45 @@ const CROSSFADE_MS = 600;
 export function GalleryProjectCardGrid({
   project,
   imageLeft = false,
+  priority = false,
 }: GalleryProjectCardGridProps) {
   const imageWrapperRef = useRef<HTMLDivElement>(null);
+  const isMobileRef = useRef(false);
+  const zoomRafRef = useRef<number | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [shouldRotate, setShouldRotate] = useState(false);
   const [hasLoadedExtra, setHasLoadedExtra] = useState(false);
+  const [hasStartedZoom, setHasStartedZoom] = useState(false);
 
   // Lista de imagens: capa + até 3 primeiras fotos da galeria.
   const images = [
-    project.imageSrc,
-    ...project.gallery.slice(0, 3).map((g) => g.src),
+    {
+      src: project.imageSrc,
+      alt: project.imageAlt ?? `Capa do projeto ${project.title}`,
+    },
+    ...project.gallery.slice(0, 3).map((image) => ({
+      src: image.src,
+      alt: image.alt,
+    })),
   ];
 
+  const startZoomOnActive = () => {
+    if (zoomRafRef.current !== null) {
+      window.cancelAnimationFrame(zoomRafRef.current);
+    }
+    setHasStartedZoom(false);
+    zoomRafRef.current = window.requestAnimationFrame(() => {
+      setHasStartedZoom(true);
+      zoomRafRef.current = null;
+    });
+  };
+
   // Detecta mobile via media query para usar IntersectionObserver em vez de hover.
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     const isMobile = window.matchMedia("(hover: none)").matches;
+    isMobileRef.current = isMobile;
     if (!isMobile) return;
 
     const el = imageWrapperRef.current;
@@ -45,35 +72,62 @@ export function GalleryProjectCardGrid({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+        if (entry.isIntersecting && entry.intersectionRatio > 0.7) {
+          startZoomOnActive();
           setShouldRotate(true);
           setHasLoadedExtra(true);
         } else {
           setShouldRotate(false);
+          setActiveIndex(0);
+          setHasStartedZoom(false);
         }
       },
-      { threshold: [0, 0.5, 1] },
+      { threshold: [0, 0.7, 1] },
     );
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (zoomRafRef.current !== null) {
+        window.cancelAnimationFrame(zoomRafRef.current);
+      }
+    };
   }, []);
 
   // Rotação automática enquanto shouldRotate é true.
   useEffect(() => {
     if (!shouldRotate || images.length <= 1) return;
+
+    if (!isMobileRef.current) {
+      const id = window.setInterval(() => {
+        setActiveIndex((prev) => (prev + 1) % images.length);
+      }, ROTATE_INTERVAL_MS);
+      return () => window.clearInterval(id);
+    }
+
+    let steps = 0;
     const id = window.setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % images.length);
+      setActiveIndex((prev) => {
+        const next = (prev + 1) % images.length;
+        steps += 1;
+        if (steps >= images.length) {
+          window.clearInterval(id);
+          setShouldRotate(false);
+        }
+        return next;
+      });
     }, ROTATE_INTERVAL_MS);
     return () => window.clearInterval(id);
   }, [shouldRotate, images.length]);
 
   const handleMouseEnter = () => {
+    startZoomOnActive();
     setHasLoadedExtra(true);
     setShouldRotate(true);
   };
   const handleMouseLeave = () => {
     setShouldRotate(false);
     setActiveIndex(0);
+    setHasStartedZoom(false);
   };
 
   return (
@@ -95,23 +149,35 @@ export function GalleryProjectCardGrid({
             ref={imageWrapperRef}
             className="reveal-curtain relative aspect-[3/4] w-full overflow-hidden md:aspect-auto md:h-[68vh]"
           >
-            {images.map((src, idx) => {
+            {images.map((image, idx) => {
               // Só monta o <Image> da capa de cara; as extras só quando hover ativa.
               const shouldRender = idx === 0 || hasLoadedExtra;
               if (!shouldRender) return null;
               return (
                 <Image
-                  key={src}
-                  src={src}
-                  alt={project.title}
+                  key={image.src}
+                  src={image.src}
+                  alt={image.alt}
                   fill
-                  priority={idx === 0}
+                  priority={idx === 0 && priority}
                   sizes="(max-width: 768px) 100vw, 22vw"
-                  className="object-cover object-top transition-opacity ease-out group-hover:scale-[1.03]"
+                  className="object-cover object-top"
                   style={{
                     opacity: activeIndex === idx ? 1 : 0,
-                    transitionDuration: `${CROSSFADE_MS}ms, 1200ms`,
+                    transform:
+                      activeIndex === idx
+                        ? `translate3d(0, 0, 0) scale(${hasStartedZoom ? 1 : ENTRY_SCALE})`
+                        : `translate3d(0, ${ENTRY_SHIFT_PX}px, 0) scale(${ENTRY_SCALE})`,
+                    transitionTimingFunction:
+                      activeIndex === idx
+                        ? "linear"
+                        : "cubic-bezier(0.4, 0, 0.2, 1)",
+                    transitionDuration:
+                      activeIndex === idx
+                        ? `${ACTIVE_ZOOM_DURATION_MS}ms`
+                        : `${CROSSFADE_MS}ms`,
                     transitionProperty: "opacity, transform",
+                    willChange: "opacity, transform",
                   }}
                 />
               );
@@ -119,11 +185,10 @@ export function GalleryProjectCardGrid({
 
             {/* Título sobreposto no canto inferior — mix-blend-mode adapta a contraste */}
             <h3
-              className="reveal-rise pointer-events-none absolute inset-x-0 bottom-0 z-10 px-4 pb-4 font-extrabold leading-[0.95] md:px-5 md:pb-5"
+              className="reveal-rise pointer-events-none absolute inset-x-0 bottom-0 z-10 px-4 pb-4 text-[clamp(2.5rem,10.5vw,3.6rem)] font-extrabold leading-[0.95] md:px-5 md:pb-5 md:text-[clamp(2rem,3.1vw,3.3rem)]"
               style={{
                 color: "#ffffff",
                 mixBlendMode: "difference",
-                fontSize: "clamp(1.5rem, 2.4vw, 2.5rem)",
                 hyphens: "auto",
                 overflowWrap: "break-word",
                 wordBreak: "normal",
@@ -147,8 +212,8 @@ export function GalleryProjectCardGrid({
                     style={{
                       background:
                         idx === activeIndex
-                          ? "rgba(255,255,255,0.95)"
-                          : "rgba(255,255,255,0.4)",
+                        ? "rgba(255,255,255,0.95)"
+                        : "rgba(255,255,255,0.4)",
                       transition: "background 300ms",
                     }}
                   />
@@ -191,8 +256,8 @@ export function GalleryProjectCardGrid({
         </div>
 
         <div
-          className="reveal-draw h-px w-16"
-          style={{ background: "hsl(var(--accent) / 0.4)" }}
+         className="reveal-draw h-px w-16"
+         style={{ background: "hsl(var(--accent) / 0.4)" }}
         />
 
         <p className="reveal-illuminate text-body-lg leading-[1.5] text-muted-foreground">

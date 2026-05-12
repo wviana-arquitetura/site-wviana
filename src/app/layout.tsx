@@ -10,6 +10,7 @@ import { BRAND } from "@/lib/brand";
 import {
   defaultDescription,
   defaultOgDescription,
+  defaultOgImageAlt,
   defaultOgImagePath,
 } from "@/lib/seo";
 
@@ -70,7 +71,7 @@ export const metadata: Metadata = {
     siteName: BRAND.name,
     title: "W.VIANA — Arquitetura | Interiores",
     description: defaultOgDescription,
-    images: [{ url: defaultOgImagePath, alt: BRAND.name }],
+    images: [{ url: defaultOgImagePath, alt: defaultOgImageAlt }],
   },
   twitter: {
     card: "summary_large_image",

@@ -3,6 +3,7 @@
 import { useLayoutEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useDesktopMailtoBlankTarget } from "@/hooks/use-desktop-mailto-target";
 import { BRAND } from "@/lib/brand";
 
 type SiteFooterProps = {
@@ -11,6 +12,7 @@ type SiteFooterProps = {
 
 export function SiteFooter({ hideCta = false }: SiteFooterProps) {
   const footerRef = useRef<HTMLElement>(null);
+  const mailtoTarget = useDesktopMailtoBlankTarget();
 
   useLayoutEffect(() => {
     if (hideCta) {
@@ -145,7 +147,9 @@ export function SiteFooter({ hideCta = false }: SiteFooterProps) {
                 conversa
               </h2>
               <Link
-                href={`mailto:${BRAND.email}`}
+                href={BRAND.mailtoUrl}
+                target={mailtoTarget}
+                rel={mailtoTarget ? "noopener noreferrer" : undefined}
                 className="footer-primary-text group mt-8 inline-flex max-w-full self-start break-all font-light tracking-tight opacity-80 transition-opacity hover:opacity-100 sm:break-normal"
                 style={{
                   color: "hsl(var(--foreground))",

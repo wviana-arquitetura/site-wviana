@@ -11,6 +11,10 @@ export type ProjectGalleryItem = {
 export type Project = {
   slug: string;
   title: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  imageAlt?: string;
+  ogImageSrc?: string;
   category: string;
   typology: "Residencial" | "Comercial" | "Corporativo";
   status: "Concluído" | "Em andamento";
@@ -21,6 +25,8 @@ export type Project = {
   imageSrc: string;
   summary: string;
   scope: string[];
+  services?: string[];
+  areaServed?: string[];
   client?: string;
   chapters: ProjectChapter[];
   gallery: ProjectGalleryItem[];

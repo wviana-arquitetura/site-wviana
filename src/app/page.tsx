@@ -5,7 +5,6 @@ import { GalleryWalkSection } from "@/components/sections/v2/gallery-walk-sectio
 import { HorizonSection } from "@/components/sections/v2/horizon-section";
 import { Void } from "@/components/ui/void";
 import {
-  defaultDescription,
   defaultOgDescription,
   defaultOgImagePath,
   getOrganizationAndWebsiteJsonLd,
@@ -14,10 +13,13 @@ import {
 
 export const metadata: Metadata = pageMeta({
   title: "W.VIANA — Arquitetura | Interiores",
-  description: defaultDescription,
+  description:
+    "Escritório de arquitetura e interiores em Fortaleza, CE, para projetos residenciais e comerciais com método, autoria e precisão.",
   path: "/",
+  socialTitle: "W.VIANA — Arquitetura e interiores em Fortaleza",
   ogDescription: defaultOgDescription,
   ogImagePath: defaultOgImagePath,
+  imageAlt: "Projeto residencial de interiores assinado pelo escritório W.VIANA",
   absoluteTitle: true,
 });
 

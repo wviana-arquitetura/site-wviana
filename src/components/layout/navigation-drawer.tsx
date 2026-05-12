@@ -3,9 +3,10 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useDesktopMailtoBlankTarget } from "@/hooks/use-desktop-mailto-target";
 import gsap from "@/lib/gsap";
-import { useUiStore } from "@/store/use-ui-store";
 import { BRAND } from "@/lib/brand";
+import { useUiStore } from "@/store/use-ui-store";
 
 const navItems = [
   { href: "/projetos", label: "Projetos", index: "01" },
@@ -18,6 +19,7 @@ export function NavigationDrawer() {
   const pathname = usePathname();
   const isOpen = useUiStore((s) => s.isNavigationOpen);
   const setNavigationOpen = useUiStore((s) => s.setNavigationOpen);
+  const mailtoTarget = useDesktopMailtoBlankTarget();
   const backdropRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const linksRef = useRef<HTMLDivElement>(null);
@@ -185,7 +187,9 @@ export function NavigationDrawer() {
         {/* Footer info */}
         <div className="mt-12 flex flex-col gap-4 md:mt-16 md:flex-row md:items-center md:gap-12">
           <Link
-            href={`mailto:${BRAND.email}`}
+            href={BRAND.mailtoUrl}
+            target={mailtoTarget}
+            rel={mailtoTarget ? "noopener noreferrer" : undefined}
             className="text-micro uppercase tracking-[0.22em]"
             style={{ color: "hsl(var(--accent))" }}
           >

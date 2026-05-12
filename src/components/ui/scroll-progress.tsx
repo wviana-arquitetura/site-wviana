@@ -98,7 +98,10 @@ export function ScrollProgress() {
       const lenis = getLenis();
       const max =
         document.documentElement.scrollHeight - window.innerHeight;
-      const y = lenis ? lenis.scroll : window.scrollY;
+      // `lenis.scroll` espelha `animatedScroll` (lerp interno). Após resets
+      // programáticos (ex.: troca de rota + scrollTo imediato), pode ficar
+      // dessincronizado do DOM. `actualScroll` segue o wrapper real.
+      const y = lenis ? lenis.actualScroll : window.scrollY;
       const progress = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
 
       const dy = Math.abs(y - lastY);
@@ -142,7 +145,10 @@ export function ScrollProgress() {
       }
 
       if (ticksRef.current) {
-        const filledIndex = Math.floor(smoothed * TICK_COUNT);
+        const atScrollEnd = max <= 0 || y >= max - 0.5;
+        const filledIndex = atScrollEnd
+          ? TICK_COUNT
+          : Math.min(TICK_COUNT, Math.floor(smoothed * TICK_COUNT));
         if (filledIndex !== lastFilledIdx) {
           lastFilledIdx = filledIndex;
           const children = ticksRef.current.children;
@@ -238,13 +244,19 @@ export function ScrollProgress() {
           {Array.from({ length: TICK_COUNT + 1 }).map((_, i) => {
             const isMajor = i % MAJOR_EVERY === 0;
             const pct = Math.round((i / TICK_COUNT) * 100);
+            const isLast = i === TICK_COUNT;
             return (
               <span
                 key={i}
                 data-filled="0"
                 data-major={isMajor ? "1" : "0"}
+                data-terminal={isLast ? "end" : undefined}
                 className="scroll-tick"
-                style={{ top: `${(i / TICK_COUNT) * 100}%` }}
+                style={
+                  isLast
+                    ? { bottom: 0, top: "auto" }
+                    : { top: `${(i / TICK_COUNT) * 100}%` }
+                }
               >
                 {isMajor && (
                   <span className="scroll-tick-label">

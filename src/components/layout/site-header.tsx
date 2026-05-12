@@ -1,22 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
 import { useUiStore } from "@/store/use-ui-store";
 import { NavigationDrawer } from "./navigation-drawer";
 
+const subscribeMounted = () => () => {};
+const getClientMountedSnapshot = () => true;
+const getServerMountedSnapshot = () => false;
+
 export function SiteHeader() {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    subscribeMounted,
+    getClientMountedSnapshot,
+    getServerMountedSnapshot,
+  );
   const [scrolled, setScrolled] = useState(false);
   const [footerDarkProgress, setFooterDarkProgress] = useState(0);
   const isNavigationOpen = useUiStore((s) => s.isNavigationOpen);
   const toggleNavigation = useUiStore((s) => s.toggleNavigation);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -65,18 +69,21 @@ export function SiteHeader() {
       <header
         className="fixed inset-x-0 top-0 z-[2147483640]"
         style={{
-          borderBottom: scrolled && !isNavigationOpen
-            ? useLightForeground
-              ? "1px solid hsl(0 0% 100% / 0.18)"
-              : "1px solid hsl(var(--accent) / 0.2)"
-            : "1px solid transparent",
-          background: scrolled && !isNavigationOpen
-            ? useLightForeground
-              ? "hsl(var(--foreground) / 0.72)"
-              : "hsl(var(--background) / 0.82)"
-            : "transparent",
+          borderBottom:
+            scrolled && !isNavigationOpen
+              ? useLightForeground
+                ? "1px solid hsl(0 0% 100% / 0.18)"
+                : "1px solid hsl(var(--accent) / 0.2)"
+              : "1px solid transparent",
+          background:
+            scrolled && !isNavigationOpen
+              ? useLightForeground
+                ? "hsl(var(--foreground) / 0.72)"
+                : "hsl(var(--background) / 0.82)"
+              : "transparent",
           backdropFilter: scrolled && !isNavigationOpen ? "blur(8px)" : "none",
-          transition: "border-color 0.6s ease, background-color 0.6s ease, backdrop-filter 0.6s ease",
+          transition:
+            "border-color 0.6s ease, background-color 0.6s ease, backdrop-filter 0.6s ease",
         }}
       >
         <div className="mx-auto flex h-12 max-w-[1800px] items-center justify-between px-8 md:h-14 md:px-16 lg:px-24">
@@ -119,7 +126,9 @@ export function SiteHeader() {
               <span className="invisible col-start-1 row-start-1 pointer-events-none" aria-hidden>
                 [Fechar]
               </span>
-              <span className="col-start-1 row-start-1">{isNavigationOpen ? "[Fechar]" : "[Menu]"}</span>
+              <span className="col-start-1 row-start-1">
+                {isNavigationOpen ? "[Fechar]" : "[Menu]"}
+              </span>
             </button>
           </div>
         </div>

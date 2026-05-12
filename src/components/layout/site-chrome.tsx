@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { SiteHeader } from "./site-header";
 import { SiteFooter } from "./site-footer";
+import { FloatingContact } from "./floating-contact";
 
 const ROUTES_HIDE_CTA = ["/contato", "/admin/reviews", "/revisao-cliente"];
 
@@ -20,6 +21,7 @@ export function SiteChrome({ children }: Readonly<SiteChromeProps>) {
       <SiteHeader />
       {children}
       <SiteFooter hideCta={hideCta} />
+      {!hideCta && <FloatingContact />}
     </>
   );
 }

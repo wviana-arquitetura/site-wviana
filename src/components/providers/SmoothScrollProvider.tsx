@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import gsap, { ScrollTrigger } from "@/lib/gsap";
@@ -10,15 +10,82 @@ type SmoothScrollProviderProps = {
   children: React.ReactNode;
 };
 
+const SCROLL_KEY_PREFIX = "wviana_scroll_pos:";
+
+function scrollStorageKey(pathname: string) {
+  return `${SCROLL_KEY_PREFIX}${pathname}`;
+}
+
+function readSavedScrollRaw(pathname: string): number {
+  try {
+    const raw = sessionStorage.getItem(scrollStorageKey(pathname));
+    if (!raw) return 0;
+    const n = Number.parseInt(raw, 10);
+    if (!Number.isFinite(n) || n < 0) return 0;
+    return n;
+  } catch {
+    return 0;
+  }
+}
+
+function writeScrollY(pathname: string, y: number) {
+  try {
+    sessionStorage.setItem(scrollStorageKey(pathname), String(Math.round(y)));
+  } catch {
+    // storage indisponível (modo privado etc.)
+  }
+}
+
 export function SmoothScrollProvider({
   children,
 }: Readonly<SmoothScrollProviderProps>) {
   const pathname = usePathname();
+  const pathnameRef = useRef(pathname);
+
+  const wasPopStateRef = useRef(false);
+  const isFirstPathnameEffectRef = useRef(true);
 
   useEffect(() => {
-    // Desabilita scroll restoration do navegador: quando ativo, o navegador restaura
-    // a posição salva no histórico no próximo frame, sobrescrevendo nosso reset
-    // e fazendo a página abrir no meio em vez de no topo.
+    pathnameRef.current = pathname;
+  }, [pathname]);
+
+  useEffect(() => {
+    const onPopState = () => {
+      wasPopStateRef.current = true;
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
+  useEffect(() => {
+    let rafId: number | null = null;
+
+    const flushScrollSave = () => {
+      writeScrollY(pathnameRef.current, window.scrollY);
+    };
+
+    const onScroll = () => {
+      if (rafId !== null) return;
+      rafId = window.requestAnimationFrame(() => {
+        rafId = null;
+        flushScrollSave();
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("beforeunload", flushScrollSave);
+    window.addEventListener("pagehide", flushScrollSave);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("beforeunload", flushScrollSave);
+      window.removeEventListener("pagehide", flushScrollSave);
+      if (rafId !== null) window.cancelAnimationFrame(rafId);
+      flushScrollSave();
+    };
+  }, []);
+
+  useEffect(() => {
     if ("scrollRestoration" in window.history) {
       window.history.scrollRestoration = "manual";
     }
@@ -53,70 +120,73 @@ export function SmoothScrollProvider({
     };
   }, []);
 
-  // Reset de scroll a cada mudança de rota.
-  //
-  // O Next.js App Router usa template.tsx que remonta o conteúdo a cada navegação,
-  // e o Lenis perde sincronia com o DOM real (o scrollTop do <html> permanece
-  // do projeto anterior). Por isso o lenis.scrollTo(0) funciona uma vez,
-  // mas algo "restaura" o scroll na sequência da renderização da nova rota.
-  //
-  // Solução em camadas:
-  // 1. Força scrollTop do <html> e <body> direto, sem passar pelo Lenis
-  // 2. Chama lenis.scrollTo(0) para alinhar o estado interno do Lenis
-  // 3. Chama lenis.resize() para que o Lenis recalcule as dimensões da nova página
-  // 4. Repete o reset por mais alguns frames (a página pode estar montando)
   useEffect(() => {
-    const forceReset = () => {
-      // Força o DOM direto — fonte mais autoritativa que o Lenis
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-      window.scrollTo(0, 0);
-      // Re-sincroniza o Lenis com o DOM
+    const forceScrollTo = (y: number) => {
+      const max = Math.max(
+        0,
+        document.documentElement.scrollHeight - window.innerHeight,
+      );
+      const clamped = Math.min(Math.max(0, y), max);
+      document.documentElement.scrollTop = clamped;
+      document.body.scrollTop = clamped;
+      window.scrollTo(0, clamped);
       const lenis = getLenis();
       if (lenis) {
-        lenis.scrollTo(0, { immediate: true, force: true });
-        // resize() força o Lenis a recalcular scrollHeight da nova página
+        lenis.scrollTo(clamped, { immediate: true, force: true });
         lenis.resize();
       }
     };
 
-    forceReset();
-
-    // Reset em múltiplos frames seguintes — o React App Router renderiza a nova
-    // página de forma assíncrona, e o documento pode crescer/encolher conforme
-    // os componentes montam (especialmente as imagens com sizes/aspect)
-    const rafIds: number[] = [];
-    [1, 2, 3].forEach((n) => {
-      const id = requestAnimationFrame(() => {
-        if (n === 1) {
-          requestAnimationFrame(() => {
-            forceReset();
-          });
-        } else {
-          forceReset();
-        }
+    const scheduleStabilization = (targetY: number) => {
+      const rafIds: number[] = [];
+      [1, 2, 3].forEach((n) => {
+        const id = requestAnimationFrame(() => {
+          if (n === 1) {
+            requestAnimationFrame(() => {
+              forceScrollTo(targetY);
+            });
+          } else {
+            forceScrollTo(targetY);
+          }
+        });
+        rafIds.push(id);
       });
-      rafIds.push(id);
-    });
 
-    ScrollTrigger.refresh();
+      ScrollTrigger.refresh();
 
-    const checks: number[] = [];
-    [50, 200, 500, 1000].forEach((ms) => {
-      const id = window.setTimeout(() => {
-        // Se ainda não está no topo após X ms, força de novo
-        const y = window.scrollY;
-        if (y > 5) {
-          forceReset();
-        }
-      }, ms);
-      checks.push(id);
-    });
+      const checks: number[] = [];
+      [50, 200, 500, 1000].forEach((ms) => {
+        const id = window.setTimeout(() => {
+          if (Math.abs(window.scrollY - targetY) > 5) {
+            forceScrollTo(targetY);
+          }
+        }, ms);
+        checks.push(id);
+      });
 
-    return () => {
-      rafIds.forEach((id) => cancelAnimationFrame(id));
-      checks.forEach((id) => window.clearTimeout(id));
+      return () => {
+        rafIds.forEach((id) => cancelAnimationFrame(id));
+        checks.forEach((id) => window.clearTimeout(id));
+      };
     };
+
+    let targetY = 0;
+
+    if (isFirstPathnameEffectRef.current) {
+      isFirstPathnameEffectRef.current = false;
+      const nav = performance.getEntriesByType(
+        "navigation",
+      )[0] as PerformanceNavigationTiming | undefined;
+      if (nav?.type === "reload") {
+        targetY = readSavedScrollRaw(pathname);
+      }
+    } else if (wasPopStateRef.current) {
+      wasPopStateRef.current = false;
+      targetY = readSavedScrollRaw(pathname);
+    }
+
+    forceScrollTo(targetY);
+    return scheduleStabilization(targetY);
   }, [pathname]);
 
   return children;

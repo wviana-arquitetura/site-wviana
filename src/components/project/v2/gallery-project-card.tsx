@@ -10,10 +10,7 @@ type GalleryProjectCardProps = {
   imageLeft?: boolean;
 };
 
-export function GalleryProjectCard({
-  project,
-  imageLeft = false,
-}: GalleryProjectCardProps) {
+export function GalleryProjectCard({ project, imageLeft = false }: GalleryProjectCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -33,7 +30,7 @@ export function GalleryProjectCard({
           <div className="reveal-curtain relative aspect-[3/4] w-full overflow-hidden md:aspect-auto md:h-[88vh]">
             <Image
               src={project.imageSrc}
-              alt={project.title}
+              alt={project.imageAlt ?? project.title}
               fill
               className="object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
               sizes="(max-width: 768px) 100vw, 42vw"
@@ -82,10 +79,7 @@ export function GalleryProjectCard({
           )}
         </div>
 
-        <div
-          className="reveal-draw h-px w-24"
-          style={{ background: "hsl(var(--accent) / 0.4)" }}
-        />
+        <div className="reveal-draw h-px w-24" style={{ background: "hsl(var(--accent) / 0.4)" }} />
 
         <p className="reveal-illuminate max-w-[520px] text-body-lg text-muted-foreground">
           {project.summary}

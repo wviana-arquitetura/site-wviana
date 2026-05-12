@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ProjectDetailContent } from "@/components/project/project-detail-content";
-import { getProjectCreativeWorkJsonLd, pageMeta } from "@/lib/seo";
+import { getBreadcrumbJsonLd, getProjectCreativeWorkJsonLd, pageMeta } from "@/lib/seo";
 import { getAllProjects, getProjectBySlug } from "@/services/projects.service";
 
 type ProjectPageProps = {
@@ -12,23 +12,20 @@ export function generateStaticParams() {
   return getAllProjects().map((project) => ({ slug: project.slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: ProjectPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) {
     return { title: "Projeto" };
   }
-  const desc =
-    project.summary.length > 160
-      ? `${project.summary.slice(0, 157)}…`
-      : project.summary;
+
   return pageMeta({
-    title: project.title,
-    description: desc,
+    title: project.seoTitle ?? project.title,
+    socialTitle: project.title,
+    description: project.seoDescription ?? project.summary,
     path: `/projetos/${project.slug}`,
-    ogImagePath: project.imageSrc,
+    ogImagePath: project.ogImageSrc ?? project.imageSrc,
+    imageAlt: project.imageAlt ?? `Imagem do projeto ${project.title}`,
   });
 }
 
@@ -41,6 +38,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   }
 
   const jsonLd = getProjectCreativeWorkJsonLd(project);
+  const breadcrumbJsonLd = getBreadcrumbJsonLd([
+    { name: "Início", path: "/" },
+    { name: "Projetos", path: "/projetos" },
+    { name: project.title, path: `/projetos/${project.slug}` },
+  ]);
 
   return (
     <>
@@ -48,6 +50,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         type="application/ld+json"
         suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <div className="min-h-screen bg-background text-foreground">
         <ProjectDetailContent project={project} />

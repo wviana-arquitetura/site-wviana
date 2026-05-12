@@ -1,9 +1,12 @@
 "use client";
 
 import { useRef, useLayoutEffect, useState, useEffect } from "react";
+import Link from "next/link";
 import gsap from "@/lib/gsap";
 
 const LOGO_SRC = "/images/logos/brand/marca-variacao-02.svg";
+const HERO_COPY =
+  "Com sede em Fortaleza e alcance nacional, o escritório desenvolve projetos de arquitetura e interiores residenciais e comerciais pensados para rotina, materialidade e experiência.";
 
 export function ThresholdHero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -41,16 +44,12 @@ export function ThresholdHero() {
     const paths = Array.from(svg.querySelectorAll<SVGPathElement>("path"));
     if (paths.length === 0) return;
 
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const foregroundColor = getComputedStyle(document.documentElement)
       .getPropertyValue("--foreground")
       .trim();
-    const strokeColor = foregroundColor
-      ? `hsl(${foregroundColor})`
-      : "#000";
+    const strokeColor = foregroundColor ? `hsl(${foregroundColor})` : "#000";
 
     paths.forEach((p) => {
       p.style.fill = "rgba(0,0,0,0)";
@@ -128,10 +127,10 @@ export function ThresholdHero() {
     >
       <div
         ref={logoContainerRef}
-        className="flex w-full items-center justify-center px-8 md:px-16 lg:px-24"
+        className="flex w-full items-center justify-center px-4 md:px-12 lg:px-20"
         aria-label="W.VIANA — Arquitetura | Interiores"
         role="img"
-        style={{ minHeight: "30vh" }}
+        style={{ minHeight: "38vh" }}
         dangerouslySetInnerHTML={
           svgMarkup
             ? {
@@ -140,6 +139,36 @@ export function ThresholdHero() {
             : undefined
         }
       />
+
+      <div className="mx-auto mt-10 flex w-full max-w-[500px] flex-col items-center px-8 text-center opacity-60 md:px-16 lg:px-24">
+        <h1
+          className="text-micro uppercase tracking-[0.25em]"
+          style={{ color: "hsl(var(--accent-strong))" }}
+        >
+          Arquitetura e interiores em Fortaleza
+        </h1>
+        <p className="mt-3 text-sm leading-[1.6] text-muted-foreground">{HERO_COPY}</p>
+        <nav
+          aria-label="Acessos principais"
+          className="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-3"
+        >
+          {[
+            { href: "/projetos", label: "Projetos" },
+            { href: "/processo", label: "Processo" },
+            { href: "/contato", label: "Contato" },
+          ].map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="group relative pb-1 text-micro uppercase tracking-[0.22em] transition-colors duration-500 hover:text-foreground"
+              style={{ color: "hsl(var(--accent-strong))" }}
+            >
+              {item.label}
+              <span className="absolute bottom-0 left-0 h-[1px] w-full origin-center scale-x-0 bg-current transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-x-100" />
+            </Link>
+          ))}
+        </nav>
+      </div>
 
       {/* Bottom-left: scroll indicator */}
       <div className="absolute bottom-[max(2.5rem,env(safe-area-inset-bottom,0px))] left-8 flex flex-col items-center gap-2 md:left-16 lg:left-24">
