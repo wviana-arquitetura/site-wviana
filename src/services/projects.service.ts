@@ -2,23 +2,36 @@ import projectsData from "@/data/projects.json";
 import type { Project } from "@/types/project";
 
 const projects = projectsData as Project[];
+const homeFeaturedSlugs = ["residencial-rc", "residencial-pl", "residencial-tn"];
+
+function sortProjectsWithHomeFeaturedFirst(items: Project[]): Project[] {
+  const featured = homeFeaturedSlugs
+    .map((slug) => items.find((project) => project.slug === slug))
+    .filter((project): project is Project => project !== undefined);
+  const featuredSlugSet = new Set(featured.map((project) => project.slug));
+  const remaining = items.filter((project) => !featuredSlugSet.has(project.slug));
+
+  return [...featured, ...remaining];
+}
+
+const orderedProjects = sortProjectsWithHomeFeaturedFirst(projects);
 
 export type ProjectTypology = Project["typology"];
 
 export function getAllProjects(): Project[] {
-  return projects;
+  return orderedProjects;
 }
 
 export function getProjectBySlug(slug: string): Project | null {
-  return projects.find((project) => project.slug === slug) ?? null;
+  return orderedProjects.find((project) => project.slug === slug) ?? null;
 }
 
 export async function fetchProjects(): Promise<Project[]> {
-  return projects;
+  return orderedProjects;
 }
 
 export function getProjectTypologies(): ProjectTypology[] {
-  return Array.from(new Set(projects.map((project) => project.typology)));
+  return Array.from(new Set(orderedProjects.map((project) => project.typology)));
 }
 
 export function getRelatedProjects(slug: string, limit = 2): Project[] {
@@ -28,11 +41,11 @@ export function getRelatedProjects(slug: string, limit = 2): Project[] {
     return [];
   }
 
-  const sameTypology = projects.filter(
+  const sameTypology = orderedProjects.filter(
     (project) => project.slug !== slug && project.typology === current.typology,
   );
 
-  const fallback = projects.filter((project) => project.slug !== slug);
+  const fallback = orderedProjects.filter((project) => project.slug !== slug);
 
   const merged = [...sameTypology, ...fallback].reduce<Project[]>((acc, item) => {
     if (!acc.find((project) => project.slug === item.slug)) {
@@ -46,13 +59,13 @@ export function getRelatedProjects(slug: string, limit = 2): Project[] {
 }
 
 export function getNextProject(slug: string): Project | null {
-  const currentIndex = projects.findIndex((project) => project.slug === slug);
+  const currentIndex = orderedProjects.findIndex((project) => project.slug === slug);
 
   if (currentIndex < 0) {
     return null;
   }
 
-  const nextIndex = (currentIndex + 1) % projects.length;
+  const nextIndex = (currentIndex + 1) % orderedProjects.length;
 
-  return projects[nextIndex] ?? null;
+  return orderedProjects[nextIndex] ?? null;
 }

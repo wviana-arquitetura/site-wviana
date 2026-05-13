@@ -3,6 +3,7 @@
 import { useLayoutEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import gsap from "@/lib/gsap";
+import { dispatchPageTransitionComplete } from "@/lib/page-transition-events";
 
 type PageTransitionProps = {
   children: React.ReactNode;
@@ -25,6 +26,7 @@ export function PageTransition({ children }: Readonly<PageTransitionProps>) {
     if (prefersReducedMotion) {
       gsap.set(root, { autoAlpha: 1 });
       gsap.set(overlay, { scaleX: 0 });
+      queueMicrotask(dispatchPageTransitionComplete);
       return;
     }
 
@@ -39,12 +41,14 @@ export function PageTransition({ children }: Readonly<PageTransitionProps>) {
         ease: "power4.inOut",
         delay: 0.15,
       })
+      .addLabel("curtainEnd", ">")
       .fromTo(
         root,
         { autoAlpha: 0 },
         { autoAlpha: 1, duration: 0.5, ease: "power2.out" },
         "<0.1",
-      );
+      )
+      .call(dispatchPageTransitionComplete, [], "curtainEnd-=0.35");
 
     return () => {
       tl.kill();

@@ -70,6 +70,74 @@
     "services": ["Design de Interiores"],
     "areaServed": ["Fortaleza", "Ceará", "Brasil"]
   },
+
+  {
+    "slug": "residencial-ml",
+    "title": "Residencial ML",
+    "category": "Residencial",
+    "typology": "Residencial",
+    "status": "Concluído",
+    "location": "Fortaleza",
+    "country": "CE",
+    "area": "94m²",
+    "imageSrc": "/images/projects/residencial-ml/capa-projeto-residencial-ml.webp",
+    "summary": "Reforma integral que transformou o apartamento em um espaço fluido, com living, varanda e cozinha totalmente integrados para ampliar convivência e circulação. A base clara e contemporânea ganha personalidade com detalhes em madeira e pontos de cor.",
+    "scope": ["Design de Interiores"],
+    "chapters": [
+      {
+        "title": "Contexto",
+        "content": "A reforma precisava transformar a planta em um espaço mais fluido, com áreas sociais conectadas e melhor aproveitamento da circulação."
+      },
+      {
+        "title": "Solução",
+        "content": "Living, varanda e cozinha foram integrados em uma base clara e contemporânea, com madeira e pontos de cor para trazer presença e acolhimento."
+      }
+    ],
+    "gallery": [
+      {
+        "src": "/images/projects/residencial-ml/galeria-residencial-ml-01.webp",
+        "alt": "vista principal do projeto Residencial ML em Fortaleza, CE"
+      },
+      {
+        "src": "/images/projects/residencial-ml/galeria-residencial-ml-02.webp",
+        "alt": "detalhe de materiais do projeto Residencial ML em Fortaleza, CE"
+      },
+      {
+        "src": "/images/projects/residencial-ml/galeria-residencial-ml-03.webp",
+        "alt": "ambiente integrado do projeto Residencial ML em Fortaleza, CE"
+      },
+      {
+        "src": "/images/projects/residencial-ml/galeria-residencial-ml-04.webp",
+        "alt": "composição de mobiliário do projeto Residencial ML em Fortaleza, CE"
+      },
+      {
+        "src": "/images/projects/residencial-ml/galeria-residencial-ml-05.webp",
+        "alt": "iluminação do espaço do projeto Residencial ML em Fortaleza, CE"
+      },
+      {
+        "src": "/images/projects/residencial-ml/galeria-residencial-ml-06.webp",
+        "alt": "circulação e layout do projeto Residencial ML em Fortaleza, CE"
+      },
+      {
+        "src": "/images/projects/residencial-ml/galeria-residencial-ml-07.webp",
+        "alt": "área social do projeto Residencial ML em Fortaleza, CE"
+      },
+      {
+        "src": "/images/projects/residencial-ml/galeria-residencial-ml-08.webp",
+        "alt": "acabamentos do projeto Residencial ML em Fortaleza, CE"
+      },
+      {
+        "src": "/images/projects/residencial-ml/galeria-residencial-ml-09.webp",
+        "alt": "perspectiva do ambiente do projeto Residencial ML em Fortaleza, CE"
+      }
+    ],
+    "seoTitle": "Residencial ML | Reforma de interiores",
+    "seoDescription": "Reforma de interiores em Fortaleza com living, varanda e cozinha integrados para ampliar convivência, circulação e personalidade no apartamento.",
+    "imageAlt": "Living integrado do projeto Residencial ML em Fortaleza",
+    "ogImageSrc": "/images/projects/residencial-ml/capa-projeto-residencial-ml.webp",
+    "services": ["Design de Interiores"],
+    "areaServed": ["Fortaleza", "Ceará", "Brasil"]
+  },
   {
     "slug": "residencial-lv",
     "title": "Residencial LV",
@@ -138,73 +206,6 @@
     "seoDescription": "Interiores para apartamento em Fortaleza com integração dos ambientes, varanda gourmet e marcenaria sob medida para uma rotina prática e elegante.",
     "imageAlt": "Apartamento contemporâneo do projeto Residencial LV em Fortaleza",
     "ogImageSrc": "/images/projects/residencial-lv/capa-projeto-residencial-lv.webp",
-    "services": ["Design de Interiores"],
-    "areaServed": ["Fortaleza", "Ceará", "Brasil"]
-  },
-  {
-    "slug": "residencial-ml",
-    "title": "Residencial ML",
-    "category": "Residencial",
-    "typology": "Residencial",
-    "status": "Concluído",
-    "location": "Fortaleza",
-    "country": "CE",
-    "area": "94m²",
-    "imageSrc": "/images/projects/residencial-ml/capa-projeto-residencial-ml.webp",
-    "summary": "Reforma integral que transformou o apartamento em um espaço fluido, com living, varanda e cozinha totalmente integrados para ampliar convivência e circulação. A base clara e contemporânea ganha personalidade com detalhes em madeira e pontos de cor.",
-    "scope": ["Design de Interiores"],
-    "chapters": [
-      {
-        "title": "Contexto",
-        "content": "A reforma precisava transformar a planta em um espaço mais fluido, com áreas sociais conectadas e melhor aproveitamento da circulação."
-      },
-      {
-        "title": "Solução",
-        "content": "Living, varanda e cozinha foram integrados em uma base clara e contemporânea, com madeira e pontos de cor para trazer presença e acolhimento."
-      }
-    ],
-    "gallery": [
-      {
-        "src": "/images/projects/residencial-ml/galeria-residencial-ml-01.webp",
-        "alt": "vista principal do projeto Residencial ML em Fortaleza, CE"
-      },
-      {
-        "src": "/images/projects/residencial-ml/galeria-residencial-ml-02.webp",
-        "alt": "detalhe de materiais do projeto Residencial ML em Fortaleza, CE"
-      },
-      {
-        "src": "/images/projects/residencial-ml/galeria-residencial-ml-03.webp",
-        "alt": "ambiente integrado do projeto Residencial ML em Fortaleza, CE"
-      },
-      {
-        "src": "/images/projects/residencial-ml/galeria-residencial-ml-04.webp",
-        "alt": "composição de mobiliário do projeto Residencial ML em Fortaleza, CE"
-      },
-      {
-        "src": "/images/projects/residencial-ml/galeria-residencial-ml-05.webp",
-        "alt": "iluminação do espaço do projeto Residencial ML em Fortaleza, CE"
-      },
-      {
-        "src": "/images/projects/residencial-ml/galeria-residencial-ml-06.webp",
-        "alt": "circulação e layout do projeto Residencial ML em Fortaleza, CE"
-      },
-      {
-        "src": "/images/projects/residencial-ml/galeria-residencial-ml-07.webp",
-        "alt": "área social do projeto Residencial ML em Fortaleza, CE"
-      },
-      {
-        "src": "/images/projects/residencial-ml/galeria-residencial-ml-08.webp",
-        "alt": "acabamentos do projeto Residencial ML em Fortaleza, CE"
-      },
-      {
-        "src": "/images/projects/residencial-ml/galeria-residencial-ml-09.webp",
-        "alt": "perspectiva do ambiente do projeto Residencial ML em Fortaleza, CE"
-      }
-    ],
-    "seoTitle": "Residencial ML | Reforma de interiores",
-    "seoDescription": "Reforma de interiores em Fortaleza com living, varanda e cozinha integrados para ampliar convivência, circulação e personalidade no apartamento.",
-    "imageAlt": "Living integrado do projeto Residencial ML em Fortaleza",
-    "ogImageSrc": "/images/projects/residencial-ml/capa-projeto-residencial-ml.webp",
     "services": ["Design de Interiores"],
     "areaServed": ["Fortaleza", "Ceará", "Brasil"]
   },

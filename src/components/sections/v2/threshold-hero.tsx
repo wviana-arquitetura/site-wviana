@@ -3,14 +3,16 @@
 import { useRef, useLayoutEffect, useState, useEffect } from "react";
 import Link from "next/link";
 import gsap from "@/lib/gsap";
+import { PAGE_TRANSITION_COMPLETE_EVENT } from "@/lib/page-transition-events";
 
 const LOGO_SRC = "/images/logos/brand/marca-variacao-02.svg";
 const HERO_COPY =
-  "Com sede em Fortaleza e alcance nacional, o escritório desenvolve projetos de arquitetura e interiores residenciais e comerciais pensados para rotina, materialidade e experiência.";
+  "Com sede em Fortaleza, o escritório atua nacionalmente com projetos residenciais e comerciais de arquitetura e interiores.";
 
 export function ThresholdHero() {
   const sectionRef = useRef<HTMLElement>(null);
   const logoContainerRef = useRef<HTMLDivElement>(null);
+  const copyBlockRef = useRef<HTMLDivElement>(null);
   const [svgMarkup, setSvgMarkup] = useState<string | null>(null);
 
   useEffect(() => {
@@ -31,6 +33,7 @@ export function ThresholdHero() {
   useLayoutEffect(() => {
     const section = sectionRef.current;
     const container = logoContainerRef.current;
+    const copyBlock = copyBlockRef.current;
     if (!section || !container || !svgMarkup) return;
 
     const svg = container.querySelector("svg");
@@ -44,7 +47,9 @@ export function ThresholdHero() {
     const paths = Array.from(svg.querySelectorAll<SVGPathElement>("path"));
     if (paths.length === 0) return;
 
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
     const foregroundColor = getComputedStyle(document.documentElement)
       .getPropertyValue("--foreground")
@@ -56,67 +61,107 @@ export function ThresholdHero() {
       p.style.stroke = strokeColor;
       p.style.strokeWidth = "1";
       p.style.vectorEffect = "non-scaling-stroke";
+      const len = p.getTotalLength();
+      p.style.strokeDasharray = String(len);
+      p.style.strokeDashoffset = String(len);
+      p.style.opacity = "1";
     });
+    if (copyBlock) gsap.set(copyBlock, { autoAlpha: 0, y: 8 });
 
     if (prefersReducedMotion) {
       paths.forEach((p) => {
         p.style.fill = strokeColor;
         p.style.stroke = "rgba(0,0,0,0)";
       });
+      if (copyBlock) gsap.set(copyBlock, { autoAlpha: 1, y: 0 });
       return;
     }
 
-    const ctx = gsap.context(() => {
-      paths.forEach((path) => {
-        const length = path.getTotalLength();
-        gsap.set(path, {
-          strokeDasharray: length,
-          strokeDashoffset: length,
-          opacity: 1,
+    const FALLBACK_MS = 1600;
+
+    let alive = true;
+    let started = false;
+    let ctx: gsap.Context | null = null;
+    let fallbackId: number | null = null;
+
+    const buildAndPlay = () => {
+      if (!alive || started) return;
+      started = true;
+
+      ctx = gsap.context(() => {
+        const tl = gsap.timeline();
+
+        tl.to(paths, {
+          strokeDashoffset: 0,
+          duration: 1.45,
+          ease: "power3.in",
+          stagger: paths.length > 1 ? 0.05 : 0,
+        })
+          .to(
+            paths,
+            {
+              fill: strokeColor,
+              duration: 0.5,
+              ease: "power2.out",
+            },
+            "-=0.5",
+          )
+          .to(
+            paths,
+            {
+              stroke: "rgba(0,0,0,0)",
+              duration: 0.4,
+              ease: "power1.out",
+            },
+            "<",
+          );
+        if (copyBlock) {
+          tl.fromTo(
+            copyBlock,
+            { autoAlpha: 0, y: 8 },
+            { autoAlpha: 1, y: 0, duration: 0.55, ease: "power2.out" },
+            "-=0.08",
+          );
+        }
+
+        gsap.to(section, {
+          autoAlpha: 0,
+          scale: 0.96,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1,
+          },
         });
-      });
+      }, section);
+    };
 
-      const tl = gsap.timeline({ delay: 0.15 });
+    const onPageReveal = () => {
+      if (!alive || started) return;
+      if (fallbackId !== null) {
+        window.clearTimeout(fallbackId);
+        fallbackId = null;
+      }
+      buildAndPlay();
+    };
 
-      tl.to(paths, {
-        strokeDashoffset: 0,
-        duration: 1.3,
-        ease: "power2.inOut",
-        stagger: paths.length > 1 ? 0.05 : 0,
-      })
-        .to(
-          paths,
-          {
-            fill: strokeColor,
-            duration: 0.5,
-            ease: "power2.out",
-          },
-          "-=0.5",
-        )
-        .to(
-          paths,
-          {
-            stroke: "rgba(0,0,0,0)",
-            duration: 0.4,
-            ease: "power1.out",
-          },
-          "<",
-        );
+    window.addEventListener(PAGE_TRANSITION_COMPLETE_EVENT, onPageReveal, {
+      once: true,
+    });
+    fallbackId = window.setTimeout(() => {
+      fallbackId = null;
+      window.removeEventListener(PAGE_TRANSITION_COMPLETE_EVENT, onPageReveal);
+      buildAndPlay();
+    }, FALLBACK_MS);
 
-      gsap.to(section, {
-        autoAlpha: 0,
-        scale: 0.96,
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
-    }, section);
-
-    return () => ctx.revert();
+    return () => {
+      alive = false;
+      window.removeEventListener(PAGE_TRANSITION_COMPLETE_EVENT, onPageReveal);
+      if (fallbackId !== null) window.clearTimeout(fallbackId);
+      ctx?.revert();
+    };
   }, [svgMarkup]);
 
   return (
@@ -140,14 +185,17 @@ export function ThresholdHero() {
         }
       />
 
-      <div className="mx-auto mt-10 flex w-full max-w-[500px] flex-col items-center px-8 text-center opacity-60 md:px-16 lg:px-24">
+      <div
+        ref={copyBlockRef}
+        className="mx-auto mt-10 flex w-full max-w-[500px] flex-col items-center px-8 text-center opacity-0 md:px-16 lg:px-24"
+      >
         <h1
           className="text-micro uppercase tracking-[0.25em]"
           style={{ color: "hsl(var(--accent-strong))" }}
         >
           Arquitetura e interiores em Fortaleza
         </h1>
-        <p className="mt-3 text-sm leading-[1.6] text-muted-foreground">{HERO_COPY}</p>
+        <p className="mt-3 text-sm leading-[1.6] text-muted-foreground opacity-70">{HERO_COPY}</p>
         <nav
           aria-label="Acessos principais"
           className="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-3"

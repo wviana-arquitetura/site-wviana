@@ -48,5 +48,3 @@ Zustand (`src/store/use-ui-store.ts`) manages UI state (mobile menu open/close).
 - `/projetos` — Projects listing
 - `/projetos/[slug]` — Project detail
 - `/processo`, `/sobre`, `/contato` — Static pages
-- `/revisao-cliente` — Internal client review form (noindex)
-- `/admin/reviews` — Internal admin (noindex)
