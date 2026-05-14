@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
+import { Suspense } from "react";
 import { GlobalIntroLoader } from "@/components/providers/GlobalIntroLoader";
 import { SiteChrome } from "@/components/layout/site-chrome";
 import "./globals.css";
@@ -130,10 +131,12 @@ export default function RootLayout({
         />
         <GlobalIntroLoader />
         <QueryProvider>
-          <SmoothScrollProvider>
-            <ScrollProgress />
-            <SiteChrome>{children}</SiteChrome>
-          </SmoothScrollProvider>
+          <Suspense>
+            <SmoothScrollProvider>
+              <ScrollProgress />
+              <SiteChrome>{children}</SiteChrome>
+            </SmoothScrollProvider>
+          </Suspense>
         </QueryProvider>
       </body>
     </html>
