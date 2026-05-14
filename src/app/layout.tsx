@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Suspense } from "react";
 import Script from "next/script";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GlobalIntroLoader } from "@/components/providers/GlobalIntroLoader";
 import { SiteChrome } from "@/components/layout/site-chrome";
 import "./globals.css";
@@ -168,6 +169,7 @@ export default function RootLayout({
             </SmoothScrollProvider>
           </Suspense>
         </QueryProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
