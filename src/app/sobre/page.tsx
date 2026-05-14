@@ -42,7 +42,7 @@ export default function StudioPage() {
       <div className="min-h-screen bg-background text-foreground">
         <main ref={rootRef}>
           {/* 1. Hero — desktop: foto horizontal + texto na parede / mobile: foto recortada + texto + W watermark */}
-          <section className="relative flex flex-col overflow-hidden md:h-[var(--svh)]">
+          <section className="relative flex min-h-[var(--svh)] flex-col overflow-hidden bg-background md:h-[var(--svh)] md:bg-transparent">
             {/* DESKTOP: Foto de fundo full-bleed */}
             <div className="absolute inset-0 z-0 hidden md:block">
               <Image
@@ -55,20 +55,20 @@ export default function StudioPage() {
               />
             </div>
 
-            {/* MOBILE: Foto vertical full-bleed — Wellington embaixo, espaço pra texto acima */}
-            <div className="absolute inset-0 z-0 md:hidden">
+            {/* MOBILE: foto só na primeira tela (svh) — recorte estável; texto extra rola sobre fundo sólido */}
+            <div className="absolute inset-x-0 top-0 z-0 h-[var(--svh)] overflow-hidden md:hidden">
               <Image
                 src="/images/team/wellington-viana/sobre-mobile-2.webp"
                 alt="Retrato de Wellington Viana em estúdio, fundador do escritório W.VIANA"
                 fill
                 priority
                 sizes="100vw"
-                className="h-full w-full -scale-x-100 object-cover object-[40%_90%]"
+                className="h-full w-full -scale-x-100 object-cover object-[38%_82%]"
               />
             </div>
 
-            {/* Conteúdo de texto */}
-            <div className="relative z-20 flex min-h-[var(--svh)] flex-col px-4 pb-12 pt-24 sm:px-6 md:min-h-0 md:flex-1 md:items-center md:justify-end md:px-12 md:pt-0 md:pb-8 lg:px-16">
+            {/* Conteúdo de texto — safe-area + altura compatível com header fixo (h-12 + notch) */}
+            <div className="relative z-20 flex min-h-[var(--svh)] flex-col px-4 pb-[max(3rem,calc(env(safe-area-inset-bottom,0px)+1.5rem))] pt-[calc(env(safe-area-inset-top,0px)+4.25rem)] sm:px-6 md:min-h-0 md:flex-1 md:items-center md:justify-end md:px-12 md:pb-8 md:pt-0 lg:px-16">
               <div className="relative w-full max-w-[34rem] md:ml-auto md:flex md:w-[clamp(34rem,42vw,50rem)] md:max-w-none md:items-center md:pl-8">
                 <div
                   aria-hidden="true"

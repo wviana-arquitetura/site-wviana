@@ -70,7 +70,7 @@ export function SiteHeader() {
   const headerContent = (
     <>
       <header
-        className="fixed inset-x-0 top-0 z-[2147483640]"
+        className="fixed inset-x-0 top-0 z-[2147483640] pt-[env(safe-area-inset-top,0px)]"
         style={{
           borderBottom:
             scrolled && !isNavigationOpen
