@@ -7,6 +7,7 @@ import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
 import { useDesktopMailtoBlankTarget } from "@/hooks/use-desktop-mailto-target";
 import { getAllProjects, getProjectTypologies } from "@/services/projects.service";
 import { BRAND } from "@/lib/brand";
+import { trackEvent } from "@/lib/analytics";
 import { getBreadcrumbJsonLd, getProjectsItemListJsonLd } from "@/lib/seo";
 
 function chunkPairs<T>(items: T[]): T[][] {
@@ -134,6 +135,14 @@ export default function ProjetosPage() {
                 href={BRAND.mailtoUrl}
                 target={mailtoTarget}
                 rel={mailtoTarget ? "noopener noreferrer" : undefined}
+                onClick={() =>
+                  trackEvent("email_click", {
+                    cta_location: "projects_bottom_cta",
+                    contact_channel: "email",
+                    link_domain: "mailto",
+                    link_path: "/email",
+                  })
+                }
                 className="reveal-illuminate group mt-2 inline-block text-architectural font-light text-foreground opacity-80 transition-opacity hover:opacity-100"
               >
                 <span

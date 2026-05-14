@@ -4,6 +4,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "@/types/project";
+import { trackEvent } from "@/lib/analytics";
 
 type GalleryProjectCardProps = {
   project: Project;
@@ -12,6 +13,13 @@ type GalleryProjectCardProps = {
 
 export function GalleryProjectCard({ project, imageLeft = false }: GalleryProjectCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
+  const handleProjectClick = (ctaLocation: string) =>
+    trackEvent("project_cta_click", {
+      project_slug: project.slug,
+      project_name: project.title,
+      project_type: project.typology,
+      cta_location: ctaLocation,
+    });
 
   return (
     <div
@@ -26,6 +34,7 @@ export function GalleryProjectCard({ project, imageLeft = false }: GalleryProjec
           href={`/projetos/${project.slug}`}
           className="group relative block w-full"
           aria-label={`Ver projeto ${project.title}`}
+          onClick={() => handleProjectClick("home_gallery_image")}
         >
           <div className="reveal-curtain relative aspect-[3/4] w-full overflow-hidden md:aspect-auto md:h-[88vh]">
             <Image
@@ -89,6 +98,7 @@ export function GalleryProjectCard({ project, imageLeft = false }: GalleryProjec
           href={`/projetos/${project.slug}`}
           className="group/link mt-2 inline-flex items-center gap-2 text-caption uppercase tracking-[0.18em] transition-opacity hover:opacity-60"
           style={{ color: "hsl(var(--accent-strong))" }}
+          onClick={() => handleProjectClick("home_gallery_link")}
         >
           Ver projeto
           <svg

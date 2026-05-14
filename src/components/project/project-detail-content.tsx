@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
 import { getNextProject } from "@/services/projects.service";
 import type { Project } from "@/types/project";
@@ -10,6 +10,7 @@ import { ProjectBrief } from "./v2/project-brief";
 import { ProjectNarrative } from "./v2/project-narrative";
 import { ProjectDocumentation } from "./v2/project-documentation";
 import { ProjectContinuation } from "./v2/project-continuation";
+import { trackEvent } from "@/lib/analytics";
 
 type ProjectDetailContentProps = {
   project: Project;
@@ -20,6 +21,14 @@ export function ProjectDetailContent({ project }: Readonly<ProjectDetailContentP
   const nextProject = getNextProject(project.slug);
 
   useArchitecturalReveal(rootRef, project.slug);
+
+  useEffect(() => {
+    trackEvent("project_view", {
+      project_slug: project.slug,
+      project_name: project.title,
+      project_type: project.typology,
+    });
+  }, [project.slug, project.title, project.typology]);
 
   // Filtra capítulos que apenas duplicam o summary (caso atual de todos os projetos
   // do JSON: chapters[0].content === summary). Se sobrar algo, renderiza Narrative.

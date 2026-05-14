@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
 import { useDesktopMailtoBlankTarget } from "@/hooks/use-desktop-mailto-target";
 import { BRAND } from "@/lib/brand";
+import { trackEvent } from "@/lib/analytics";
 import { getBreadcrumbJsonLd, getContactPageJsonLd, getFaqJsonLd } from "@/lib/seo";
 
 const PROJECT_TYPES = [
@@ -58,6 +59,14 @@ export default function ContactPage() {
     const message = String(data.get("message") || "").trim();
 
     const hasAnyField = Boolean(name || email || projectType || message);
+    const formProjectType = projectType || undefined;
+
+    trackEvent("whatsapp_form_submit", {
+      cta_location: "contato_page_form",
+      contact_channel: "whatsapp",
+      form_project_type: formProjectType,
+      form_has_message: Boolean(message),
+    });
 
     const text = hasAnyField
       ? [
@@ -127,6 +136,14 @@ export default function ContactPage() {
                     href={BRAND.mailtoUrl}
                     target={mailtoTarget}
                     rel={mailtoTarget ? "noopener noreferrer" : undefined}
+                    onClick={() =>
+                      trackEvent("email_click", {
+                        cta_location: "contato_page_email",
+                        contact_channel: "email",
+                        link_domain: "mailto",
+                        link_path: "/email",
+                      })
+                    }
                     className="reveal-illuminate group flex items-baseline gap-3 transition-opacity hover:opacity-60"
                   >
                     <span
@@ -142,6 +159,14 @@ export default function ContactPage() {
                     href={BRAND.whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() =>
+                      trackEvent("whatsapp_click", {
+                        cta_location: "contato_page_whatsapp",
+                        contact_channel: "whatsapp",
+                        link_domain: "wa.me",
+                        link_path: "/whatsapp",
+                      })
+                    }
                     className="reveal-illuminate group flex items-baseline gap-3 transition-opacity hover:opacity-60"
                   >
                     <span
@@ -249,9 +274,6 @@ export default function ContactPage() {
 
                   <button
                     type="submit"
-                    data-gtm-event="contact_submit"
-                    data-gtm-location="contato_page"
-                    data-gtm-channel="whatsapp"
                     className="group mt-2 flex w-full items-center justify-center gap-3 border py-4 text-caption uppercase tracking-[0.18em] text-foreground transition-all hover:bg-secondary hover:text-"
                     style={{ borderColor: "hsl(var(--accent) / 0.4)" }}
                   >

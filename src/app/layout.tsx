@@ -1,13 +1,16 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Suspense } from "react";
+import Script from "next/script";
 import { GlobalIntroLoader } from "@/components/providers/GlobalIntroLoader";
 import { SiteChrome } from "@/components/layout/site-chrome";
 import "./globals.css";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
+import { PageViewTracker } from "@/components/analytics/page-view-tracker";
 import { BRAND } from "@/lib/brand";
+import { GTM_ID } from "@/lib/analytics";
 import {
   defaultDescription,
   defaultOgDescription,
@@ -114,6 +117,16 @@ const preHydrationCleanScript = `
 })();
 `;
 
+const gtmScript = GTM_ID
+  ? `
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${GTM_ID}');
+`
+  : "";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -129,6 +142,23 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: preHydrationCleanScript }}
           suppressHydrationWarning
         />
+        {GTM_ID ? (
+          <>
+            <Script id="gtm-init" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: gtmScript }} />
+            <noscript>
+              <iframe
+                src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+                height="0"
+                width="0"
+                style={{ display: "none", visibility: "hidden" }}
+                title="Google Tag Manager"
+              />
+            </noscript>
+          </>
+        ) : null}
+        <Suspense fallback={null}>
+          <PageViewTracker />
+        </Suspense>
         <GlobalIntroLoader />
         <QueryProvider>
           <Suspense>

@@ -4,6 +4,7 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { BRAND } from "@/lib/brand";
 import { getLenis } from "@/lib/scroll";
+import { trackEvent } from "@/lib/analytics";
 
 /**
  * CTA persistente:
@@ -72,9 +73,14 @@ export function FloatingContact() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Conversar com a W.VIANA pelo WhatsApp"
-          data-gtm-event="floating_cta_click"
-          data-gtm-location="floating_bar_mobile"
-          data-gtm-channel="whatsapp"
+          onClick={() =>
+            trackEvent("whatsapp_click", {
+              cta_location: "floating_bar_mobile",
+              contact_channel: "whatsapp",
+              link_domain: "wa.me",
+              link_path: "/whatsapp",
+            })
+          }
           tabIndex={active ? 0 : -1}
           className={[
             "pointer-events-auto flex h-14 w-full items-center justify-between",
@@ -125,9 +131,14 @@ export function FloatingContact() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Conversar com a W.VIANA pelo WhatsApp"
-          data-gtm-event="floating_cta_click"
-          data-gtm-location="floating_pill_desktop"
-          data-gtm-channel="whatsapp"
+          onClick={() =>
+            trackEvent("whatsapp_click", {
+              cta_location: "floating_pill_desktop",
+              contact_channel: "whatsapp",
+              link_domain: "wa.me",
+              link_path: "/whatsapp",
+            })
+          }
           tabIndex={active ? 0 : -1}
           className={[
             "group pointer-events-auto relative flex h-12 items-center gap-3 overflow-hidden",
