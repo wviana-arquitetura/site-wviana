@@ -15,6 +15,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: projectsMtime,
     changeFrequency: route === "" ? "weekly" : "monthly",
     priority: route === "" ? 1 : 0.8,
+    ...(route === "/sobre"
+      ? { images: [`${BRAND.siteUrl}/images/team/wellington-viana/sobre-desktop.webp`] }
+      : {}),
   }));
 
   const projectEntries: MetadataRoute.Sitemap = projects.map((project) => ({

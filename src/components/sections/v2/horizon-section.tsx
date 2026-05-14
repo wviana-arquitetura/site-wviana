@@ -100,7 +100,7 @@ export function HorizonSection() {
       <div className="reveal-rise grid w-full max-w-[1100px] grid-cols-1 items-center md:grid-cols-[1fr_auto_1fr]">
         <Stat
           value="250"
-          prefix="+"
+          suffix="+"
           label={["Projetos", "entregues"]}
           align="md:items-end md:pr-12 lg:pr-20"
         />
@@ -145,11 +145,13 @@ export function HorizonSection() {
 function Stat({
   value,
   prefix,
+  suffix,
   label,
   align,
 }: {
   value: string;
   prefix?: string;
+  suffix?: string;
   label: [string, string];
   align: string;
 }) {
@@ -179,6 +181,18 @@ function Stat({
           </span>
         ) : null}
         <span>{value}</span>
+        {suffix ? (
+          <span
+            style={{
+              color: "hsl(var(--accent-strong))",
+              fontSize: "0.55em",
+              marginTop: "0.12em",
+              marginLeft: "0.04em",
+            }}
+          >
+            {suffix}
+          </span>
+        ) : null}
       </div>
       <div
         className="mt-6 flex flex-col text-center uppercase leading-[1.3] tracking-[0.24em] md:mt-8 md:text-left"

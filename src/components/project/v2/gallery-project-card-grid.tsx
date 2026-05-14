@@ -188,7 +188,7 @@ export function GalleryProjectCardGrid({
               className="reveal-rise pointer-events-none absolute inset-x-0 bottom-0 z-10 px-4 pb-4 text-[clamp(2.5rem,10.5vw,3.6rem)] font-extrabold leading-[0.95] md:px-5 md:pb-5 md:text-[clamp(2rem,3.1vw,3.3rem)]"
               style={{
                 color: "#ffffff",
-                mixBlendMode: "difference",
+                textShadow: "0 2px 16px rgba(0,0,0,0.35)",
                 hyphens: "auto",
                 overflowWrap: "break-word",
                 wordBreak: "normal",

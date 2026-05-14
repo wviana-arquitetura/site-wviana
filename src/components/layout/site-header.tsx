@@ -4,6 +4,7 @@ import { useEffect, useSyncExternalStore, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useUiStore } from "@/store/use-ui-store";
 import { NavigationDrawer } from "./navigation-drawer";
 
@@ -12,6 +13,7 @@ const getClientMountedSnapshot = () => true;
 const getServerMountedSnapshot = () => false;
 
 export function SiteHeader() {
+  const pathname = usePathname();
   const mounted = useSyncExternalStore(
     subscribeMounted,
     getClientMountedSnapshot,
@@ -61,6 +63,7 @@ export function SiteHeader() {
     };
   }, []);
 
+  const isAboutPage = pathname === "/sobre";
   const useLightForeground = isNavigationOpen || footerDarkProgress > 0.01;
   const interactiveColor = useLightForeground ? "hsl(0 0% 100%)" : "hsl(var(--accent-strong))";
 
@@ -115,7 +118,9 @@ export function SiteHeader() {
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
                 useLightForeground
                   ? "border-white/35 bg-white/[0.1] hover:border-white/55 hover:bg-white/[0.16] focus-visible:ring-white/50"
-                  : "border-[hsl(var(--accent-strong)/0.45)] bg-[hsl(var(--accent-strong)/0.06)] hover:border-[hsl(var(--accent-strong)/0.65)] hover:bg-[hsl(var(--accent-strong)/0.12)] focus-visible:ring-[hsl(var(--accent-strong)/0.5)]",
+                  : isAboutPage
+                    ? "border-[hsl(var(--accent-strong)/0.7)] bg-[hsl(var(--background)/0.4)] hover:border-[hsl(var(--accent-strong)/0.9)] hover:bg-[hsl(var(--background)/0.74)] focus-visible:ring-[hsl(var(--accent-strong)/0.65)] shadow-[0_6px_24px_rgba(0,0,0,0.12)]"
+                    : "border-[hsl(var(--accent-strong)/0.45)] bg-[hsl(var(--accent-strong)/0.06)] hover:border-[hsl(var(--accent-strong)/0.65)] hover:bg-[hsl(var(--accent-strong)/0.12)] focus-visible:ring-[hsl(var(--accent-strong)/0.5)]",
               ].join(" ")}
               style={{ color: interactiveColor }}
               aria-label={isNavigationOpen ? "Fechar navegação" : "Abrir navegação"}

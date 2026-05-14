@@ -19,17 +19,17 @@ const contactFaqItems = [
   {
     question: "Como iniciar um projeto com a W.VIANA?",
     answer:
-      "O primeiro passo é enviar uma mensagem com o tipo de projeto, localização e momento atual da obra ou imóvel. A equipe retorna para entender escopo, prazo e próximos encaminhamentos.",
+      "O primeiro passo para iniciar seu projeto com a W.VIANA é entrar em contato informando o tipo de projeto, localização do imóvel e etapa atual da obra ou espaço. A partir dessas informações, nossa equipe retorna para entender melhor suas necessidades, alinhar escopo, prazos e dar sequência aos próximos passos do projeto.",
   },
   {
-    question: "O escritório faz arquitetura e interiores?",
+    question: "O escritório faz projeto arquitetônico e de interiores?",
     answer:
-      "Sim. A W.VIANA desenvolve projetos arquitetônicos, interiores e escopos integrados para residências, espaços comerciais e ambientes corporativos.",
+      "Sim, o escritório desenvolve tanto projetos arquitetônicos quanto projetos de interiores. Os serviços podem ser contratados de forma separada ou em conjunto, de acordo com a necessidade de cada cliente e etapa do projeto.",
   },
   {
     question: "Onde fica o escritório?",
     answer:
-      "O escritório fica em Fortaleza, CE, na Rua Vicente Linhares, 521, Ed. Humberto Santana Business.",
+      "O escritório fica em Fortaleza-CE, na Rua Vicente Linhares, 521, no Ed. Humberto Santana Business.",
   },
 ];
 
@@ -114,7 +114,7 @@ export default function ContactPage() {
                   Vamos conversar sobre o seu projeto.
                 </h1>
                 <p className="reveal-illuminate mt-4 max-w-[440px] text-body-lg text-muted-foreground">
-                Atendemos projetos de arquitetura e interiores em Fortaleza, no Ceará e em outras regiões do Brasil conforme escopo.
+                  Atendemos projetos de arquitetura e interiores presencialmente em Fortaleza, no Ceará, além de desenvolver projetos para outras regiões do Brasil de forma remota/online.
                 </p>
 
                 <div
@@ -166,12 +166,11 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                <div className="mt-10 grid gap-4 text-muted-foreground sm:grid-cols-2">
+                <div className="mt-10 grid gap-4 text-muted-foreground md:grid-cols-3">
                   {[
-                    "Projetos residenciais",
-                    "Interiores comerciais",
-                    "Arquitetura corporativa",
-                    "Acompanhamento técnico",
+                    "Residencial",
+                    "Comercial",
+                    "Corporativo",
                   ].map((item) => (
                     <span
                       key={item}

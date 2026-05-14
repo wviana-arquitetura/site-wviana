@@ -41,7 +41,7 @@ export function GalleryProjectCard({ project, imageLeft = false }: GalleryProjec
               className="reveal-rise absolute inset-x-0 bottom-0 px-5 pb-5 text-architectural font-extrabold leading-[0.95] md:px-7 md:pb-7"
               style={{
                 color: "#ffffff",
-                mixBlendMode: "difference",
+                textShadow: "0 2px 16px rgba(0,0,0,0.35)",
                 hyphens: "auto",
                 overflowWrap: "break-word",
                 wordBreak: "normal",

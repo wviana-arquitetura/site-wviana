@@ -7,7 +7,7 @@ import { PAGE_TRANSITION_COMPLETE_EVENT } from "@/lib/page-transition-events";
 
 const LOGO_SRC = "/images/logos/brand/marca-variacao-02.svg";
 const HERO_COPY =
-  "Com sede em Fortaleza, o escritório atua nacionalmente com projetos residenciais e comerciais de arquitetura e interiores.";
+  "Com sede em Fortaleza, o escritório atua nacionalmente com projetos residenciais, comerciais e corporativos de arquitetura e interiores.";
 
 export function ThresholdHero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -193,7 +193,7 @@ export function ThresholdHero() {
           className="text-micro uppercase tracking-[0.25em]"
           style={{ color: "hsl(var(--accent-strong))" }}
         >
-          Arquitetura e interiores em Fortaleza
+          Escritório de arquitetura e interiores
         </h1>
         <p className="mt-3 text-sm leading-[1.6] text-muted-foreground opacity-70">{HERO_COPY}</p>
         <nav

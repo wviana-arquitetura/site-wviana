@@ -1,8 +1,16 @@
+import { Inter } from "next/font/google";
 import type { Project } from "@/types/project";
 
 type ProjectBriefProps = {
   project: Project;
 };
+
+const projectSummaryFont = Inter({
+  subsets: ["latin-ext"],
+  weight: ["200", "300", "400"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
 
 export function ProjectBrief({ project }: ProjectBriefProps) {
   return (
@@ -10,7 +18,7 @@ export function ProjectBrief({ project }: ProjectBriefProps) {
       <div className="mx-auto flex w-full max-w-[1800px] flex-col gap-12 md:flex-row md:gap-16">
         {/* Left: Metadata */}
         <div className="reveal-stagger flex flex-col gap-6 md:w-[25%]">
-          <MetaItem label="Tipo" value={project.typology} />
+          <p className="sr-only">Tipo: {project.typology}</p>
           {project.area ? <MetaItem label="Área Projetada" value={project.area} /> : null}
           <MetaItem label="Local" value={`${project.location}, ${project.country}`} />
           <div>
@@ -31,10 +39,10 @@ export function ProjectBrief({ project }: ProjectBriefProps) {
         </div>
 
         {/* Right: Summary — fontSize cap'd para caber em uma viewport mesmo em summaries longos */}
-        <div className="md:w-[65%]">
+        <div className="md:w-[65%] md:max-w-[900px]">
           <p
-            className="reveal-illuminate font-light leading-[1.1] text-foreground"
-            style={{ fontSize: "clamp(2rem, 4.2vw, 5rem)" }}
+            className={`${projectSummaryFont.className} reveal-illuminate max-w-[28ch] font-extralight leading-[1.1] text-foreground md:max-w-[24ch]`}
+            style={{ fontSize: "clamp(1.6rem, 3.6vw, 4.6rem)", fontSynthesis: "none", fontWeight: 200 }}
           >
             {project.summary}
           </p>

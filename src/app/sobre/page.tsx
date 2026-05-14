@@ -9,12 +9,12 @@ const capabilities = [
   {
     title: "Projeto Arquitetônico",
     description:
-      "Concepção espacial, partido arquitetônico, estudos preliminares e projeto executivo completo, traduzindo o estilo de vida do cliente em soluções funcionais e atemporais.",
+      "Responsável por definir toda a concepção construtiva do imóvel — desde a distribuição dos ambientes e circulação até fachadas, volumetria e soluções técnicas da obra.",
   },
   {
-    title: "Interiores & Materialidade",
+    title: "Interiores e Materialidade",
     description:
-      "Curadoria de materiais, acabamentos, mobiliário e iluminação. Projetos de interiores com identidade própria, equilibrando conforto, estética e propósito.",
+      "Desenvolvido para transformar os ambientes internos através de soluções personalizadas, definindo layout, mobiliário, iluminação, revestimentos, texturas e materiais que compõem cada espaço.",
   },
 ];
 
@@ -46,71 +46,65 @@ export default function StudioPage() {
             {/* DESKTOP: Foto de fundo full-bleed */}
             <div className="absolute inset-0 z-0 hidden md:block">
               <Image
-                src="/images/team/wellington-viana/retrato-horizontal-wellington-viana.webp"
-                alt="Wellington Viana"
+                src="/images/team/wellington-viana/sobre-desktop.webp"
+                alt="Retrato de Wellington Viana em estúdio, fundador do escritório W.VIANA"
                 fill
                 priority
                 sizes="100vw"
-                className="object-cover object-center"
-              />
-            </div>
-
-            {/* DESKTOP: Marca d'água brand-7 atrás do texto */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute right-[-4%] bottom-[10%] z-10 hidden select-none md:block"
-              style={{
-                width: "clamp(18rem, 32vw, 44rem)",
-                opacity: 0.35,
-                filter:
-                  "brightness(0) saturate(100%) invert(38%) sepia(15%) saturate(450%) hue-rotate(355deg) brightness(95%) contrast(85%)",
-              }}
-            >
-              <Image
-                src="/images/logos/brand/marca-variacao-07.svg"
-                alt=""
-                width={1000}
-                height={1000}
-                className="h-auto w-full"
+                className="h-full w-full object-cover object-[10%_center]"
               />
             </div>
 
             {/* MOBILE: Foto vertical full-bleed — Wellington embaixo, espaço pra texto acima */}
             <div className="absolute inset-0 z-0 md:hidden">
               <Image
-                src="/images/team/wellington-viana/retrato-vertical-wellington-viana.webp"
-                alt="Wellington Viana"
+                src="/images/team/wellington-viana/sobre-mobile-2.webp"
+                alt="Retrato de Wellington Viana em estúdio, fundador do escritório W.VIANA"
                 fill
                 priority
                 sizes="100vw"
-                className="object-cover object-bottom"
-              />
-            </div>
-
-            {/* MOBILE: Marca d'água brand-7 ancorada ao centro-direita, atrás do texto */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute right-[-12%] top-[20%] z-10 -translate-y-1/2 select-none md:hidden"
-              style={{
-                width: "clamp(14rem, 70vw, 22rem)",
-                opacity: 0.22,
-                filter:
-                  "brightness(0) saturate(100%) invert(38%) sepia(15%) saturate(450%) hue-rotate(355deg) brightness(95%) contrast(85%)",
-              }}
-            >
-              <Image
-                src="/images/logos/brand/marca-variacao-07.svg"
-                alt=""
-                width={1000}
-                height={1000}
-                className="h-auto w-full"
+                className="h-full w-full -scale-x-100 object-cover object-[40%_90%]"
               />
             </div>
 
             {/* Conteúdo de texto */}
-            <div className="relative z-20 flex min-h-[var(--svh)] flex-col px-6 pb-12 pt-24 md:min-h-0 md:flex-1 md:items-center md:justify-end md:px-12 md:pb-0 md:pt-0 md:py-20 lg:px-16">
-              <div className="relative w-full md:ml-auto md:flex md:items-center md:max-w-[55%] md:pl-8 lg:max-w-[50%]">
-                <div className="relative z-10 [&_*]:[text-shadow:0_1px_12px_rgba(242,242,242,0.6),0_0_4px_rgba(242,242,242,0.4)] md:[&_*]:[text-shadow:none]">
+            <div className="relative z-20 flex min-h-[var(--svh)] flex-col px-4 pb-12 pt-24 sm:px-6 md:min-h-0 md:flex-1 md:items-center md:justify-end md:px-12 md:pt-0 md:pb-8 lg:px-16">
+              <div className="relative w-full max-w-[34rem] md:ml-auto md:flex md:w-[clamp(34rem,42vw,50rem)] md:max-w-none md:items-center md:pl-8">
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -top-4 right-0 z-0 w-[clamp(20rem,88vw,30rem)] translate-x-[24%] select-none md:hidden"
+                  style={{
+                    opacity: 0.35,
+                    filter:
+                      "brightness(0) saturate(100%) invert(38%) sepia(15%) saturate(450%) hue-rotate(355deg) brightness(95%) contrast(85%)",
+                  }}
+                >
+                  <Image
+                    src="/images/logos/brand/marca-variacao-07.svg"
+                    alt=""
+                    width={1000}
+                    height={1000}
+                    className="h-auto w-full"
+                  />
+                </div>
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -top-4 right-0 z-0 hidden w-[22rem] translate-x-[24%] select-none md:block lg:w-[26rem] xl:w-[30rem] 2xl:w-[34rem]"
+                  style={{
+                    opacity: 0.35,
+                    filter:
+                      "brightness(0) saturate(100%) invert(38%) sepia(15%) saturate(450%) hue-rotate(355deg) brightness(95%) contrast(85%)",
+                  }}
+                >
+                  <Image
+                    src="/images/logos/brand/marca-variacao-07.svg"
+                    alt=""
+                    width={1000}
+                    height={1000}
+                    className="h-auto w-full"
+                  />
+                </div>
+                <div className="relative z-10">
                   <span className="reveal-illuminate text-micro uppercase tracking-[0.22em] [color:hsl(27,38%,22%)] md:[color:hsl(27,22%,38%)]">
                     Sobre
                   </span>
@@ -124,37 +118,25 @@ export default function StudioPage() {
                     Fundador
                   </p>
                   <div className="reveal-draw mt-4 h-px w-20 [background:hsl(27,28%,38%)] md:[background:hsl(27,18%,50%)]" />
-                  <div className="mt-4 flex flex-col gap-3 md:mt-5 md:gap-4">
-                    <p
-                      className="reveal-illuminate leading-[1.55] text-foreground/80"
-                      style={{ fontSize: "clamp(0.95rem, 1.15vw, 1.2rem)" }}
-                    >
+                  <div className="mt-4 flex w-full flex-col gap-3 md:mt-5 md:gap-4">
+                    <p className="reveal-illuminate text-[clamp(0.95rem,3.9vw,1.06rem)] leading-[1.55] text-foreground/80 md:text-[clamp(0.95rem,1.15vw,1.2rem)]">
                       Formado em Arquitetura e Urbanismo pela Universidade de Fortaleza, Wellington
                       Viana atua há mais de 8 anos transformando espaços em experiências únicas. À
                       frente do seu escritório, construiu uma trajetória marcada pela sensibilidade
                       estética e pela criação de projetos que refletem, de forma autêntica, a
                       essência de cada cliente.
                     </p>
-                    <p
-                      className="reveal-illuminate leading-[1.55] text-foreground/80"
-                      style={{ fontSize: "clamp(0.95rem, 1.15vw, 1.2rem)" }}
-                    >
+                    <p className="reveal-illuminate text-[clamp(0.95rem,3.9vw,1.06rem)] leading-[1.55] text-foreground/80 md:text-[clamp(0.95rem,1.15vw,1.2rem)]">
                       Com assinatura contemporânea, elegante e atemporal, acredita que a arquitetura
                       precisa traduzir personalidade, despertar sensações e proporcionar bem-estar
                       em cada ambiente.
                     </p>
-                    <p
-                      className="reveal-illuminate leading-[1.55] text-foreground/80"
-                      style={{ fontSize: "clamp(0.95rem, 1.15vw, 1.2rem)" }}
-                    >
+                    <p className="reveal-illuminate text-[clamp(0.95rem,3.9vw,1.06rem)] leading-[1.55] text-foreground/80 md:text-[clamp(0.95rem,1.15vw,1.2rem)]">
                       A partir de Fortaleza, o escritório atua em arquitetura e interiores para
                       residências, espaços comerciais e ambientes corporativos, sempre com uma
                       leitura precisa de rotina, contexto e intenção.
                     </p>
-                    <p
-                      className="reveal-illuminate leading-[1.55] text-foreground/80"
-                      style={{ fontSize: "clamp(0.95rem, 1.15vw, 1.2rem)" }}
-                    >
+                    <p className="reveal-illuminate text-[clamp(0.95rem,3.9vw,1.06rem)] leading-[1.55] text-foreground/80 md:text-[clamp(0.95rem,1.15vw,1.2rem)]">
                       Mais do que projetar espaços, entrega arquitetura com propósito — ambientes
                       que contam histórias, valorizam vivências e permanecem atuais ao longo do
                       tempo.

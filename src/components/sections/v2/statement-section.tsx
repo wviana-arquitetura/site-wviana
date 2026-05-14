@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useLayoutEffect, useMemo } from "react";
+import { Inter } from "next/font/google";
 import gsap, { ScrollTrigger } from "@/lib/gsap";
 
 const SENTENCES = [
@@ -11,6 +12,12 @@ const SENTENCES = [
 ];
 const MANIFESTO = SENTENCES.join(" ");
 const UNDERLINED_WORDS = new Set(["experiências", "propósito", "atemporal"]);
+const manifestoFont = Inter({
+  subsets: ["latin-ext"],
+  weight: ["200", "300", "400"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
 
 export function StatementSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -112,9 +119,10 @@ export function StatementSection() {
       <div className="mx-auto w-full max-w-[1800px] px-8 md:px-16 lg:px-24">
         <div className="ml-0 max-w-[1200px] md:ml-[15%]">
           <p
-            className="font-sans font-light leading-[1.15] text-foreground/95"
+            className={`${manifestoFont.className} font-extralight leading-[1.15] text-foreground/95`}
             style={{
-              fontWeight: 300,
+              fontWeight: 200,
+              fontSynthesis: "none",
               letterSpacing: "-0.01em",
               fontSize: "clamp(1.6rem, 3.2vw, 4rem)",
             }}
@@ -133,9 +141,10 @@ export function StatementSection() {
                   className="inline-block mr-[0.3em]"
                   style={{
                     opacity: 0.08,
-                    fontWeight: 300,
+                    fontWeight: isUnderlined ? 300 : 200,
                     color: isUnderlined ? "hsl(var(--secondary))" : undefined,
                     fontStyle: isUnderlined ? "italic" : "normal",
+                    fontSynthesis: isUnderlined ? "style" : "none",
                   }}
                   aria-hidden="true"
                 >
