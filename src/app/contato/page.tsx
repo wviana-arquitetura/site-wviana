@@ -6,6 +6,7 @@ import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
 import { useDesktopMailtoBlankTarget } from "@/hooks/use-desktop-mailto-target";
 import { BRAND } from "@/lib/brand";
 import { trackEvent } from "@/lib/analytics";
+import { submitContactLead } from "@/lib/contact-lead";
 import { getBreadcrumbJsonLd, getContactPageJsonLd, getFaqJsonLd } from "@/lib/seo";
 
 const PROJECT_TYPES = [
@@ -67,6 +68,8 @@ export default function ContactPage() {
       form_project_type: formProjectType,
       form_has_message: Boolean(message),
     });
+
+    submitContactLead({ name, email, projectType, message });
 
     const text = hasAnyField
       ? [
