@@ -490,7 +490,7 @@ Consumido por: `SiteHeader`, `NavigationDrawer`.
 BRAND = {
   name: "W.Viana | Arquitetura",
   email: "contato@wvarq.com",
-  siteUrl: "https://wviana.com.br",
+  siteUrl: "https://wvarq.com",
   whatsappPhone: "5585996202796",
   whatsappUrl: "https://wa.me/5585996202796?text=...",
   location: "Fortaleza, CE",
