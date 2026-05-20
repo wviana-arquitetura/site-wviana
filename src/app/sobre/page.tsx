@@ -46,7 +46,7 @@ export default function StudioPage() {
             {/* DESKTOP: Foto de fundo full-bleed */}
             <div className="absolute inset-0 z-0 hidden lg:block">
               <Image
-                src="/images/team/wellington-viana/sobre-desktop.webp"
+                src="/images/team/wellington-viana/sobre-desktop-2.webp"
                 alt="Retrato de Wellington Viana em estúdio, fundador do escritório W.VIANA"
                 fill
                 priority
