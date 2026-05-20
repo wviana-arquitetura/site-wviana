@@ -63,7 +63,7 @@ export default function StudioPage() {
                 fill
                 priority
                 sizes="100vw"
-                className="h-full w-full -scale-x-100 object-cover object-[38%_82%]"
+                className="h-full w-full object-cover object-right-bottom"
               />
             </div>
 
@@ -119,27 +119,18 @@ export default function StudioPage() {
                   </p>
                   <div className="reveal-draw mt-4 h-px w-20 [background:hsl(27,28%,38%)] md:[background:hsl(27,18%,50%)]" />
                   <div className="mt-4 flex w-full flex-col gap-3 md:mt-5 md:gap-4">
-                    <p className="reveal-illuminate text-[clamp(0.95rem,3.9vw,1.06rem)] leading-[1.55] text-foreground/80 md:text-[clamp(0.95rem,1.15vw,1.2rem)]">
-                      Formado em Arquitetura e Urbanismo pela Universidade de Fortaleza, Wellington
-                      Viana atua há mais de 8 anos transformando espaços em experiências únicas. À
-                      frente do seu escritório, construiu uma trajetória marcada pela sensibilidade
-                      estética e pela criação de projetos que refletem, de forma autêntica, a
-                      essência de cada cliente.
+                    <p className="reveal-illuminate text-[clamp(0.75rem,3vw,0.85rem)] leading-[1.55] text-foreground/80 md:text-[clamp(0.95rem,1.15vw,1.2rem)]">
+                      Arquitetura, para Wellington, se mede no dia a dia: na luz que entra de
+                      manhã, no caminho entre a cozinha e a sala, no canto onde a casa convida a
+                      parar. Formado em Arquitetura e Urbanismo pela Universidade de Fortaleza, há
+                      mais de 8 anos assina projetos residenciais, comerciais e corporativos que
+                      começam pela mesma pergunta — como cada cliente quer viver esse espaço?
                     </p>
-                    <p className="reveal-illuminate text-[clamp(0.95rem,3.9vw,1.06rem)] leading-[1.55] text-foreground/80 md:text-[clamp(0.95rem,1.15vw,1.2rem)]">
-                      Com assinatura contemporânea, elegante e atemporal, acredita que a arquitetura
-                      precisa traduzir personalidade, despertar sensações e proporcionar bem-estar
-                      em cada ambiente.
-                    </p>
-                    <p className="reveal-illuminate text-[clamp(0.95rem,3.9vw,1.06rem)] leading-[1.55] text-foreground/80 md:text-[clamp(0.95rem,1.15vw,1.2rem)]">
-                      A partir de Fortaleza, o escritório atua em arquitetura e interiores para
-                      residências, espaços comerciais e ambientes corporativos, sempre com uma
-                      leitura precisa de rotina, contexto e intenção.
-                    </p>
-                    <p className="reveal-illuminate text-[clamp(0.95rem,3.9vw,1.06rem)] leading-[1.55] text-foreground/80 md:text-[clamp(0.95rem,1.15vw,1.2rem)]">
-                      Mais do que projetar espaços, entrega arquitetura com propósito — ambientes
-                      que contam histórias, valorizam vivências e permanecem atuais ao longo do
-                      tempo.
+                    <p className="reveal-illuminate text-[clamp(0.75rem,3vw,0.85rem)] leading-[1.55] text-foreground/80 md:text-[clamp(0.95rem,1.15vw,1.2rem)]">
+                      Sua assinatura é contemporânea, elegante e atemporal: ambientes onde
+                      materiais, luz e proporção conversam sem disputar atenção. Sofisticação sem
+                      ruído, personalização sem excesso. Projetos feitos para permanecer — e para
+                      serem vividos todos os dias.
                     </p>
                   </div>
                 </div>
