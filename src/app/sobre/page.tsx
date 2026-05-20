@@ -120,17 +120,19 @@ export default function StudioPage() {
                   <div className="reveal-draw mt-4 h-px w-20 [background:hsl(27,28%,38%)] lg:[background:hsl(27,18%,50%)]" />
                   <div className="mt-4 flex w-full flex-col gap-3 lg:mt-5 lg:gap-4">
                     <p className="reveal-illuminate text-[clamp(0.75rem,3vw,0.85rem)] leading-[1.55] text-foreground/80 lg:text-[clamp(0.95rem,1.15vw,1.2rem)]">
-                      Arquitetura, para Wellington, se mede no dia a dia: na luz que entra de
-                      manhã, no caminho entre a cozinha e a sala, no canto onde a casa convida a
-                      parar. Formado em Arquitetura e Urbanismo pela Universidade de Fortaleza, há
-                      mais de 8 anos assina projetos residenciais, comerciais e corporativos que
-                      começam pela mesma pergunta — como cada cliente quer viver esse espaço?
+                      Formado em Arquitetura e Urbanismo pela Universidade de Fortaleza, Wellington
+                      Viana atua há mais de 8 anos desenvolvendo projetos que unem estética,
+                      funcionalidade e identidade. À frente do seu escritório, construiu uma
+                      trajetória marcada pela atenção aos detalhes, pela sensibilidade estética e
+                      pela criação de ambientes que refletem de forma autêntica o estilo de vida de
+                      cada cliente.
                     </p>
                     <p className="reveal-illuminate text-[clamp(0.75rem,3vw,0.85rem)] leading-[1.55] text-foreground/80 lg:text-[clamp(0.95rem,1.15vw,1.2rem)]">
-                      Sua assinatura é contemporânea, elegante e atemporal: ambientes onde
-                      materiais, luz e proporção conversam sem disputar atenção. Sofisticação sem
-                      ruído, personalização sem excesso. Projetos feitos para permanecer — e para
-                      serem vividos todos os dias.
+                      Com uma assinatura contemporânea, elegante e atemporal, Wellington acredita
+                      que a arquitetura deve ir além da estética, proporcionando bem-estar e
+                      experiências únicas. Seus projetos valorizam a harmonia entre materiais,
+                      iluminação, texturas e composição, resultando em espaços sofisticados,
+                      personalizados e pensados para permanecer atuais ao longo do tempo.
                     </p>
                   </div>
                 </div>
