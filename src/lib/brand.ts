@@ -13,7 +13,7 @@ export const BRAND = {
   email: CONTACT_EMAIL,
   /** Link mailto com mensagem inicial para o cliente só complementar e enviar. */
   mailtoUrl: `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(MAILTO_SUBJECT)}&body=${encodeURIComponent(MAILTO_BODY)}`,
-  siteUrl: "https://wvarq.com",
+  siteUrl: "https://wvianaarquitetura.com.br",
   whatsappPhone: "5585997177666",
   whatsappPhoneFormatted: "+55 85 9971-7666",
   whatsappUrl:

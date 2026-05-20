@@ -92,7 +92,7 @@ export async function GET() {
               textTransform: "uppercase",
             }}
           >
-            wvarq.com
+            wvianaarquitetura.com.br
           </div>
         </div>
       </div>
