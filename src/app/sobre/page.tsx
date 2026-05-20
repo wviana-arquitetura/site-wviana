@@ -42,9 +42,9 @@ export default function StudioPage() {
       <div className="min-h-screen bg-background text-foreground">
         <main ref={rootRef}>
           {/* 1. Hero — desktop: foto horizontal + texto na parede / mobile: foto recortada + texto + W watermark */}
-          <section className="relative flex min-h-[var(--svh)] flex-col overflow-hidden bg-background md:h-[var(--svh)] md:bg-transparent">
+          <section className="relative flex min-h-[var(--svh)] flex-col overflow-hidden bg-background [@media(orientation:landscape)_and_(max-height:500px)]:min-h-[640px] lg:h-[var(--svh)] lg:bg-transparent">
             {/* DESKTOP: Foto de fundo full-bleed */}
-            <div className="absolute inset-0 z-0 hidden md:block">
+            <div className="absolute inset-0 z-0 hidden lg:block">
               <Image
                 src="/images/team/wellington-viana/sobre-desktop.webp"
                 alt="Retrato de Wellington Viana em estúdio, fundador do escritório W.VIANA"
@@ -55,8 +55,8 @@ export default function StudioPage() {
               />
             </div>
 
-            {/* MOBILE: foto só na primeira tela (svh) — recorte estável; texto extra rola sobre fundo sólido */}
-            <div className="absolute inset-x-0 top-0 z-0 h-[var(--svh)] overflow-hidden md:hidden">
+            {/* MOBILE/TABLET: foto vertical com crop bottom-right. Em landscape mobile (tela baixa) a foto cresce além do viewport para preservar a proporção — o hero deixa de tentar caber em uma única tela. */}
+            <div className="absolute inset-x-0 top-0 z-0 h-[var(--svh)] overflow-hidden lg:hidden [@media(orientation:landscape)_and_(max-height:500px)]:h-[640px]">
               <Image
                 src="/images/team/wellington-viana/sobre-mobile-2.webp"
                 alt="Retrato de Wellington Viana em estúdio, fundador do escritório W.VIANA"
@@ -68,11 +68,11 @@ export default function StudioPage() {
             </div>
 
             {/* Conteúdo de texto — safe-area + altura compatível com header fixo (h-12 + notch) */}
-            <div className="relative z-20 flex min-h-[var(--svh)] flex-col px-4 pb-[max(3rem,calc(env(safe-area-inset-bottom,0px)+1.5rem))] pt-[calc(env(safe-area-inset-top,0px)+4.25rem)] sm:px-6 md:min-h-0 md:flex-1 md:items-center md:justify-end md:px-12 md:pb-8 md:pt-0 lg:px-16">
-              <div className="relative w-full max-w-[34rem] md:ml-auto md:flex md:w-[clamp(34rem,42vw,50rem)] md:max-w-none md:items-center md:pl-8">
+            <div className="relative z-20 flex min-h-[var(--svh)] flex-col px-4 pb-[max(3rem,calc(env(safe-area-inset-bottom,0px)+1.5rem))] pt-[calc(env(safe-area-inset-top,0px)+4.25rem)] sm:px-6 [@media(orientation:landscape)_and_(max-height:500px)]:min-h-[640px] lg:min-h-0 lg:flex-1 lg:items-center lg:justify-end lg:px-16 lg:pb-8 lg:pt-0">
+              <div className="relative w-full max-w-[34rem] lg:ml-auto lg:flex lg:w-[clamp(34rem,42vw,50rem)] lg:max-w-none lg:items-center lg:pl-8">
                 <div
                   aria-hidden="true"
-                  className="pointer-events-none absolute -top-4 right-0 z-0 w-[clamp(20rem,88vw,30rem)] translate-x-[24%] select-none md:hidden"
+                  className="pointer-events-none absolute -top-4 right-0 z-0 w-[clamp(20rem,88vw,30rem)] translate-x-[24%] select-none lg:hidden"
                   style={{
                     opacity: 0.35,
                     filter:
@@ -89,7 +89,7 @@ export default function StudioPage() {
                 </div>
                 <div
                   aria-hidden="true"
-                  className="pointer-events-none absolute -top-4 right-0 z-0 hidden w-[22rem] translate-x-[24%] select-none md:block lg:w-[26rem] xl:w-[30rem] 2xl:w-[34rem]"
+                  className="pointer-events-none absolute -top-4 right-0 z-0 hidden w-[22rem] translate-x-[24%] select-none lg:block xl:w-[30rem] 2xl:w-[34rem]"
                   style={{
                     opacity: 0.35,
                     filter:
@@ -105,28 +105,28 @@ export default function StudioPage() {
                   />
                 </div>
                 <div className="relative z-10">
-                  <span className="reveal-illuminate text-micro uppercase tracking-[0.22em] [color:hsl(27,38%,22%)] md:[color:hsl(27,22%,38%)]">
+                  <span className="reveal-illuminate text-micro uppercase tracking-[0.22em] [color:hsl(27,38%,22%)] lg:[color:hsl(27,22%,38%)]">
                     Sobre
                   </span>
                   <h1
                     className="reveal-rise mt-2 font-extralight leading-[0.95] tracking-tight text-foreground"
-                    style={{ fontSize: "clamp(2rem, 4vw, 4.5rem)" }}
+                    style={{ fontSize: "clamp(1.5rem, 7vmin, 4.5rem)" }}
                   >
                     Wellington Viana
                   </h1>
-                  <p className="reveal-illuminate mt-2 text-micro uppercase tracking-[0.22em] [color:hsl(27,32%,30%)] md:[color:hsl(27,20%,45%)]">
+                  <p className="reveal-illuminate mt-2 text-micro uppercase tracking-[0.22em] [color:hsl(27,32%,30%)] lg:[color:hsl(27,20%,45%)]">
                     Fundador
                   </p>
-                  <div className="reveal-draw mt-4 h-px w-20 [background:hsl(27,28%,38%)] md:[background:hsl(27,18%,50%)]" />
-                  <div className="mt-4 flex w-full flex-col gap-3 md:mt-5 md:gap-4">
-                    <p className="reveal-illuminate text-[clamp(0.75rem,3vw,0.85rem)] leading-[1.55] text-foreground/80 md:text-[clamp(0.95rem,1.15vw,1.2rem)]">
+                  <div className="reveal-draw mt-4 h-px w-20 [background:hsl(27,28%,38%)] lg:[background:hsl(27,18%,50%)]" />
+                  <div className="mt-4 flex w-full flex-col gap-3 lg:mt-5 lg:gap-4">
+                    <p className="reveal-illuminate text-[clamp(0.75rem,3vw,0.85rem)] leading-[1.55] text-foreground/80 lg:text-[clamp(0.95rem,1.15vw,1.2rem)]">
                       Arquitetura, para Wellington, se mede no dia a dia: na luz que entra de
                       manhã, no caminho entre a cozinha e a sala, no canto onde a casa convida a
                       parar. Formado em Arquitetura e Urbanismo pela Universidade de Fortaleza, há
                       mais de 8 anos assina projetos residenciais, comerciais e corporativos que
                       começam pela mesma pergunta — como cada cliente quer viver esse espaço?
                     </p>
-                    <p className="reveal-illuminate text-[clamp(0.75rem,3vw,0.85rem)] leading-[1.55] text-foreground/80 md:text-[clamp(0.95rem,1.15vw,1.2rem)]">
+                    <p className="reveal-illuminate text-[clamp(0.75rem,3vw,0.85rem)] leading-[1.55] text-foreground/80 lg:text-[clamp(0.95rem,1.15vw,1.2rem)]">
                       Sua assinatura é contemporânea, elegante e atemporal: ambientes onde
                       materiais, luz e proporção conversam sem disputar atenção. Sofisticação sem
                       ruído, personalização sem excesso. Projetos feitos para permanecer — e para
