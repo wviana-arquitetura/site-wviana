@@ -27,34 +27,16 @@ export function StatementSection() {
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
-    if (!section || wordsRef.current.length === 0) {
-      console.log("[StatementSection] setup abortado", {
-        hasSection: Boolean(section),
-        wordsCount: wordsRef.current.length,
-      });
-      return;
-    }
+    if (!section || wordsRef.current.length === 0) return;
 
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    const sectionRect = section.getBoundingClientRect();
-
-    console.log("[StatementSection] setup", {
-      wordsCount: wordsRef.current.length,
-      prefersReducedMotion,
-      triggerStart: "top 25%",
-      scrollY: window.scrollY,
-      sectionTop: sectionRect.top,
-      sectionHeight: sectionRect.height,
-      viewportHeight: window.innerHeight,
-    });
 
     if (prefersReducedMotion) {
       wordsRef.current.forEach((w) => {
         if (w) w.style.opacity = "1";
       });
-      console.log("[StatementSection] reduced motion ativo, animação ignorada");
       return;
     }
 
@@ -73,19 +55,12 @@ export function StatementSection() {
         start: "top 25%",
         once: true,
         onEnter: () => {
-          const rectOnEnter = section.getBoundingClientRect();
-          console.log("[StatementSection] onEnter disparou", {
-            scrollY: window.scrollY,
-            sectionTop: rectOnEnter.top,
-            viewportHeight: window.innerHeight,
-          });
           tl.play();
         },
       });
     }, section);
 
     return () => {
-      console.log("[StatementSection] cleanup");
       ctx.revert();
     };
   }, []);

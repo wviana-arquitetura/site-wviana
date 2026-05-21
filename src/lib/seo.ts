@@ -16,11 +16,10 @@ export const defaultDescription =
 export const defaultOgDescription =
   "Arquitetura e interiores em Fortaleza com método claro, materialidade precisa e projetos residenciais e comerciais sob medida.";
 
-export const defaultOgImagePath =
-  "/images/projects/residencial-rc/capa-projeto-residencial-rc.webp";
+export const defaultOgImagePath = "/og/default";
 
 export const defaultOgImageAlt =
-  "Projeto de interiores residencial assinado pelo escritório W.VIANA";
+  "W.VIANA — Arquitetura e interiores em Fortaleza";
 
 export const privateRouteRobots: Metadata["robots"] = {
   index: false,
@@ -59,6 +58,7 @@ export function pageMeta(input: {
   const socialTitle = input.socialTitle ?? input.title;
   const canonical = input.absoluteCanonical ?? absoluteUrl(path);
   const imageAlt = input.imageAlt ?? defaultOgImageAlt;
+  const isDefaultOgImage = imagePath === defaultOgImagePath;
 
   return {
     title: input.absoluteTitle ? { absolute: input.title } : input.title,
@@ -72,7 +72,15 @@ export function pageMeta(input: {
       siteName: BRAND.name,
       title: socialTitle,
       description: ogDesc,
-      images: [{ url: absoluteUrl(imagePath), alt: imageAlt }],
+      images: [
+        {
+          url: absoluteUrl(imagePath),
+          alt: imageAlt,
+          ...(isDefaultOgImage
+            ? { width: 1200, height: 630, type: "image/png" }
+            : {}),
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
