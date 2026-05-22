@@ -1,4 +1,4 @@
-const CONTACT_EMAIL = "contato@wvarq.com";
+const CONTACT_EMAIL = "contato@wvianaarquitetura.com";
 
 /** Assunto + corpo padrão (mesmo tom do link do WhatsApp). */
 const MAILTO_SUBJECT = "Contato pelo site";

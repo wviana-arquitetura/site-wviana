@@ -91,6 +91,54 @@ Hoje o form leva pro `wa.me` (WhatsApp pessoal). Migrar para WhatsApp Business c
 ### 15. Política de privacidade e termos de uso ✅
 **Concluído** — páginas `/privacidade` e `/termos` publicadas, banner aponta para `/privacidade`, footer com CNPJ.
 
+## Marketing — próximos passos
+
+Pacote de configurações e integrações de marketing pensadas como evolução do que já foi configurado (GA4, GTM, Search Console). Cada item agrega à stack existente sem refatoração.
+
+### Já configurado nesta sessão (2026-05-22)
+- ✅ **GA4** (`G-FGR3V7PTSW`) coletando eventos com Consent Mode v2
+- ✅ **GTM** (`GTM-WD6CCB46`) publicado, tag GA4 disparando em Initialization
+- ✅ **Resend** + Google Sheets capturando leads do formulário em produção
+- ✅ **Google Search Console** — propriedade verificada (Domínio), sitemap.xml enviado (20 páginas indexadas), vinculado ao GA4
+
+### M1. Marcar eventos como Key Event no GA4
+GA4 já recebe `whatsapp_click`, `whatsapp_form_submit`, `email_click`, `project_view`, `project_cta_click`. Falta marcar os relevantes como Key Event pra virarem conversão oficial e habilitarem comparação por canal.
+Caminho: GA4 → Admin → Eventos → checkbox "Marcar como Key Event" nos eventos de conversão.
+- **Esforço:** ~5min (no painel, sem código)
+- **Impacto:** médio — habilita relatórios de conversão por canal e (futura) integração com Google Ads
+
+### M2. Microsoft Clarity (heatmap + gravações)
+Ferramenta gratuita e ilimitada da Microsoft. Gera mapas de calor de clique/scroll e grava sessões anônimas. Insight rápido sobre onde os visitantes travam, especialmente útil em site novo sem histórico de comportamento.
+Cadastra em [clarity.microsoft.com](https://clarity.microsoft.com), pega o tracking ID, adiciona como Custom HTML tag no GTM com gatilho "Initialization - All Pages" (mesmo padrão da tag GA4).
+- **Esforço:** ~10min
+- **Impacto:** médio a alto — descobre problemas de UX que não aparecem em métricas agregadas
+- **Dependência:** já coberto pela política de privacidade existente (gravação anonimizada, cookies declarados)
+
+### M3. Meta Pixel + Conversions API
+Item 20 acima detalhado: instalar Pixel via GTM e, idealmente, Conversions API server-side (na mesma route `/api/contact`) para enviar `Lead` event ao Meta com hash do e-mail. Habilita remarketing, lookalike e campanhas otimizadas pra conversão no Instagram/Facebook Ads.
+- **Esforço:** ~2h (Pixel via GTM + CAPI server-side com `fetch` na route)
+- **Impacto:** alto se houver verba de Meta Ads — sem isso anúncio roda no escuro
+- **Quando fazer:** antes de iniciar qualquer campanha paga no Meta
+
+### M4. Google Ads conversion tracking
+Item 17 (Enhanced Conversions) já cobre o avançado. O passo zero é criar a tag de conversão no Google Ads para `whatsapp_form_submit` e importar como Key Event vindo do GA4. Sem isso, campanhas Google Ads não conseguem otimizar pra lead — só por clique.
+- **Esforço:** ~15min (Google Ads + GTM)
+- **Impacto:** alto se houver verba de Google Ads
+- **Quando fazer:** antes de iniciar qualquer campanha paga no Google
+
+### M5. Newsletter / captura de e-mail recorrente
+Cliente médio de arquitetura demora 6-12 meses pra decidir. Visitante que ainda não está pronto não tem onde deixar contato sem compromisso. Adicionar formulário simples ("Receba projetos novos no e-mail") cria canal próprio independente de algoritmo.
+Pode reaproveitar Resend (já configurado) + tabela do Google Sheets pra armazenar inscritos, ou usar Mailchimp/Brevo free tier. Newsletter mensal manual com 1 projeto + 1 dica de design.
+- **Esforço:** ~6h (componente + integração + página de confirmação)
+- **Impacto:** médio a longo prazo — nutre lead frio até a hora da decisão
+- **Quando fazer:** após atingir ~5k visitas/mês (antes disso o crescimento da lista é lento demais)
+
+### M6. Blog / conteúdo evergreen estruturado
+Item 7 acima é a versão pontual ("1-2 posts"). Aqui é a estrutura: CMS simples (MDX local ou Sanity/Contentful free) + listagem `/blog` + páginas individuais com schema `Article`. Permite produção contínua sem mexer no código a cada post.
+- **Esforço:** ~16h (CMS + tema + 3 posts iniciais)
+- **Impacto:** alto a longo prazo (6-12 meses pra render) — único caminho sustentável de SEO orgânico contra escritórios maiores
+- **Pré-requisito:** comprometimento de escrita de 1-2 posts/mês por pelo menos 12 meses
+
 ## Google Ads (lado do código)
 
 Preparação técnica do site para campanhas. A configuração nas contas Google (vincular GA4↔Ads, importar conversões, auto-tagging, Consent Mode nas tags) é responsabilidade do gestor de tráfego.

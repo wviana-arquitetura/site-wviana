@@ -220,7 +220,7 @@ Alvos de texto: todos .footer-primary-text dentro do footer
 **Secao principal** — min-height `calc(100dvh - var(--header-height))`:
 - Label: "Proximo passo" (accent, micro)
 - Titulo: "Vamos projetar." (monumental, font-light, classe `footer-primary-text`)
-- Email: `contato@wvarq.com` (architectural, border-bottom accent)
+- Email: `contato@wvianaarquitetura.com` (architectural, border-bottom accent)
 - WhatsApp: link externo (architectural, border-bottom accent)
 - Watermark: logo `/images/logos/brand/marca-variacao-07.svg`, opacity 16%, `filter: invert(1)`, `translateX(14%)`
 
@@ -489,7 +489,7 @@ Consumido por: `SiteHeader`, `NavigationDrawer`.
 ```typescript
 BRAND = {
   name: "W.Viana | Arquitetura",
-  email: "contato@wvarq.com",
+  email: "contato@wvianaarquitetura.com",
   siteUrl: "https://wvianaarquitetura.com.br",
   whatsappPhone: "5585996202796",
   whatsappUrl: "https://wa.me/5585996202796?text=...",
