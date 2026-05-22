@@ -3,14 +3,18 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta({
   title: "Sobre Wellington Viana",
-  socialTitle: "Sobre a W.VIANA",
+  socialTitle: "Sobre Wellington Viana | W.VIANA",
   description:
     "Conheça Wellington Viana e o escritório W.VIANA, especializado em arquitetura e interiores em Fortaleza com projetos autorais.",
   path: "/sobre",
-  ogImagePath: "/images/team/wellington-viana/sobre-desktop.webp",
-  imageAlt: "Retrato de Wellington Viana, fundador do escritório W.VIANA",
+  ogImagePath: "/og/sobre",
+  imageAlt: "Sobre Wellington Viana — fundador do escritório W.VIANA",
 });
 
-export default function SobreLayout({ children }: { children: React.ReactNode }) {
+export default function SobreLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return children;
 }
