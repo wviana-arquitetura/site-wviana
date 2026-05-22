@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useDesktopMailtoBlankTarget } from "@/hooks/use-desktop-mailto-target";
 import gsap from "@/lib/gsap";
 import { BRAND } from "@/lib/brand";
+import { trackEvent } from "@/lib/analytics";
 import { useUiStore } from "@/store/use-ui-store";
 
 const navItems = [
@@ -190,6 +191,14 @@ export function NavigationDrawer() {
             href={BRAND.mailtoUrl}
             target={mailtoTarget}
             rel={mailtoTarget ? "noopener noreferrer" : undefined}
+            onClick={() =>
+              trackEvent("email_click", {
+                cta_location: "drawer_email",
+                contact_channel: "email",
+                link_domain: "mailto",
+                link_path: "/email",
+              })
+            }
             className="text-micro uppercase tracking-[0.22em]"
             style={{ color: "hsl(var(--accent))" }}
           >
@@ -199,6 +208,14 @@ export function NavigationDrawer() {
             href={BRAND.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() =>
+              trackEvent("whatsapp_click", {
+                cta_location: "drawer_whatsapp",
+                contact_channel: "whatsapp",
+                link_domain: "wa.me",
+                link_path: "/whatsapp",
+              })
+            }
             className="text-micro uppercase tracking-[0.22em]"
             style={{ color: "hsl(var(--accent))" }}
           >

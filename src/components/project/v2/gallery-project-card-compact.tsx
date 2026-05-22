@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "@/types/project";
+import { trackEvent } from "@/lib/analytics";
 
 type GalleryProjectCardCompactProps = {
   project: Project;
@@ -14,6 +15,14 @@ export function GalleryProjectCardCompact({ project }: GalleryProjectCardCompact
       href={`/projetos/${project.slug}`}
       className="group flex h-full flex-col gap-6"
       aria-label={`Ver projeto ${project.title}`}
+      onClick={() =>
+        trackEvent("project_cta_click", {
+          project_slug: project.slug,
+          project_name: project.title,
+          project_type: project.typology,
+          cta_location: "compact_card",
+        })
+      }
     >
       {/* Foto vertical alta — preenche a maior parte da altura disponível,
           com título sobreposto no canto inferior (mix-blend-mode garante contraste) */}

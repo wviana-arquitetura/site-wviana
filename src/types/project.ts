@@ -22,6 +22,8 @@ export type Project = {
   country: string;
   year?: string;
   area?: string;
+  /** Data ISO (YYYY-MM-DD) da ultima edicao do projeto. Usada no sitemap para sinalizar freshness ao Google. */
+  updatedAt?: string;
   imageSrc: string;
   summary: string;
   scope: string[];

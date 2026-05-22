@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "@/types/project";
+import { trackEvent } from "@/lib/analytics";
 
 type GalleryProjectCardGridProps = {
   project: Project;
@@ -35,6 +36,14 @@ export function GalleryProjectCardGrid({
   const [shouldRotate, setShouldRotate] = useState(false);
   const [hasLoadedExtra, setHasLoadedExtra] = useState(false);
   const [hasStartedZoom, setHasStartedZoom] = useState(false);
+
+  const handleProjectClick = (ctaLocation: string) =>
+    trackEvent("project_cta_click", {
+      project_slug: project.slug,
+      project_name: project.title,
+      project_type: project.typology,
+      cta_location: ctaLocation,
+    });
 
   // Lista de imagens: capa + até 3 primeiras fotos da galeria.
   const images = [
@@ -144,6 +153,7 @@ export function GalleryProjectCardGrid({
           aria-label={`Ver projeto ${project.title}`}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
+          onClick={() => handleProjectClick("projects_grid_image")}
         >
           <div
             ref={imageWrapperRef}
@@ -268,6 +278,7 @@ export function GalleryProjectCardGrid({
           href={`/projetos/${project.slug}`}
           className="group/link mt-1 inline-flex items-center gap-2 text-caption uppercase tracking-[0.18em] transition-opacity hover:opacity-60"
           style={{ color: "hsl(var(--accent-strong))" }}
+          onClick={() => handleProjectClick("projects_grid_link")}
         >
           Ver projeto
           <svg

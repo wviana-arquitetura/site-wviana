@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
     socialTitle: project.title,
     description: project.seoDescription ?? project.summary,
     path: `/projetos/${project.slug}`,
-    ogImagePath: project.ogImageSrc ?? project.imageSrc,
+    ogImagePath: `/og/projetos/${project.slug}`,
     imageAlt: project.imageAlt ?? `Imagem do projeto ${project.title}`,
   });
 }

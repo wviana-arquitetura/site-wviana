@@ -190,12 +190,14 @@ export function ThresholdHero() {
         className="mx-auto mt-10 flex w-full max-w-[500px] flex-col items-center px-8 text-center opacity-0 md:px-16 lg:px-24"
       >
         <h1
-          className="text-micro uppercase tracking-[0.25em]"
+          className="text-micro uppercase tracking-[0.2em]"
           style={{ color: "hsl(var(--accent-strong))" }}
         >
           Escritório de arquitetura e interiores
         </h1>
-        <p className="mt-3 text-sm leading-[1.6] text-muted-foreground opacity-70">{HERO_COPY}</p>
+        <p className="mt-3 text-sm leading-[1.6] tracking-[-0.012em] text-muted-foreground opacity-70">
+          {HERO_COPY}
+        </p>
         <nav
           aria-label="Acessos principais"
           className="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-3"
@@ -208,7 +210,7 @@ export function ThresholdHero() {
             <Link
               key={item.href}
               href={item.href}
-              className="group relative pb-1 text-micro uppercase tracking-[0.22em] transition-colors duration-500 hover:text-foreground"
+              className="group relative pb-1 text-micro uppercase tracking-[0.19em] transition-colors duration-500 hover:text-foreground"
               style={{ color: "hsl(var(--accent-strong))" }}
             >
               {item.label}
@@ -225,7 +227,7 @@ export function ThresholdHero() {
           style={{ background: "hsl(var(--accent) / 0.5)" }}
         />
         <span
-          className="text-micro uppercase tracking-[0.22em]"
+          className="text-micro uppercase tracking-[0.19em]"
           style={{ color: "hsl(var(--accent-strong))" }}
         >
           Scroll
@@ -234,7 +236,7 @@ export function ThresholdHero() {
 
       {/* Bottom-right: location */}
       <span
-        className="absolute bottom-[max(2.5rem,env(safe-area-inset-bottom,0px))] right-8 text-micro uppercase tracking-[0.22em] md:right-16 lg:right-24"
+        className="absolute bottom-[max(2.5rem,env(safe-area-inset-bottom,0px))] right-8 text-micro uppercase tracking-[0.19em] md:right-16 lg:right-24"
         style={{ color: "hsl(var(--accent-strong))" }}
       >
         Brasil

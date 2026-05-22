@@ -21,4 +21,12 @@ export const BRAND = {
   location: "Fortaleza, CE",
   instagramUrl: "https://www.instagram.com/wviana.arq/",
   pinterestUrl: "https://br.pinterest.com/wviana_arq/",
+  /** Dados legais (LGPD / Marco Civil) — usados em política, termos e footer. */
+  legal: {
+    razaoSocial: "Wellington Andrade Viana Arquitetura",
+    cnpj: "49.493.768/0001-33",
+    enderecoComercial: "Rua Vicente Linhares, 521 — Ed. Humberto Santana Business, Aldeota, Fortaleza-CE",
+    encarregadoNome: "Wellington Andrade Viana",
+    encarregadoEmail: CONTACT_EMAIL,
+  },
 } as const;

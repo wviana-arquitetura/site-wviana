@@ -58,7 +58,8 @@ export function pageMeta(input: {
   const socialTitle = input.socialTitle ?? input.title;
   const canonical = input.absoluteCanonical ?? absoluteUrl(path);
   const imageAlt = input.imageAlt ?? defaultOgImageAlt;
-  const isDefaultOgImage = imagePath === defaultOgImagePath;
+  // Rotas OG geradas pelo proprio site (defaultOgImagePath ou /og/*) tem 1200x630 PNG.
+  const isGeneratedOgImage = imagePath === defaultOgImagePath || imagePath.startsWith("/og/");
 
   return {
     title: input.absoluteTitle ? { absolute: input.title } : input.title,
@@ -76,7 +77,7 @@ export function pageMeta(input: {
         {
           url: absoluteUrl(imagePath),
           alt: imageAlt,
-          ...(isDefaultOgImage
+          ...(isGeneratedOgImage
             ? { width: 1200, height: 630, type: "image/png" }
             : {}),
         },

@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useDesktopMailtoBlankTarget } from "@/hooks/use-desktop-mailto-target";
 import { BRAND } from "@/lib/brand";
+import { trackEvent } from "@/lib/analytics";
 
 type SiteFooterProps = {
   hideCta?: boolean;
@@ -150,6 +151,14 @@ export function SiteFooter({ hideCta = false }: SiteFooterProps) {
                 href={BRAND.mailtoUrl}
                 target={mailtoTarget}
                 rel={mailtoTarget ? "noopener noreferrer" : undefined}
+                onClick={() =>
+                  trackEvent("email_click", {
+                    cta_location: "footer_email",
+                    contact_channel: "email",
+                    link_domain: "mailto",
+                    link_path: "/email",
+                  })
+                }
                 className="footer-primary-text group mt-8 inline-flex max-w-full self-start break-all font-light tracking-tight opacity-80 transition-opacity hover:opacity-100 sm:break-normal"
                 style={{
                   color: "hsl(var(--foreground))",
@@ -165,6 +174,14 @@ export function SiteFooter({ hideCta = false }: SiteFooterProps) {
                 href={BRAND.whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() =>
+                  trackEvent("whatsapp_click", {
+                    cta_location: "footer_whatsapp",
+                    contact_channel: "whatsapp",
+                    link_domain: "wa.me",
+                    link_path: "/whatsapp",
+                  })
+                }
                 className="footer-primary-text group mt-4 inline-flex self-start font-light tracking-tight opacity-80 transition-opacity hover:opacity-100"
                 style={{
                   color: "hsl(var(--foreground))",
@@ -208,9 +225,9 @@ export function SiteFooter({ hideCta = false }: SiteFooterProps) {
             className="text-micro uppercase tracking-[0.22em]"
             style={{ color: "hsl(var(--accent-strong))" }}
           >
-            &copy; 2026 W.VIANA Arquitetura | Interiores
+            &copy; 2026 W.VIANA Arquitetura | Interiores &middot; CNPJ {BRAND.legal.cnpj}
           </p>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap gap-6">
             <Link
               href={BRAND.instagramUrl}
               target="_blank"
@@ -228,6 +245,20 @@ export function SiteFooter({ hideCta = false }: SiteFooterProps) {
               style={{ color: "hsl(var(--accent-strong))" }}
             >
               Pinterest
+            </Link>
+            <Link
+              href="/privacidade"
+              className="text-micro uppercase tracking-[0.22em] transition-opacity hover:opacity-60"
+              style={{ color: "hsl(var(--accent-strong))" }}
+            >
+              Privacidade
+            </Link>
+            <Link
+              href="/termos"
+              className="text-micro uppercase tracking-[0.22em] transition-opacity hover:opacity-60"
+              style={{ color: "hsl(var(--accent-strong))" }}
+            >
+              Termos
             </Link>
           </div>
         </div>
