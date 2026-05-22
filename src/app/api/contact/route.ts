@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import type { ContactLeadPayload } from "@/lib/contact-lead";
+import { rateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -13,6 +14,17 @@ const LEADS_SHEET_WEBHOOK_URL = process.env.LEADS_SHEET_WEBHOOK_URL;
 const MAX_FIELD_LENGTH = 5000;
 const MAX_EMAIL_LENGTH = 254;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX = 5;
+
+const getClientIp = (request: Request): string => {
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  if (forwardedFor) return forwardedFor.split(",")[0]!.trim();
+  const realIp = request.headers.get("x-real-ip");
+  if (realIp) return realIp.trim();
+  return "unknown";
+};
 
 const sanitize = (value: unknown): string => {
   if (typeof value !== "string") return "";
@@ -33,7 +45,7 @@ const escapeHtml = (raw: string): string =>
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 
-const renderEmailHtml = (lead: Required<ContactLeadPayload>): string => {
+const renderEmailHtml = (lead: Omit<Required<ContactLeadPayload>, "website">): string => {
   const rows: string[] = [];
   if (lead.name) rows.push(`<tr><td><strong>Nome</strong></td><td>${escapeHtml(lead.name)}</td></tr>`);
   if (lead.email) rows.push(`<tr><td><strong>E-mail</strong></td><td>${escapeHtml(lead.email)}</td></tr>`);
@@ -55,7 +67,7 @@ const renderEmailHtml = (lead: Required<ContactLeadPayload>): string => {
 </html>`;
 };
 
-const renderEmailText = (lead: Required<ContactLeadPayload>): string => {
+const renderEmailText = (lead: Omit<Required<ContactLeadPayload>, "website">): string => {
   const lines: string[] = ["Novo lead pelo site W.VIANA", ""];
   if (lead.name) lines.push(`Nome: ${lead.name}`);
   if (lead.email) lines.push(`E-mail: ${lead.email}`);
@@ -66,7 +78,7 @@ const renderEmailText = (lead: Required<ContactLeadPayload>): string => {
   return lines.join("\n");
 };
 
-const sendEmail = async (lead: Required<ContactLeadPayload>): Promise<void> => {
+const sendEmail = async (lead: Omit<Required<ContactLeadPayload>, "website">): Promise<void> => {
   if (!RESEND_API_KEY) {
     console.error("[contact] RESEND_API_KEY ausente — email não enviado");
     return;
@@ -94,7 +106,7 @@ const sendEmail = async (lead: Required<ContactLeadPayload>): Promise<void> => {
   }
 };
 
-const sendToSheet = async (lead: Required<ContactLeadPayload>): Promise<void> => {
+const sendToSheet = async (lead: Omit<Required<ContactLeadPayload>, "website">): Promise<void> => {
   if (!LEADS_SHEET_WEBHOOK_URL) {
     console.error("[contact] LEADS_SHEET_WEBHOOK_URL ausente — planilha não atualizada");
     return;
@@ -120,6 +132,21 @@ const sendToSheet = async (lead: Required<ContactLeadPayload>): Promise<void> =>
 };
 
 export async function POST(request: Request) {
+  const ip = getClientIp(request);
+  const limit = rateLimit(`contact:${ip}`, {
+    windowMs: RATE_LIMIT_WINDOW_MS,
+    max: RATE_LIMIT_MAX,
+  });
+  if (!limit.allowed) {
+    return NextResponse.json(
+      { ok: false, error: "rate_limited" },
+      {
+        status: 429,
+        headers: { "Retry-After": String(Math.ceil(limit.retryAfterMs / 1000)) },
+      },
+    );
+  }
+
   let raw: unknown;
   try {
     raw = await request.json();
@@ -128,12 +155,19 @@ export async function POST(request: Request) {
   }
 
   const payload = raw as Partial<ContactLeadPayload> | null;
+
+  // Honeypot: humanos não veem o campo `website`. Se vier preenchido, é bot.
+  // Retorna 200 silenciosamente para não dar pista que detectou.
+  if (sanitize(payload?.website)) {
+    return NextResponse.json({ ok: true });
+  }
+
   const lead = {
     name: sanitize(payload?.name),
     email: sanitize(payload?.email),
     projectType: sanitize(payload?.projectType),
     message: sanitize(payload?.message),
-  } satisfies Required<ContactLeadPayload>;
+  } satisfies Omit<Omit<Required<ContactLeadPayload>, "website">, "website">;
 
   const hasAnyField = Boolean(lead.name || lead.email || lead.projectType || lead.message);
   if (!hasAnyField) {

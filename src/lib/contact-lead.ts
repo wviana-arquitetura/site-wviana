@@ -3,6 +3,8 @@ export type ContactLeadPayload = {
   email?: string;
   projectType?: string;
   message?: string;
+  /** Honeypot anti-bot: humanos não veem este campo. Sempre vazio em submissões legítimas. */
+  website?: string;
 };
 
 const API_PATH = "/api/contact";

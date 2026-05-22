@@ -39,7 +39,7 @@ const contactFaqItems = [
 export default function ContactPage() {
   const rootRef = useRef<HTMLElement>(null);
   const router = useRouter();
-  const [submitState, setSubmitState] = useState<"idle" | "sent">("idle");
+  const [submitState, setSubmitState] = useState<"idle" | "submitting" | "sent">("idle");
   const contactJsonLd = getContactPageJsonLd();
   const faqJsonLd = getFaqJsonLd(contactFaqItems);
   const breadcrumbJsonLd = getBreadcrumbJsonLd([
@@ -52,6 +52,7 @@ export default function ContactPage() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (submitState === "submitting") return;
 
     const form = event.currentTarget;
     const data = new FormData(form);
@@ -60,9 +61,12 @@ export default function ContactPage() {
     const email = String(data.get("email") || "").trim();
     const projectType = String(data.get("project-type") || "").trim();
     const message = String(data.get("message") || "").trim();
+    const website = String(data.get("website") || "").trim();
 
     const hasAnyField = Boolean(name || email || projectType || message);
     const formProjectType = projectType || undefined;
+
+    setSubmitState("submitting");
 
     trackEvent("whatsapp_form_submit", {
       cta_location: "contato_page_form",
@@ -71,7 +75,7 @@ export default function ContactPage() {
       form_has_message: Boolean(message),
     });
 
-    submitContactLead({ name, email, projectType, message });
+    submitContactLead({ name, email, projectType, message, website });
 
     const text = hasAnyField
       ? [
@@ -231,6 +235,19 @@ export default function ContactPage() {
                   aria-label="Formulário de contato"
                   onSubmit={handleSubmit}
                 >
+                  {/* Honeypot anti-bot: humanos não veem; bots automáticos preenchem. */}
+                  <div aria-hidden="true" className="sr-only">
+                    <label htmlFor="website">Deixe em branco</label>
+                    <input
+                      id="website"
+                      name="website"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      defaultValue=""
+                    />
+                  </div>
+
                   <FormField label="Nome" name="name" />
                   <FormField label="E-mail" name="email" type="email" />
 
@@ -280,25 +297,29 @@ export default function ContactPage() {
 
                   <button
                     type="submit"
-                    className="group mt-2 flex w-full items-center justify-center gap-3 border py-4 text-caption uppercase tracking-[0.18em] text-foreground transition-all hover:bg-secondary hover:text-"
+                    disabled={submitState !== "idle"}
+                    aria-busy={submitState === "submitting"}
+                    className="group mt-2 flex w-full items-center justify-center gap-3 border py-4 text-caption uppercase tracking-[0.18em] text-foreground transition-all hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-transparent"
                     style={{ borderColor: "hsl(var(--accent) / 0.4)" }}
                   >
-                    conversar no whatsapp →
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      className="transition-transform group-hover:translate-x-1"
-                    >
-                      <path
-                        d="M3 8h10M9 4l4 4-4 4"
-                        stroke="currentColor"
-                        strokeWidth="1"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                    {submitState === "submitting" ? "enviando…" : "conversar no whatsapp →"}
+                    {submitState === "idle" ? (
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        className="transition-transform group-hover:translate-x-1"
+                      >
+                        <path
+                          d="M3 8h10M9 4l4 4-4 4"
+                          stroke="currentColor"
+                          strokeWidth="1"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    ) : null}
                   </button>
 
                   {submitState === "sent" ? (
