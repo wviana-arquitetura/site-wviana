@@ -69,12 +69,12 @@ export function CookieConsent() {
         <p className="max-w-[680px] text-caption leading-[1.5] text-muted-foreground">
           Usamos cookies para medir desempenho do site e melhorar campanhas. Você pode aceitar ou recusar — sua escolha é guardada neste dispositivo.{" "}
           <Link
-            href="/contato"
+            href="/privacidade"
             className="underline underline-offset-4 transition-colors hover:text-foreground"
           >
-            Fale conosco
-          </Link>{" "}
-          em caso de dúvidas.
+            Política de Privacidade
+          </Link>
+          .
         </p>
         <div className="flex shrink-0 gap-3">
           <button

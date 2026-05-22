@@ -225,9 +225,9 @@ export function SiteFooter({ hideCta = false }: SiteFooterProps) {
             className="text-micro uppercase tracking-[0.22em]"
             style={{ color: "hsl(var(--accent-strong))" }}
           >
-            &copy; 2026 W.VIANA Arquitetura | Interiores
+            &copy; 2026 W.VIANA Arquitetura | Interiores &middot; CNPJ {BRAND.legal.cnpj}
           </p>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap gap-6">
             <Link
               href={BRAND.instagramUrl}
               target="_blank"
@@ -245,6 +245,20 @@ export function SiteFooter({ hideCta = false }: SiteFooterProps) {
               style={{ color: "hsl(var(--accent-strong))" }}
             >
               Pinterest
+            </Link>
+            <Link
+              href="/privacidade"
+              className="text-micro uppercase tracking-[0.22em] transition-opacity hover:opacity-60"
+              style={{ color: "hsl(var(--accent-strong))" }}
+            >
+              Privacidade
+            </Link>
+            <Link
+              href="/termos"
+              className="text-micro uppercase tracking-[0.22em] transition-opacity hover:opacity-60"
+              style={{ color: "hsl(var(--accent-strong))" }}
+            >
+              Termos
             </Link>
           </div>
         </div>
