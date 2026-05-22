@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { Suspense } from "react";
 import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import { GlobalIntroLoader } from "@/components/providers/GlobalIntroLoader";
 import { SiteChrome } from "@/components/layout/site-chrome";
 import "./globals.css";
@@ -211,6 +212,7 @@ export default function RootLayout({
         </QueryProvider>
         <CookieConsent />
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
