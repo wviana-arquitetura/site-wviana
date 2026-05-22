@@ -16,8 +16,11 @@ export const defaultDescription =
 export const defaultOgDescription =
   "Arquitetura e interiores em Fortaleza com método claro, materialidade precisa e projetos residenciais e comerciais sob medida.";
 
-export const defaultOgImagePath = "/og/default";
-
+/**
+ * As imagens OG sao geradas em build via `opengraph-image.tsx` (App Router convention).
+ * O Next injeta `og:image` / `twitter:image` automaticamente apontando para o PNG estatico,
+ * entao `pageMeta` so passa `images` quando explicitamente sobrescrito (raro).
+ */
 export const defaultOgImageAlt =
   "W.VIANA — Arquitetura e interiores em Fortaleza";
 
@@ -43,6 +46,7 @@ export function pageMeta(input: {
   path: string;
   socialTitle?: string;
   ogDescription?: string;
+  /** Sobrescreve a imagem OG (raro). Por padrao usa o PNG gerado por opengraph-image.tsx. */
   ogImagePath?: string;
   imageAlt?: string;
   ogType?: "website" | "article";
@@ -52,14 +56,20 @@ export function pageMeta(input: {
   absoluteTitle?: boolean;
 }): Metadata {
   const path = input.path.startsWith("/") ? input.path : `/${input.path}`;
-  const imagePath = input.ogImagePath ?? defaultOgImagePath;
   const description = compactDescription(input.description);
   const ogDesc = compactDescription(input.ogDescription ?? description, 200);
   const socialTitle = input.socialTitle ?? input.title;
   const canonical = input.absoluteCanonical ?? absoluteUrl(path);
   const imageAlt = input.imageAlt ?? defaultOgImageAlt;
-  // Rotas OG geradas pelo proprio site (defaultOgImagePath ou /og/*) tem 1200x630 PNG.
-  const isGeneratedOgImage = imagePath === defaultOgImagePath || imagePath.startsWith("/og/");
+
+  const customImages = input.ogImagePath
+    ? [
+        {
+          url: absoluteUrl(input.ogImagePath),
+          alt: imageAlt,
+        },
+      ]
+    : undefined;
 
   return {
     title: input.absoluteTitle ? { absolute: input.title } : input.title,
@@ -73,21 +83,13 @@ export function pageMeta(input: {
       siteName: BRAND.name,
       title: socialTitle,
       description: ogDesc,
-      images: [
-        {
-          url: absoluteUrl(imagePath),
-          alt: imageAlt,
-          ...(isGeneratedOgImage
-            ? { width: 1200, height: 630, type: "image/png" }
-            : {}),
-        },
-      ],
+      ...(customImages ? { images: customImages } : {}),
     },
     twitter: {
       card: "summary_large_image",
       title: socialTitle,
       description: ogDesc,
-      images: [absoluteUrl(imagePath)],
+      ...(customImages ? { images: customImages.map((i) => i.url) } : {}),
     },
   };
 }
@@ -111,7 +113,7 @@ export function getOrganizationAndWebsiteJsonLd() {
         email: BRAND.email,
         telephone: BRAND.whatsappPhoneFormatted,
         priceRange: "Sob consulta",
-        image: absoluteUrl(defaultOgImagePath),
+        image: absoluteUrl("/opengraph-image.png"),
         logo: absoluteUrl("/images/logos/brand/marca-logotipo-principal.svg"),
         sameAs: [BRAND.instagramUrl, BRAND.pinterestUrl],
         areaServed: [

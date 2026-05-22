@@ -6,7 +6,6 @@ import { HorizonSection } from "@/components/sections/v2/horizon-section";
 import { Void } from "@/components/ui/void";
 import {
   defaultOgDescription,
-  defaultOgImagePath,
   getOrganizationAndWebsiteJsonLd,
   pageMeta,
 } from "@/lib/seo";
@@ -18,7 +17,6 @@ export const metadata: Metadata = pageMeta({
   path: "/",
   socialTitle: "W.VIANA — Arquitetura e interiores em Fortaleza",
   ogDescription: defaultOgDescription,
-  ogImagePath: defaultOgImagePath,
   imageAlt: "Projeto residencial de interiores assinado pelo escritório W.VIANA",
   absoluteTitle: true,
 });

@@ -1,14 +1,22 @@
-import { readFile } from "node:fs/promises";
-import path from "node:path";
-import sharp from "sharp";
 import { ImageResponse } from "next/og";
-import { getProjectBySlug } from "@/services/projects.service";
-import { loadOgFonts, OG_FONT } from "@/lib/og-fonts";
+import { notFound } from "next/navigation";
+import { getAllProjects, getProjectBySlug } from "@/services/projects.service";
+import {
+  OG_FONT,
+  OG_SIZE,
+  imageResponseToJpeg,
+  loadCoverAsDataUrl,
+  loadLogoAsDataUrl,
+  loadOgFonts,
+} from "@/lib/og-shared";
 
 export const runtime = "nodejs";
-export const contentType = "image/png";
+export const contentType = "image/jpeg";
+export const size = OG_SIZE;
 
-const SIZE = { width: 1200, height: 630 } as const;
+export function generateStaticParams() {
+  return getAllProjects().map((project) => ({ slug: project.slug }));
+}
 
 const COLORS = {
   background: "#000000",
@@ -26,80 +34,22 @@ const OG = {
 const LOGO_WIDTH = 300;
 const LOGO_HEIGHT = 68;
 
-type RouteContext = {
+type Props = {
   params: Promise<{ slug: string }>;
 };
 
-async function loadLogoAsDataUrl(): Promise<string | null> {
-  try {
-    const filePath = path.join(
-      process.cwd(),
-      "public",
-      "images/logos/brand/marca-variacao-02.svg",
-    );
+export const alt = "Projeto — W.VIANA Arquitetura";
 
-    const svgText = await readFile(filePath, "utf-8");
-
-    const recolored = svgText.replace(
-      /\.cls-1\{[^}]*\}/,
-      `.cls-1{stroke-width:0px;fill:${COLORS.foreground};}`,
-    );
-
-    const png = await sharp(Buffer.from(recolored), { density: 500 })
-      .trim()
-      .resize({
-        width: LOGO_WIDTH * 2,
-        withoutEnlargement: false,
-      })
-      .png()
-      .toBuffer();
-
-    return `data:image/png;base64,${png.toString("base64")}`;
-  } catch {
-    return null;
-  }
-}
-
-async function loadProjectImageAsDataUrl(
-  relativeSrc: string,
-): Promise<string | null> {
-  try {
-    const filePath = path.join(
-      process.cwd(),
-      "public",
-      relativeSrc.replace(/^\//, ""),
-    );
-
-    const buffer = await readFile(filePath);
-
-    const jpeg = await sharp(buffer)
-      .resize(SIZE.width * 2, SIZE.height * 2, {
-        fit: "cover",
-        position: "center",
-      })
-      .jpeg({
-        quality: 84,
-        mozjpeg: true,
-      })
-      .toBuffer();
-
-    return `data:image/jpeg;base64,${jpeg.toString("base64")}`;
-  } catch {
-    return null;
-  }
-}
-
-export async function GET(_request: Request, { params }: RouteContext) {
+export default async function OpengraphImage({ params }: Props) {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
+  if (!project) notFound();
 
-  if (!project) {
-    return new Response(null, { status: 404 });
-  }
+  const coverSrc = project.ogImageSrc ?? project.imageSrc;
 
-  const [backgroundUrl, logoUrl, { fonts }] = await Promise.all([
-    loadProjectImageAsDataUrl(project.imageSrc),
-    loadLogoAsDataUrl(),
+  const [backgroundUrl, logoUrl, fonts] = await Promise.all([
+    loadCoverAsDataUrl(coverSrc),
+    loadLogoAsDataUrl(COLORS.foreground),
     loadOgFonts(),
   ]);
 
@@ -113,7 +63,7 @@ export async function GET(_request: Request, { params }: RouteContext) {
   const titleFontSize =
     project.title.length > 42 ? 58 : project.title.length > 28 ? 64 : 72;
 
-  return new ImageResponse(
+  const image = new ImageResponse(
     (
       <div
         style={{
@@ -128,12 +78,12 @@ export async function GET(_request: Request, { params }: RouteContext) {
         }}
       >
         {backgroundUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
+           
           <img
             src={backgroundUrl}
             alt=""
-            width={SIZE.width}
-            height={SIZE.height}
+            width={OG_SIZE.width}
+            height={OG_SIZE.height}
             style={{
               position: "absolute",
               inset: 0,
@@ -182,16 +132,13 @@ export async function GET(_request: Request, { params }: RouteContext) {
             }}
           >
             {logoUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
+               
               <img
                 src={logoUrl}
                 alt=""
                 width={LOGO_WIDTH}
                 height={LOGO_HEIGHT}
-                style={{
-                  objectFit: "contain",
-                  objectPosition: "left top",
-                }}
+                style={{ objectFit: "contain", objectPosition: "left top" }}
               />
             ) : (
               <div
@@ -323,6 +270,8 @@ export async function GET(_request: Request, { params }: RouteContext) {
         </div>
       </div>
     ),
-    { ...SIZE, fonts },
+    { ...OG_SIZE, fonts },
   );
+
+  return imageResponseToJpeg(image);
 }

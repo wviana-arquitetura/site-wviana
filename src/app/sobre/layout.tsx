@@ -7,7 +7,6 @@ export const metadata: Metadata = pageMeta({
   description:
     "Conheça Wellington Viana e o escritório W.VIANA, especializado em arquitetura e interiores em Fortaleza com projetos autorais.",
   path: "/sobre",
-  ogImagePath: "/og/sobre",
   imageAlt: "Sobre Wellington Viana — fundador do escritório W.VIANA",
 });
 
