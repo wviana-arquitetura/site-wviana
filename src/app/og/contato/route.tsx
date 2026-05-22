@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
 import { ImageResponse } from "next/og";
-import { getProjectBySlug } from "@/services/projects.service";
+import { BRAND } from "@/lib/brand";
 import { loadOgFonts, OG_FONT } from "@/lib/og-fonts";
 
 export const runtime = "nodejs";
@@ -11,24 +11,24 @@ export const contentType = "image/png";
 const SIZE = { width: 1200, height: 630 } as const;
 
 const COLORS = {
-  background: "#000000",
-  foreground: "#F2F2F2",
-  muted: "rgba(242,242,242,0.76)",
+  background: "#F2F2F2",
+  foreground: "#111111",
+  muted: "#6F6A66",
   accent: "#BAAEA4",
-  line: "rgba(242,242,242,0.24)",
+  line: "#D8D2CD",
+  soft: "#E4DDD7",
 } as const;
 
 const OG = {
+  eyebrow: "Arquitetura e Interiores",
+  title: "Vamos conversar sobre o seu projeto.",
+  subtitle:
+    "Projetos residenciais e comerciais pensados para rotina, materialidade e experiência.",
   site: "wvianaarquitetura.com.br",
-  label: "Portfólio de projetos",
 } as const;
 
-const LOGO_WIDTH = 300;
-const LOGO_HEIGHT = 68;
-
-type RouteContext = {
-  params: Promise<{ slug: string }>;
-};
+const LOGO_WIDTH = 390;
+const LOGO_HEIGHT = 86;
 
 async function loadLogoAsDataUrl(): Promise<string | null> {
   try {
@@ -60,58 +60,11 @@ async function loadLogoAsDataUrl(): Promise<string | null> {
   }
 }
 
-async function loadProjectImageAsDataUrl(
-  relativeSrc: string,
-): Promise<string | null> {
-  try {
-    const filePath = path.join(
-      process.cwd(),
-      "public",
-      relativeSrc.replace(/^\//, ""),
-    );
-
-    const buffer = await readFile(filePath);
-
-    const jpeg = await sharp(buffer)
-      .resize(SIZE.width * 2, SIZE.height * 2, {
-        fit: "cover",
-        position: "center",
-      })
-      .jpeg({
-        quality: 84,
-        mozjpeg: true,
-      })
-      .toBuffer();
-
-    return `data:image/jpeg;base64,${jpeg.toString("base64")}`;
-  } catch {
-    return null;
-  }
-}
-
-export async function GET(_request: Request, { params }: RouteContext) {
-  const { slug } = await params;
-  const project = getProjectBySlug(slug);
-
-  if (!project) {
-    return new Response(null, { status: 404 });
-  }
-
-  const [backgroundUrl, logoUrl, { fonts }] = await Promise.all([
-    loadProjectImageAsDataUrl(project.imageSrc),
+export async function GET() {
+  const [logoUrl, { fonts }] = await Promise.all([
     loadLogoAsDataUrl(),
     loadOgFonts(),
   ]);
-
-  const meta = [
-    project.typology,
-    [project.location, project.country].filter(Boolean).join(", "),
-  ]
-    .filter(Boolean)
-    .join(" · ");
-
-  const titleFontSize =
-    project.title.length > 42 ? 58 : project.title.length > 28 ? 64 : 72;
 
   return new ImageResponse(
     (
@@ -127,38 +80,39 @@ export async function GET(_request: Request, { params }: RouteContext) {
           fontFamily: OG_FONT.body,
         }}
       >
-        {backgroundUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={backgroundUrl}
-            alt=""
-            width={SIZE.width}
-            height={SIZE.height}
-            style={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-            }}
-          />
-        ) : null}
-
         <div
           style={{
             position: "absolute",
-            inset: 0,
-            backgroundImage:
-              "linear-gradient(90deg, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.64) 38%, rgba(0,0,0,0.28) 70%, rgba(0,0,0,0.16) 100%)",
+            right: -190,
+            top: -230,
+            width: 640,
+            height: 640,
+            borderRadius: 999,
+            background: COLORS.soft,
           }}
         />
 
         <div
           style={{
             position: "absolute",
-            inset: 0,
-            backgroundImage:
-              "linear-gradient(180deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.12) 42%, rgba(0,0,0,0.88) 100%)",
+            right: 92,
+            bottom: 92,
+            width: 250,
+            height: 250,
+            border: `1px solid ${COLORS.line}`,
+            opacity: 0.75,
+          }}
+        />
+
+        <div
+          style={{
+            position: "absolute",
+            right: 154,
+            bottom: 154,
+            width: 250,
+            height: 250,
+            border: `1px solid ${COLORS.line}`,
+            opacity: 0.45,
           }}
         />
 
@@ -168,14 +122,15 @@ export async function GET(_request: Request, { params }: RouteContext) {
             height: "100%",
             display: "flex",
             flexDirection: "column",
+            padding: "58px 76px 54px",
             position: "relative",
             zIndex: 1,
-            padding: "56px 72px 52px",
           }}
         >
           <div
             style={{
               width: "100%",
+              height: 92,
               display: "flex",
               justifyContent: "space-between",
               alignItems: "flex-start",
@@ -197,11 +152,10 @@ export async function GET(_request: Request, { params }: RouteContext) {
               <div
                 style={{
                   fontFamily: OG_FONT.display,
-                  fontSize: 48,
+                  fontSize: 46,
                   lineHeight: 1,
                   fontWeight: 800,
                   letterSpacing: 6,
-                  color: COLORS.foreground,
                 }}
               >
                 W.VIANA
@@ -213,8 +167,8 @@ export async function GET(_request: Request, { params }: RouteContext) {
                 display: "flex",
                 alignItems: "center",
                 gap: 14,
-                marginTop: 6,
-                fontSize: 17,
+                marginTop: 4,
+                fontSize: 18,
                 fontWeight: 400,
                 letterSpacing: 4,
                 textTransform: "uppercase",
@@ -228,7 +182,51 @@ export async function GET(_request: Request, { params }: RouteContext) {
                   background: COLORS.accent,
                 }}
               />
-              {OG.label}
+              {OG.eyebrow}
+            </div>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              maxWidth: 800,
+              marginTop: 42,
+            }}
+          >
+            <div
+              style={{
+                width: 104,
+                height: 4,
+                background: COLORS.accent,
+                marginBottom: 32,
+              }}
+            />
+
+            <div
+              style={{
+                fontFamily: OG_FONT.display,
+                fontSize: 76,
+                fontWeight: 300,
+                lineHeight: 0.96,
+                letterSpacing: "-0.03em",
+                color: COLORS.foreground,
+              }}
+            >
+              {OG.title}
+            </div>
+
+            <div
+              style={{
+                maxWidth: 700,
+                marginTop: 26,
+                fontSize: 28,
+                fontWeight: 400,
+                lineHeight: 1.24,
+                color: COLORS.muted,
+              }}
+            >
+              {OG.subtitle}
             </div>
           </div>
 
@@ -236,83 +234,21 @@ export async function GET(_request: Request, { params }: RouteContext) {
 
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-              maxWidth: 900,
-            }}
-          >
-            <div
-              style={{
-                width: 96,
-                height: 4,
-                background: COLORS.accent,
-                marginBottom: 28,
-              }}
-            />
-
-            <div
-              style={{
-                fontFamily: OG_FONT.display,
-                fontSize: titleFontSize,
-                fontWeight: 800,
-                lineHeight: 0.98,
-                letterSpacing: "-0.04em",
-                color: COLORS.foreground,
-                maxWidth: 900,
-              }}
-            >
-              {project.title}
-            </div>
-
-            <div
-              style={{
-                marginTop: 24,
-                display: "flex",
-                alignItems: "center",
-                gap: 18,
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 22,
-                  fontWeight: 400,
-                  lineHeight: 1.25,
-                  letterSpacing: 2.6,
-                  textTransform: "uppercase",
-                  color: COLORS.accent,
-                }}
-              >
-                {meta}
-              </div>
-            </div>
-          </div>
-
-          <div
-            style={{
               width: "100%",
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              marginTop: 42,
               borderTop: `1px solid ${COLORS.line}`,
               paddingTop: 22,
+              fontSize: 21,
+              fontWeight: 400,
+              color: COLORS.muted,
             }}
           >
-            <div
-              style={{
-                fontSize: 18,
-                fontWeight: 400,
-                letterSpacing: 4,
-                textTransform: "uppercase",
-                color: COLORS.muted,
-              }}
-            >
-              Arquitetura e Interiores
-            </div>
+            <div>{BRAND.location}</div>
 
             <div
               style={{
-                fontSize: 22,
                 color: COLORS.foreground,
                 fontWeight: 500,
               }}

@@ -2,7 +2,10 @@ import type { MetadataRoute } from "next";
 import { statSync } from "node:fs";
 import path from "node:path";
 import { BRAND } from "@/lib/brand";
-import projects from "@/data/projects.json";
+import projectsData from "@/data/projects.json";
+import type { Project } from "@/types/project";
+
+const projects = projectsData as Project[];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const projectsPath = path.join(process.cwd(), "src/data/projects.json");
@@ -22,12 +25,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       : {}),
   }));
 
-  const projectEntries: MetadataRoute.Sitemap = projects.map((project) => ({
-    url: `${BRAND.siteUrl}/projetos/${project.slug}`,
-    lastModified: projectsMtime,
-    changeFrequency: "monthly",
-    priority: 0.7,
-  }));
+  const projectEntries: MetadataRoute.Sitemap = projects.map((project) => {
+    // Se o JSON traz updatedAt valido, usamos ele; senao caimos no mtime do arquivo.
+    const parsed = project.updatedAt ? new Date(project.updatedAt) : null;
+    const lastModified =
+      parsed && !Number.isNaN(parsed.getTime()) ? parsed : projectsMtime;
+    return {
+      url: `${BRAND.siteUrl}/projetos/${project.slug}`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    };
+  });
 
   return [...staticEntries, ...projectEntries];
 }
