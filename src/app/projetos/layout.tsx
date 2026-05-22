@@ -7,7 +7,6 @@ export const metadata: Metadata = pageMeta({
   description:
     "Conheça projetos residenciais, comerciais e corporativos do escritório W.VIANA em Fortaleza e no Ceará.",
   path: "/projetos",
-  ogImagePath: "/og/default",
   imageAlt: "Portfólio de projetos residenciais e comerciais W.VIANA",
 });
 

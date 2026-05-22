@@ -15,12 +15,7 @@ import { CookieConsent } from "@/components/analytics/cookie-consent";
 import { BRAND } from "@/lib/brand";
 import { GTM_ID } from "@/lib/analytics";
 import { CONSENT_STORAGE_KEY } from "@/lib/consent";
-import {
-  defaultDescription,
-  defaultOgDescription,
-  defaultOgImageAlt,
-  defaultOgImagePath,
-} from "@/lib/seo";
+import { defaultDescription, defaultOgDescription } from "@/lib/seo";
 
 /* Aeonik — manual: Light / Medium / Bold (TRIAL: Regular cobre 400 e 500) */
 const aeonik = localFont({
@@ -79,21 +74,11 @@ export const metadata: Metadata = {
     siteName: BRAND.name,
     title: "W.VIANA — Arquitetura | Interiores",
     description: defaultOgDescription,
-    images: [
-      {
-        url: defaultOgImagePath,
-        alt: defaultOgImageAlt,
-        width: 1200,
-        height: 630,
-        type: "image/png",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "W.VIANA — Arquitetura | Interiores",
     description: defaultOgDescription,
-    images: [defaultOgImagePath],
   },
 };
 

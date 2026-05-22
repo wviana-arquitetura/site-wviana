@@ -1,13 +1,18 @@
-import { readFile } from "node:fs/promises";
-import path from "node:path";
-import sharp from "sharp";
 import { ImageResponse } from "next/og";
-import { loadOgFonts, OG_FONT } from "@/lib/og-fonts";
+import {
+  OG_FONT,
+  OG_SIZE,
+  OG_CONTENT_TYPE,
+  loadAboutImageAsDataUrl,
+  loadLogoAsDataUrl,
+  loadMarkAsDataUrl,
+  loadOgFonts,
+} from "@/lib/og-shared";
 
 export const runtime = "nodejs";
-export const contentType = "image/png";
-
-const SIZE = { width: 1200, height: 630 } as const;
+export const contentType = OG_CONTENT_TYPE;
+export const size = OG_SIZE;
+export const alt = "Wellington Viana — Fundador da W.VIANA";
 
 const COLORS = {
   background: "#F2F2F2",
@@ -34,9 +39,9 @@ const OG = {
 
 const LOGO_WIDTH = 300;
 const LOGO_HEIGHT = 68;
-
 const MARK_WIDTH = 300;
 const MARK_HEIGHT = 300;
+const ABOUT_PANEL_WIDTH = 470;
 
 const ABOUT_IMAGE_CANDIDATES = [
   "/images/sobre/wellington-viana.webp",
@@ -49,104 +54,15 @@ const ABOUT_IMAGE_CANDIDATES = [
   "/images/about/sobre-wellington-viana.jpg",
   "/images/wellington-viana.webp",
   "/images/wellington-viana.jpg",
+  "/images/team/wellington-viana/sobre-desktop.webp",
+  "/images/team/wellington-viana/sobre-desktop-2.webp",
 ] as const;
 
-async function loadLogoAsDataUrl(): Promise<string | null> {
-  try {
-    const filePath = path.join(
-      process.cwd(),
-      "public",
-      "images/logos/brand/marca-variacao-02.svg",
-    );
-
-    const svgText = await readFile(filePath, "utf-8");
-
-    const recolored = svgText.replace(
-      /\.cls-1\{[^}]*\}/,
-      `.cls-1{stroke-width:0px;fill:${COLORS.foreground};}`,
-    );
-
-    const png = await sharp(Buffer.from(recolored), { density: 500 })
-      .trim()
-      .resize({
-        width: LOGO_WIDTH * 2,
-        withoutEnlargement: false,
-      })
-      .png()
-      .toBuffer();
-
-    return `data:image/png;base64,${png.toString("base64")}`;
-  } catch {
-    return null;
-  }
-}
-
-async function loadMarkAsDataUrl(): Promise<string | null> {
-  try {
-    const filePath = path.join(
-      process.cwd(),
-      "public",
-      "images/logos/brand/marca-variacao-07.svg",
-    );
-
-    const svgText = await readFile(filePath, "utf-8");
-
-    const recolored = svgText.replace(
-      /<svg\b([^>]*)>/,
-      `<svg$1><style>*{fill:${COLORS.foreground}!important;stroke:${COLORS.foreground}!important;}</style>`,
-    );
-
-    const png = await sharp(Buffer.from(recolored), { density: 500 })
-      .trim()
-      .resize({
-        width: MARK_WIDTH * 2,
-        withoutEnlargement: false,
-      })
-      .png()
-      .toBuffer();
-
-    return `data:image/png;base64,${png.toString("base64")}`;
-  } catch {
-    return null;
-  }
-}
-
-async function loadAboutImageAsDataUrl(): Promise<string | null> {
-  for (const src of ABOUT_IMAGE_CANDIDATES) {
-    try {
-      const filePath = path.join(
-        process.cwd(),
-        "public",
-        src.replace(/^\//, ""),
-      );
-
-      const buffer = await readFile(filePath);
-
-      const jpeg = await sharp(buffer)
-        .resize(520 * 2, SIZE.height * 2, {
-          fit: "cover",
-          position: "center",
-        })
-        .jpeg({
-          quality: 86,
-          mozjpeg: true,
-        })
-        .toBuffer();
-
-      return `data:image/jpeg;base64,${jpeg.toString("base64")}`;
-    } catch {
-      continue;
-    }
-  }
-
-  return null;
-}
-
-export async function GET() {
-  const [logoUrl, aboutImageUrl, markUrl, { fonts }] = await Promise.all([
-    loadLogoAsDataUrl(),
-    loadAboutImageAsDataUrl(),
-    loadMarkAsDataUrl(),
+export default async function OpengraphImage() {
+  const [logoUrl, aboutImageUrl, markUrl, fonts] = await Promise.all([
+    loadLogoAsDataUrl(COLORS.foreground),
+    loadAboutImageAsDataUrl(ABOUT_IMAGE_CANDIDATES, ABOUT_PANEL_WIDTH),
+    loadMarkAsDataUrl(COLORS.foreground),
     loadOgFonts(),
   ]);
 
@@ -211,7 +127,7 @@ export async function GET() {
         >
           <div
             style={{
-              width: 470,
+              width: ABOUT_PANEL_WIDTH,
               height: "100%",
               display: "flex",
               position: "relative",
@@ -223,12 +139,12 @@ export async function GET() {
             }}
           >
             {aboutImageUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
+               
               <img
                 src={aboutImageUrl}
                 alt=""
-                width={520}
-                height={SIZE.height}
+                width={ABOUT_PANEL_WIDTH}
+                height={OG_SIZE.height}
                 style={{
                   width: "100%",
                   height: "100%",
@@ -238,7 +154,7 @@ export async function GET() {
                 }}
               />
             ) : markUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
+               
               <img
                 src={markUrl}
                 alt=""
@@ -295,16 +211,13 @@ export async function GET() {
               }}
             >
               {logoUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
+                 
                 <img
                   src={logoUrl}
                   alt=""
                   width={LOGO_WIDTH}
                   height={LOGO_HEIGHT}
-                  style={{
-                    objectFit: "contain",
-                    objectPosition: "left top",
-                  }}
+                  style={{ objectFit: "contain", objectPosition: "left top" }}
                 />
               ) : (
                 <div
@@ -333,13 +246,7 @@ export async function GET() {
                   color: COLORS.muted,
                 }}
               >
-                <span
-                  style={{
-                    width: 42,
-                    height: 1,
-                    background: COLORS.accent,
-                  }}
-                />
+                <span style={{ width: 42, height: 1, background: COLORS.accent }} />
                 {OG.eyebrow}
               </div>
             </div>
@@ -413,20 +320,11 @@ export async function GET() {
                 justifyContent: "space-between",
               }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  gap: 34,
-                }}
-              >
+              <div style={{ display: "flex", gap: 34 }}>
                 {OG.stats.map((item) => (
                   <div
                     key={item.label}
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 6,
-                    }}
+                    style={{ display: "flex", flexDirection: "column", gap: 6 }}
                   >
                     <div
                       style={{
@@ -468,6 +366,6 @@ export async function GET() {
         </div>
       </div>
     ),
-    { ...SIZE, fonts },
+    { ...OG_SIZE, fonts },
   );
 }

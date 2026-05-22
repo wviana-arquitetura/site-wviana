@@ -1,13 +1,16 @@
-import { readFile } from "node:fs/promises";
-import path from "node:path";
-import sharp from "sharp";
 import { ImageResponse } from "next/og";
-import { loadOgFonts, OG_FONT } from "@/lib/og-fonts";
+import {
+  OG_FONT,
+  OG_SIZE,
+  OG_CONTENT_TYPE,
+  loadLogoAsDataUrl,
+  loadOgFonts,
+} from "@/lib/og-shared";
 
 export const runtime = "nodejs";
-export const contentType = "image/png";
-
-const SIZE = { width: 1200, height: 630 } as const;
+export const contentType = OG_CONTENT_TYPE;
+export const size = OG_SIZE;
+export const alt = "W.VIANA — Arquitetura e interiores em Fortaleza";
 
 const COLORS = {
   background: "#F2F2F2",
@@ -28,39 +31,9 @@ const OG = {
 const LOGO_WIDTH = 720;
 const LOGO_HEIGHT = 160;
 
-async function loadLogoAsDataUrl(): Promise<string | null> {
-  try {
-    const filePath = path.join(
-      process.cwd(),
-      "public",
-      "images/logos/brand/marca-variacao-02.svg",
-    );
-
-    const svgText = await readFile(filePath, "utf-8");
-
-    const recolored = svgText.replace(
-      /\.cls-1\{[^}]*\}/,
-      `.cls-1{stroke-width:0px;fill:${COLORS.foreground};}`,
-    );
-
-    const png = await sharp(Buffer.from(recolored), { density: 500 })
-      .trim()
-      .resize({
-        width: LOGO_WIDTH * 2,
-        withoutEnlargement: false,
-      })
-      .png()
-      .toBuffer();
-
-    return `data:image/png;base64,${png.toString("base64")}`;
-  } catch {
-    return null;
-  }
-}
-
-export async function GET() {
-  const [logoUrl, { fonts }] = await Promise.all([
-    loadLogoAsDataUrl(),
+export default async function OpengraphImage() {
+  const [logoUrl, fonts] = await Promise.all([
+    loadLogoAsDataUrl(COLORS.foreground),
     loadOgFonts(),
   ]);
 
@@ -138,13 +111,7 @@ export async function GET() {
               color: COLORS.muted,
             }}
           >
-            <span
-              style={{
-                width: 42,
-                height: 1,
-                background: COLORS.accent,
-              }}
-            />
+            <span style={{ width: 42, height: 1, background: COLORS.accent }} />
             {OG.title}
           </div>
 
@@ -158,16 +125,13 @@ export async function GET() {
             }}
           >
             {logoUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
+               
               <img
                 src={logoUrl}
                 alt=""
                 width={LOGO_WIDTH}
                 height={LOGO_HEIGHT}
-                style={{
-                  objectFit: "contain",
-                  objectPosition: "center",
-                }}
+                style={{ objectFit: "contain", objectPosition: "center" }}
               />
             ) : (
               <div
@@ -219,6 +183,6 @@ export async function GET() {
         </div>
       </div>
     ),
-    { ...SIZE, fonts },
+    { ...OG_SIZE, fonts },
   );
 }

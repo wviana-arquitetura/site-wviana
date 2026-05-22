@@ -7,7 +7,6 @@ export const metadata: Metadata = pageMeta({
   description:
     "Fale com o escritório W.VIANA em Fortaleza para conversar sobre projetos residenciais, comerciais, arquitetura e interiores.",
   path: "/contato",
-  ogImagePath: "/og/contato",
   imageAlt: "Contato do escritório W.VIANA em Fortaleza",
 });
 
