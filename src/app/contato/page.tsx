@@ -2,6 +2,7 @@
 
 import { FormEvent, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
 import { useDesktopMailtoBlankTarget } from "@/hooks/use-desktop-mailto-target";
 import { BRAND } from "@/lib/brand";
@@ -37,6 +38,7 @@ const contactFaqItems = [
 
 export default function ContactPage() {
   const rootRef = useRef<HTMLElement>(null);
+  const router = useRouter();
   const [submitState, setSubmitState] = useState<"idle" | "sent">("idle");
   const contactJsonLd = getContactPageJsonLd();
   const faqJsonLd = getFaqJsonLd(contactFaqItems);
@@ -91,6 +93,7 @@ export default function ContactPage() {
 
     setSubmitState("sent");
     form.reset();
+    router.push("/contato/obrigado");
   };
 
   return (

@@ -11,10 +11,18 @@ const LEAD_NOTIFICATION_EMAIL = process.env.LEAD_NOTIFICATION_EMAIL;
 const LEADS_SHEET_WEBHOOK_URL = process.env.LEADS_SHEET_WEBHOOK_URL;
 
 const MAX_FIELD_LENGTH = 5000;
+const MAX_EMAIL_LENGTH = 254;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 const sanitize = (value: unknown): string => {
   if (typeof value !== "string") return "";
   return value.trim().slice(0, MAX_FIELD_LENGTH);
+};
+
+const isValidEmail = (value: string): boolean => {
+  if (!value) return true;
+  if (value.length > MAX_EMAIL_LENGTH) return false;
+  return EMAIL_REGEX.test(value);
 };
 
 const escapeHtml = (raw: string): string =>
@@ -130,6 +138,10 @@ export async function POST(request: Request) {
   const hasAnyField = Boolean(lead.name || lead.email || lead.projectType || lead.message);
   if (!hasAnyField) {
     return NextResponse.json({ ok: false, error: "empty_payload" }, { status: 400 });
+  }
+
+  if (!isValidEmail(lead.email)) {
+    return NextResponse.json({ ok: false, error: "invalid_email" }, { status: 400 });
   }
 
   const results = await Promise.allSettled([sendEmail(lead), sendToSheet(lead)]);
