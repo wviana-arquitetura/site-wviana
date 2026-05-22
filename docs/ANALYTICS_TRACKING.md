@@ -40,12 +40,34 @@ Para evitar duplicidade, deve existir **apenas uma estrategia**:
 - **Opcao recomendada**: usar `page_view` via dataLayer manual (ja implementado), e **desativar** o `send_page_view` na tag GA4 Configuration do GTM.
 - **Nao usar** ao mesmo tempo History Change do GTM e dataLayer manual.
 
-## 5. Privacidade e LGPD
+## 5. Privacidade, LGPD e Consent Mode v2
 
+### 5.1 Regras gerais
 - **Nunca enviar dados pessoais** do formulario para GA4, GTM ou Google Ads.
 - Campos como **nome, e-mail e mensagem** nao devem aparecer em parametros de evento.
 - Para WhatsApp, nao enviar o link completo com query. Use apenas dominio/caminho.
-- Banner simples de cookies e Consent Mode sao recomendados quando iniciar Ads.
+
+### 5.2 Consent Mode v2 (implementado)
+O site instala o Google Consent Mode v2 antes do GTM carregar. O estado default e `denied` para os quatro sinais:
+
+- `ad_storage`
+- `analytics_storage`
+- `ad_user_data`
+- `ad_personalization`
+
+A inicializacao vive em `src/app/layout.tsx` (script inline `consentInitScript`), que tambem registra `window.gtag` e aplica `wait_for_update: 500ms`.
+
+### 5.3 Banner de cookies
+- Componente: `src/components/analytics/cookie-consent.tsx`
+- Posicao: barra inferior fixa, com botoes **Aceitar** / **Recusar**
+- Persistencia: localStorage (`wviana.consent.v1`), formato `'granted' | 'denied'`
+- Em paginas com hero (`[data-section="hero"]`), o banner so aparece quando a hero sai da viewport — preserva o impacto visual da home
+- Decisao guardada e re-aplicada no proximo page load (sem aparecer de novo)
+
+### 5.4 Como o GTM deve consumir
+- Ativar o **Consent Mode v2** em todas as tags do Google (GA4 Configuration, Conversion Linker, Ads).
+- As tags vao respeitar `analytics_storage` e `ad_storage` automaticamente.
+- Para visitantes em `denied`, o Google ainda alimenta modeling (consent-aware), mas sem cookies persistentes.
 
 ## 6. Responsabilidades
 
@@ -54,6 +76,8 @@ Para evitar duplicidade, deve existir **apenas uma estrategia**:
 - Garantir page_view sem duplicidade.
 - Garantir eventos de contato e projetos.
 - Garantir ausencia de dados pessoais nos eventos.
+- Manter o Consent Mode v2 (default `denied`) carregando antes do GTM.
+- Manter o endpoint `/api/contact` com honeypot, rate-limit e validacao funcionando.
 - Validar eventos via DebugView/Tag Assistant.
 
 ### 6.2 Gestor de trafego
@@ -87,6 +111,25 @@ Para evitar duplicidade, deve existir **apenas uma estrategia**:
 3. Importar **whatsapp_click** e **email_click** como conversions secundarias.
 4. Otimizacao inicial: **apenas whatsapp_form_submit**.
 
+### 7.4 Captura de lead (e-mail + planilha)
+Alem do tracking, o form de `/contato` envia o lead para um endpoint proprio:
+
+- Endpoint: `POST /api/contact` (em `src/app/api/contact/route.ts`)
+- E-mail transacional via **Resend** (variavel `RESEND_API_KEY`); destino em `LEAD_NOTIFICATION_EMAIL`
+- Planilha via **Google Apps Script Web App** (variavel `LEADS_SHEET_WEBHOOK_URL`)
+- Wrapper client: `src/lib/contact-lead.ts` — fire-and-forget com `keepalive: true` para sobreviver ao `window.open` do WhatsApp
+
+### 7.5 Pagina de obrigado (`/contato/obrigado`)
+- Apos o submit do form, o usuario e redirecionado para `/contato/obrigado` (o WhatsApp ja abriu em outra aba).
+- A pagina e **noindex/nofollow** e **fora do sitemap** — nao compete no organico.
+- Funciona como **URL de conversao fallback** no Google Ads (alem do evento `whatsapp_form_submit`).
+
+### 7.6 Protecao do endpoint
+- **Honeypot**: campo escondido `website` no form; se preenchido, o endpoint retorna 200 silenciosamente sem disparar Resend/Sheet.
+- **Rate-limit**: 5 requests por minuto por IP (sliding window em memoria — `src/lib/rate-limit.ts`). IP lido de `x-forwarded-for` / `x-real-ip`. Retorna 429 com `Retry-After` quando bloqueado.
+- **Validacao**: e-mail tem que bater no regex basico (se vier preenchido); payload todo vazio retorna 400.
+- Em producao serverless, considerar trocar o rate-limit em memoria por **Upstash Redis / Vercel KV** se o trafego crescer.
+
 ## 8. Checklist de validacao
 
 - GA4 DebugView: eventos e parametros corretos.
@@ -94,11 +137,18 @@ Para evitar duplicidade, deve existir **apenas uma estrategia**:
 - Google Ads: diagnostico de conversoes importadas.
 - Testar em desktop e mobile.
 - Confirmar ausencia de dados pessoais nos eventos.
+- Consent Mode: confirmar `consent default 'denied'` no console (`window.dataLayer`) antes de qualquer interacao do banner.
+- Banner: aparece apos sair da hero na home; nao reaparece em proxima visita.
+- Endpoint: 429 apos 5 requests em 60s; honeypot preenchido retorna 200 sem disparar email.
+- Page view de `/contato/obrigado` aparece no GA4 apos submit do form.
 
 ## 9. O que nao esta no escopo agora
 
 - BigQuery, lead scoring, CRM, server-side tagging, dashboards enterprise.
 - Eventos granulares demais (scroll por secao, view de cada imagem, etc.).
+- Enhanced conversions (hash de e-mail no client / server-side).
+- CMP de terceiro (Cookiebot, Iubenda) — usamos banner proprio simples.
+- Politica de privacidade dedicada (item pendente, ver `docs/IMPROVEMENTS.md`).
 
 ## 10. Glossario rapido
 
