@@ -10,8 +10,10 @@ import { QueryProvider } from "@/components/providers/query-provider";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { PageViewTracker } from "@/components/analytics/page-view-tracker";
+import { CookieConsent } from "@/components/analytics/cookie-consent";
 import { BRAND } from "@/lib/brand";
 import { GTM_ID } from "@/lib/analytics";
+import { CONSENT_STORAGE_KEY } from "@/lib/consent";
 import {
   defaultDescription,
   defaultOgDescription,
@@ -126,6 +128,32 @@ const preHydrationCleanScript = `
 })();
 `;
 
+const consentInitScript = `
+(function(){
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ window.dataLayer.push(arguments); }
+  window.gtag = gtag;
+  gtag('consent','default',{
+    ad_storage:'denied',
+    analytics_storage:'denied',
+    ad_user_data:'denied',
+    ad_personalization:'denied',
+    wait_for_update: 500
+  });
+  try {
+    var stored = window.localStorage.getItem('${CONSENT_STORAGE_KEY}');
+    if (stored === 'granted' || stored === 'denied') {
+      gtag('consent','update',{
+        ad_storage: stored,
+        analytics_storage: stored,
+        ad_user_data: stored,
+        ad_personalization: stored
+      });
+    }
+  } catch (e) {}
+})();
+`;
+
 const gtmScript = GTM_ID
   ? `
 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -149,6 +177,10 @@ export default function RootLayout({
       >
         <script
           dangerouslySetInnerHTML={{ __html: preHydrationCleanScript }}
+          suppressHydrationWarning
+        />
+        <script
+          dangerouslySetInnerHTML={{ __html: consentInitScript }}
           suppressHydrationWarning
         />
         {GTM_ID ? (
@@ -177,6 +209,7 @@ export default function RootLayout({
             </SmoothScrollProvider>
           </Suspense>
         </QueryProvider>
+        <CookieConsent />
         <SpeedInsights />
       </body>
     </html>

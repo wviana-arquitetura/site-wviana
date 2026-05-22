@@ -2,6 +2,7 @@ export {};
 
 declare global {
   interface Window {
-    dataLayer?: Array<Record<string, unknown>>;
+    dataLayer?: Array<Record<string, unknown> | IArguments>;
+    gtag?: (...args: unknown[]) => void;
   }
 }
