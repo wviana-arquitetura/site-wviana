@@ -88,17 +88,46 @@ Hoje o form leva pro `wa.me` (WhatsApp pessoal). Migrar para WhatsApp Business c
 
 ## Compliance e legal
 
-### 15. Política de privacidade e termos de uso
-Exigência LGPD. O banner de cookies já existe, mas falta o link da política em si.
-- **Esforço:** ~2h (texto + página)
-- **Impacto:** obrigatório — risco legal se não tiver, especialmente com Google Ads ativo
+### 15. Política de privacidade e termos de uso ✅
+**Concluído** — páginas `/privacidade` e `/termos` publicadas, banner aponta para `/privacidade`, footer com CNPJ.
+
+## Google Ads (lado do código)
+
+Preparação técnica do site para campanhas. A configuração nas contas Google (vincular GA4↔Ads, importar conversões, auto-tagging, Consent Mode nas tags) é responsabilidade do gestor de tráfego.
+
+### 16. UTM listener nos eventos e no lead
+Capturar `utm_source/medium/campaign/term/content` ao chegar no site e propagar nos eventos do GTM e no e-mail/planilha do lead. Sem isso o cliente não sabe de qual campanha veio o lead.
+- **Esforço:** ~1h
+- **Impacto:** alto — base de qualquer relatório de campanha
+
+### 17. Enhanced Conversions
+Enviar e-mail hasheado (SHA-256) junto do `whatsapp_form_submit` para o Google reconciliar com contas Google. Aumenta atribuição em 5-10%. Depende do domínio verificado no Ads.
+- **Esforço:** ~1h (código) + setup no Ads
+- **Impacto:** médio — melhora atribuição e bidding
+
+### 18. Landing pages otimizadas para anúncio
+Páginas dedicadas por intenção: `/arquitetura-fortaleza`, `/projetos-residenciais-fortaleza`, `/design-de-interiores-fortaleza`. Headline alinhada com o anúncio, CTA único, sem distração. Aumenta Quality Score (CPC mais baixo) e conversão.
+- **Esforço:** ~3h por landing
+- **Impacto:** alto — afeta diretamente CPC e taxa de conversão das campanhas
+
+### 19. Query param de conversion ID no `/contato/obrigado`
+Aceitar `?conv=<id>` na URL de obrigado para diferenciar conversões por campanha sem precisar criar gatilhos novos no GTM toda vez.
+- **Esforço:** ~30min
+- **Impacto:** baixo a médio — facilita rastreamento granular
+
+### 20. Pixel do Meta (opcional)
+Se o cliente for rodar Instagram/Facebook Ads em paralelo, instalar o pixel + Conversions API server-side. Atribuição cross-channel.
+- **Esforço:** ~2h
+- **Impacto:** depende — só se houver Meta Ads ativo
 
 ---
 
 ## Recomendação de ordem (custo × benefício)
 
-1. **Política de privacidade** (15) — obrigação legal, ~2h
+1. ~~**Política de privacidade** (15)~~ — concluído
 2. **Depoimentos** (1) — alto valor, ~2h se já tem material
-3. **Cal.com / Calendly** (10) — converte melhor que form, ~1h
-4. **Páginas de cidade** (4) — SEO local, ~3h por cidade
-5. **AVIF + preload** (8 + 9) — ganho de Lighthouse, ~1h30
+3. **UTM listener** (16) — base de relatório de campanha, ~1h
+4. **Cal.com / Calendly** (10) — converte melhor que form, ~1h
+5. **Páginas de cidade / landing pages** (4 + 18) — SEO local + Quality Score do Ads, ~3h cada
+6. **Enhanced Conversions** (17) — atribuição de Ads, ~1h
+7. **AVIF + preload** (8 + 9) — ganho de Lighthouse, ~1h30
