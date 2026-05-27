@@ -1,12 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import gsap from "@/lib/gsap";
 
 const INTRO_KEY = "wviana:intro-played";
 
+// Rotas que pulam a intro (admin tem UI própria, auth é callback técnico).
+const ROUTES_SKIP_INTRO = ["/admin", "/auth"];
+
 export function GlobalIntroLoader() {
+  const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
@@ -16,6 +21,9 @@ export function GlobalIntroLoader() {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const shouldSkip = ROUTES_SKIP_INTRO.some((r) => pathname?.startsWith(r));
+    if (shouldSkip) return;
+
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -44,45 +52,48 @@ export function GlobalIntroLoader() {
       },
     });
 
+    // Sequência encurtada (~3.2s → ~2s) pra liberar a viewport mais cedo: o
+    // overlay opaco cobre a hero (que já está pintada por baixo) e atrasa o LCP
+    // na primeira visita. Mantém a leitura da marca, só reduz as durações.
     tl
       // Step 1: Horizon line draws from center
       .fromTo(
         line,
         { width: 0 },
-        { width: "40vw", duration: 0.8, ease: "power2.inOut" },
+        { width: "40vw", duration: 0.55, ease: "power2.inOut" },
       )
       // Step 2: Logo fades in above the line
       .fromTo(
         logo,
         { autoAlpha: 0, y: 10 },
-        { autoAlpha: 1, y: 0, duration: 0.6 },
-        "-=0.3",
+        { autoAlpha: 1, y: 0, duration: 0.45 },
+        "-=0.2",
       )
       // Step 3: Label fades in below
       .fromTo(
         label,
         { autoAlpha: 0 },
-        { autoAlpha: 1, duration: 0.5 },
-        "-=0.2",
+        { autoAlpha: 1, duration: 0.35 },
+        "-=0.15",
       )
       // Step 4: Hold
-      .to({}, { duration: 0.5 })
+      .to({}, { duration: 0.2 })
       // Step 5: Content fades out
       .to([logo, line, label], {
         autoAlpha: 0,
-        duration: 0.3,
+        duration: 0.25,
       })
       // Step 6: Split reveal — top and bottom halves slide apart
       .set(overlay, { autoAlpha: 0 })
       .fromTo(
         top,
         { yPercent: 0 },
-        { yPercent: -100, duration: 0.8, ease: "power4.inOut" },
+        { yPercent: -100, duration: 0.6, ease: "power4.inOut" },
       )
       .fromTo(
         bottom,
         { yPercent: 0 },
-        { yPercent: 100, duration: 0.8, ease: "power4.inOut" },
+        { yPercent: 100, duration: 0.6, ease: "power4.inOut" },
         "<",
       );
 
@@ -90,7 +101,7 @@ export function GlobalIntroLoader() {
       window.cancelAnimationFrame(rafId);
       tl.kill();
     };
-  }, []);
+  }, [pathname]);
 
   if (!isVisible) return null;
 

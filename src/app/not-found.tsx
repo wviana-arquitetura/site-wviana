@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   robots: privateRouteRobots,
 };
 
-export default function NotFound() {
-  const featured = getAllProjects().slice(0, 3);
+export default async function NotFound() {
+  const featured = (await getAllProjects()).slice(0, 3);
   return <NotFoundContent featured={featured} />;
 }

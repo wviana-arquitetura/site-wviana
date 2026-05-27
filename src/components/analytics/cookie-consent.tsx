@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   CONSENT_STORAGE_KEY,
   persistDecision,
@@ -9,6 +10,9 @@ import {
   updateConsent,
   type ConsentDecision,
 } from "@/lib/consent";
+
+// Rotas onde o banner de cookies não deve aparecer (UI própria).
+const ROUTES_HIDE_BANNER = ["/admin", "/auth"];
 
 const subscribe = (callback: () => void) => {
   if (typeof window === "undefined") return () => {};
@@ -23,7 +27,10 @@ const getDecision = () => readStoredDecision();
 const getServerDecision = () => null;
 
 export function CookieConsent() {
+  const pathname = usePathname();
   const decision = useSyncExternalStore(subscribe, getDecision, getServerDecision);
+
+  const hideBanner = ROUTES_HIDE_BANNER.some((r) => pathname?.startsWith(r));
   // O banner espera a hero sair da viewport antes de aparecer — evita poluir o impacto inicial.
   // Default `true` no SSR/primeiro render: a página começa no topo, então a hero (se existir) está visível.
   // Páginas sem hero atualizam para `false` no effect a partir do observer.
@@ -47,6 +54,7 @@ export function CookieConsent() {
     return () => observer.disconnect();
   }, [decision]);
 
+  if (hideBanner) return null;
   if (decision !== null) return null;
   if (heroVisible) return null;
 
