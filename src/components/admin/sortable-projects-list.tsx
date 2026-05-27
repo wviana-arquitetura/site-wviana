@@ -80,7 +80,7 @@ export function SortableProjectsList({ initialProjects }: Props) {
     initialProjects.map((p, idx) => [p.id, idx + 1]),
   );
   const moves: ChangeEntry[] = projects
-    .map((project, currentIdx) => {
+    .map((project, currentIdx): ChangeEntry | null => {
       const oldPosition = initialOrderById.get(project.id) ?? currentIdx + 1;
       const newPosition = currentIdx + 1;
       if (oldPosition === newPosition) return null;
@@ -88,7 +88,7 @@ export function SortableProjectsList({ initialProjects }: Props) {
         field: project.title,
         before: `Posição ${oldPosition}`,
         after: `Posição ${newPosition}`,
-        kind: "modified" as const,
+        kind: "modified",
       };
     })
     .filter((c): c is ChangeEntry => c !== null);

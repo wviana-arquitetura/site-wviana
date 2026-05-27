@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import {
@@ -205,8 +205,8 @@ export async function deleteProjectAction(id: string): Promise<ActionResult> {
   }
 
   // Se o projeto deletado era publicado, o site público precisa revalidar
-  revalidateTag("projects");
-  revalidateTag("home_featured");
+  updateTag("projects");
+  updateTag("home_featured");
   revalidatePath("/admin/projetos");
   redirect("/admin/projetos");
 }
@@ -233,7 +233,7 @@ export async function publishProjectAction(id: string): Promise<ActionResult> {
     return { ok: false, error: error?.message ?? "Erro ao publicar" };
   }
 
-  revalidateTag("projects");
+  updateTag("projects");
   revalidatePath("/");
   revalidatePath("/projetos");
   revalidatePath(`/projetos/${project.slug}`);
@@ -263,7 +263,7 @@ export async function unpublishProjectAction(id: string): Promise<ActionResult> 
     return { ok: false, error: error?.message ?? "Erro ao despublicar" };
   }
 
-  revalidateTag("projects");
+  updateTag("projects");
   revalidatePath("/");
   revalidatePath("/projetos");
   revalidatePath(`/projetos/${project.slug}`);
@@ -298,7 +298,7 @@ export async function reorderProjectsAction(
     }
   }
 
-  revalidateTag("projects");
+  updateTag("projects");
   revalidatePath("/projetos");
   revalidatePath("/admin/projetos");
   return { ok: true };
@@ -388,8 +388,8 @@ export async function setHomeFeaturedAction(
     return { ok: false, error: insertError.message };
   }
 
-  revalidateTag("home_featured");
-  revalidateTag("projects");
+  updateTag("home_featured");
+  updateTag("projects");
   revalidatePath("/");
   revalidatePath("/admin/home");
   return { ok: true };
