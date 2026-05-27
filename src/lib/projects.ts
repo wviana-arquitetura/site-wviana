@@ -6,8 +6,14 @@ import type { Project } from "@/types/project";
 
 export type { Project };
 
-export const projects: Project[] = getAllProjects();
+/**
+ * Atalho server-side para listar todos os projetos publicados.
+ * Use diretamente em Server Components / Route Handlers (não em Client Components).
+ */
+export async function getProjects(): Promise<Project[]> {
+  return getAllProjects();
+}
 
-export function getProjectBySlug(slug: string) {
+export async function getProjectBySlug(slug: string): Promise<Project | null> {
   return getProjectBySlugFromService(slug);
 }

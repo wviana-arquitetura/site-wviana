@@ -7,10 +7,20 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "migrate:projects": "tsx scripts/migrate-projects-to-supabase.ts"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "@radix-ui/react-dialog": "^1.1.15",
+    "@radix-ui/react-label": "^2.1.8",
+    "@radix-ui/react-select": "^2.2.6",
+    "@radix-ui/react-tabs": "^1.1.13",
+    "@radix-ui/react-toast": "^1.2.15",
+    "@supabase/ssr": "^0.10.3",
+    "@supabase/supabase-js": "^2.106.1",
     "@tanstack/react-query": "^5.90.21",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
@@ -25,7 +35,9 @@
     "resend": "^6.12.3",
     "sass": "^1.98.0",
     "sharp": "^0.34.5",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.5.0",
+    "zod": "^4.4.3",
     "zustand": "^5.0.12"
   },
   "devDependencies": {
@@ -33,11 +45,13 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.27",
+    "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.1.7",
     "postcss": "^8.5.8",
     "prettier": "^3.8.1",
     "tailwindcss": "^3.4.19",
+    "tsx": "^4.22.3",
     "typescript": "^5"
   }
 }

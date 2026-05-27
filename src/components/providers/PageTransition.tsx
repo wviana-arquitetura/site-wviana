@@ -9,6 +9,13 @@ type PageTransitionProps = {
   children: React.ReactNode;
 };
 
+// Module-level: o template.tsx remonta o PageTransition a cada navegação, então
+// um useRef resetaria toda vez. Esta flag persiste através dos remounts e só
+// volta a true num reload completo — é a semântica de "primeira carga da aba".
+// Na primeira carga o conteúdo NÃO pode começar invisível: é o paint dele que
+// registra o LCP, e a cortina taupe (scaleX:1) já o cobre visualmente por cima.
+let isFirstLoad = true;
+
 export function PageTransition({ children }: Readonly<PageTransitionProps>) {
   const pathname = usePathname();
   const rootRef = useRef<HTMLDivElement>(null);
@@ -30,10 +37,14 @@ export function PageTransition({ children }: Readonly<PageTransitionProps>) {
       return;
     }
 
+    const firstLoad = isFirstLoad;
+    isFirstLoad = false;
+
     const tl = gsap.timeline();
 
     // "A Cortina" — taupe wipe left-to-right, then exit
     tl.set(overlay, { transformOrigin: "left", scaleX: 1, autoAlpha: 1 })
+      .set(root, { autoAlpha: 1 })
       .to(overlay, {
         transformOrigin: "right",
         scaleX: 0,
@@ -41,14 +52,20 @@ export function PageTransition({ children }: Readonly<PageTransitionProps>) {
         ease: "power4.inOut",
         delay: 0.15,
       })
-      .addLabel("curtainEnd", ">")
-      .fromTo(
+      .addLabel("curtainEnd", ">");
+
+    // Na carga inicial o conteúdo já está visível por baixo da cortina (LCP cedo).
+    // Em navegações, mantém o reveal com fade que faz parte da estética.
+    if (!firstLoad) {
+      tl.fromTo(
         root,
         { autoAlpha: 0 },
         { autoAlpha: 1, duration: 0.5, ease: "power2.out" },
         "<0.1",
-      )
-      .call(dispatchPageTransitionComplete, [], "curtainEnd-=0.35");
+      );
+    }
+
+    tl.call(dispatchPageTransitionComplete, [], "curtainEnd-=0.35");
 
     return () => {
       tl.kill();

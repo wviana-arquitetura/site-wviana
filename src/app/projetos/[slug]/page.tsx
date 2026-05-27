@@ -2,19 +2,24 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ProjectDetailContent } from "@/components/project/project-detail-content";
 import { getBreadcrumbJsonLd, getProjectCreativeWorkJsonLd, pageMeta } from "@/lib/seo";
-import { getAllProjects, getProjectBySlug } from "@/services/projects.service";
+import {
+  getAllProjects,
+  getNextProject,
+  getProjectBySlug,
+} from "@/services/projects.service";
 
 type ProjectPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export function generateStaticParams() {
-  return getAllProjects().map((project) => ({ slug: project.slug }));
+export async function generateStaticParams() {
+  const projects = await getAllProjects();
+  return projects.map((project) => ({ slug: project.slug }));
 }
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  const project = await getProjectBySlug(slug);
   if (!project) {
     return { title: "Projeto" };
   }
@@ -30,11 +35,13 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  const project = await getProjectBySlug(slug);
 
   if (!project) {
     notFound();
   }
+
+  const nextProject = await getNextProject(project.slug);
 
   const jsonLd = getProjectCreativeWorkJsonLd(project);
   const breadcrumbJsonLd = getBreadcrumbJsonLd([
@@ -56,7 +63,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <div className="min-h-screen bg-background text-foreground">
-        <ProjectDetailContent project={project} />
+        <ProjectDetailContent project={project} nextProject={nextProject} />
       </div>
     </>
   );

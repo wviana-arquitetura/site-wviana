@@ -9,9 +9,15 @@ import { trackEvent } from "@/lib/analytics";
 type GalleryProjectCardProps = {
   project: Project;
   imageLeft?: boolean;
+  /** Marca a imagem como prioritária (LCP). Use só quando o card está acima da dobra. */
+  priority?: boolean;
 };
 
-export function GalleryProjectCard({ project, imageLeft = false }: GalleryProjectCardProps) {
+export function GalleryProjectCard({
+  project,
+  imageLeft = false,
+  priority = false,
+}: GalleryProjectCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const handleProjectClick = (ctaLocation: string) =>
     trackEvent("project_cta_click", {
@@ -41,6 +47,7 @@ export function GalleryProjectCard({ project, imageLeft = false }: GalleryProjec
               src={project.imageSrc}
               alt={project.imageAlt ?? project.title}
               fill
+              priority={priority}
               className="object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
               sizes="(max-width: 768px) 100vw, 42vw"
             />

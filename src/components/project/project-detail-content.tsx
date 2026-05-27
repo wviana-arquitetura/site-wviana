@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
-import { getNextProject } from "@/services/projects.service";
 import type { Project } from "@/types/project";
 import { Void } from "@/components/ui/void";
 import { ProjectCover } from "./v2/project-cover";
@@ -14,11 +13,14 @@ import { trackEvent } from "@/lib/analytics";
 
 type ProjectDetailContentProps = {
   project: Project;
+  nextProject: Project | null;
 };
 
-export function ProjectDetailContent({ project }: Readonly<ProjectDetailContentProps>) {
+export function ProjectDetailContent({
+  project,
+  nextProject,
+}: Readonly<ProjectDetailContentProps>) {
   const rootRef = useRef<HTMLElement>(null);
-  const nextProject = getNextProject(project.slug);
 
   useArchitecturalReveal(rootRef, project.slug);
 

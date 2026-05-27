@@ -14,8 +14,9 @@ export const runtime = "nodejs";
 export const contentType = "image/jpeg";
 export const size = OG_SIZE;
 
-export function generateStaticParams() {
-  return getAllProjects().map((project) => ({ slug: project.slug }));
+export async function generateStaticParams() {
+  const projects = await getAllProjects();
+  return projects.map((project) => ({ slug: project.slug }));
 }
 
 const COLORS = {
@@ -42,7 +43,7 @@ export const alt = "Projeto — W.VIANA Arquitetura";
 
 export default async function OpengraphImage({ params }: Props) {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  const project = await getProjectBySlug(slug);
   if (!project) notFound();
 
   const coverSrc = project.ogImageSrc ?? project.imageSrc;
