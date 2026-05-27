@@ -22,6 +22,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { config } from "dotenv";
 import { createClient } from "@supabase/supabase-js";
+import sharp from "sharp";
 import projectsData from "../src/data/projects.json" with { type: "json" };
 import type { Project } from "../src/types/project";
 
@@ -48,37 +49,56 @@ const STORAGE_BUCKET = "project-images";
 
 const HOME_FEATURED_SLUGS = ["residencial-rc", "residencial-pl", "residencial-tn"];
 
-const MIME_FOR_EXT: Record<string, string> = {
-  ".webp": "image/webp",
-  ".jpg": "image/jpeg",
-  ".jpeg": "image/jpeg",
-  ".png": "image/png",
-};
+// Compressão antes do upload: o Next/Image ainda reescala/converte pra AVIF na
+// entrega, então isto reduz o custo do cache-miss e o tráfego Vercel↔Supabase,
+// não o que o usuário final baixa. Os originais ficam intactos em public/.
+const MAX_DIMENSION = 2400; // lado maior, em px
+const WEBP_QUALITY = 80;
+
+// Cache de 1 ano: imagens de portfólio raramente mudam, e a URL é estável.
+const CACHE_CONTROL_SECONDS = "31536000";
 
 function logStep(label: string) {
   console.log(`\n▸ ${label}`);
 }
 
-function getMime(filePath: string): string {
-  const ext = filePath.toLowerCase().match(/\.[^.]+$/)?.[0] ?? "";
-  return MIME_FOR_EXT[ext] ?? "application/octet-stream";
+/**
+ * Comprime a imagem: reescala o lado maior pra no máximo MAX_DIMENSION (sem
+ * ampliar imagens menores) e recodifica em WebP q80. Retorna os bytes WebP.
+ */
+async function compressToWebp(localPath: string): Promise<Buffer> {
+  return sharp(localPath)
+    .rotate() // respeita orientação EXIF antes de redimensionar
+    .resize({
+      width: MAX_DIMENSION,
+      height: MAX_DIMENSION,
+      fit: "inside",
+      withoutEnlargement: true,
+    })
+    .webp({ quality: WEBP_QUALITY })
+    .toBuffer();
 }
 
 /**
- * Faz upload de um arquivo local pro Supabase Storage e retorna a URL pública.
- * Se já existe no bucket, sobrescreve (upsert: true).
+ * Comprime e faz upload de um arquivo local pro Supabase Storage, retornando a
+ * URL pública. Sobrescreve se já existe (upsert: true) e marca cache de 1 ano.
  */
 async function uploadImage(
   localPath: string,
   storagePath: string,
 ): Promise<string> {
-  const file = readFileSync(localPath);
-  const contentType = getMime(localPath);
+  const original = readFileSync(localPath);
+  const compressed = await compressToWebp(localPath);
+  const savedPct = Math.round((1 - compressed.length / original.length) * 100);
+  console.log(
+    `      ${(original.length / 1024).toFixed(0)}KB → ${(compressed.length / 1024).toFixed(0)}KB (-${savedPct}%)  ${storagePath}`,
+  );
 
   const { error } = await supabase.storage
     .from(STORAGE_BUCKET)
-    .upload(storagePath, file, {
-      contentType,
+    .upload(storagePath, compressed, {
+      contentType: "image/webp",
+      cacheControl: CACHE_CONTROL_SECONDS,
       upsert: true,
     });
 

@@ -2,10 +2,10 @@ import type { NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 
 /**
- * Middleware roda em toda request que matchar o `config.matcher`.
+ * Proxy (antigo middleware) roda em toda request que matchar o `config.matcher`.
  * Delega para o helper do Supabase que renova sessão e protege /admin.
  */
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   return updateSession(request);
 }
 

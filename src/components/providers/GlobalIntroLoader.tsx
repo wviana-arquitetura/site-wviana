@@ -120,7 +120,6 @@ export function GlobalIntroLoader() {
             width={1920}
             height={1080}
             className="h-14 w-auto invert md:h-16"
-            priority
           />
         </div>
         <div ref={lineRef} className="intro-loader-line" />
