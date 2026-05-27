@@ -7,11 +7,11 @@ import gsap, { ScrollTrigger } from "@/lib/gsap";
  * v2 architectural reveal hook.
  *
  * CSS classes:
- *  .reveal-illuminate  → opacity 0.06 → 1        (1.4s)
- *  .reveal-rise        → y:20 + opacity 0 → 1     (1.0s)
- *  .reveal-curtain     → clipPath horizontal wipe  (1.2s)
+ *  .reveal-illuminate  → opacity 0.06 → 1        (1.0s)
+ *  .reveal-rise        → y:20 + opacity 0 → 1     (0.7s)
+ *  .reveal-curtain     → clipPath horizontal wipe  (0.85s)
  *  .reveal-draw        → scaleX 0 → 1             (0.8s)
- *  .reveal-stagger     → same as rise, 120ms stagger between siblings
+ *  .reveal-stagger     → same as rise, 80ms stagger between siblings
  */
 export function useArchitecturalReveal(
   rootRef: RefObject<HTMLElement | null>,
@@ -53,7 +53,7 @@ export function useArchitecturalReveal(
           { opacity: 0.06 },
           {
             opacity: 1,
-            duration: 1.4,
+            duration: 1.0,
             ease: "power2.out",
             scrollTrigger: { trigger: el, start: "top 88%", once: true },
           },
@@ -69,7 +69,7 @@ export function useArchitecturalReveal(
           {
             autoAlpha: 1,
             y: 0,
-            duration: 1.0,
+            duration: 0.7,
             ease: "power2.out",
             scrollTrigger: { trigger: el, start: "top 88%", once: true },
           },
@@ -85,7 +85,7 @@ export function useArchitecturalReveal(
           { clipPath: "inset(0 100% 0 0)" },
           {
             clipPath: "inset(0 0% 0 0)",
-            duration: 1.2,
+            duration: 0.85,
             ease: "power3.inOut",
             scrollTrigger: { trigger: el, start: "top 82%", once: true },
           },
@@ -126,8 +126,8 @@ export function useArchitecturalReveal(
             {
               autoAlpha: 1,
               y: 0,
-              duration: 1.0,
-              stagger: 0.12,
+              duration: 0.7,
+              stagger: 0.08,
               ease: "power2.out",
               scrollTrigger: {
                 trigger: parent as HTMLElement,

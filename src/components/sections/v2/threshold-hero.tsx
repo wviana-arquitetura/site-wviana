@@ -1,40 +1,29 @@
 "use client";
 
-import { useRef, useLayoutEffect, useState, useEffect } from "react";
+import { useRef, useLayoutEffect } from "react";
 import Link from "next/link";
 import gsap from "@/lib/gsap";
 import { PAGE_TRANSITION_COMPLETE_EVENT } from "@/lib/page-transition-events";
 
-const LOGO_SRC = "/images/logos/brand/marca-variacao-02.svg";
 const HERO_COPY =
   "Com sede em Fortaleza, o escritório atua nacionalmente com projetos residenciais, comerciais e corporativos de arquitetura e interiores.";
 
-export function ThresholdHero() {
+type ThresholdHeroProps = {
+  /** Markup do logo SVG, lido no servidor e embutido no HTML (sem fetch no cliente).
+   *  Vem com fill já aplicado pelo `scopeSvg`, então é pintado no primeiro paint (LCP). */
+  logoSvg: string;
+};
+
+export function ThresholdHero({ logoSvg }: ThresholdHeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const logoContainerRef = useRef<HTMLDivElement>(null);
   const copyBlockRef = useRef<HTMLDivElement>(null);
-  const [svgMarkup, setSvgMarkup] = useState<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    fetch(LOGO_SRC)
-      .then((r) => r.text())
-      .then((text) => {
-        if (!cancelled) setSvgMarkup(text);
-      })
-      .catch(() => {
-        if (!cancelled) setSvgMarkup(null);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
     const container = logoContainerRef.current;
     const copyBlock = copyBlockRef.current;
-    if (!section || !container || !svgMarkup) return;
+    if (!section || !container) return;
 
     const svg = container.querySelector("svg");
     if (!svg) return;
@@ -56,6 +45,20 @@ export function ThresholdHero() {
       .trim();
     const strokeColor = foregroundColor ? `hsl(${foregroundColor})` : "#000";
 
+    if (prefersReducedMotion) {
+      // Sem motion: preenche o logo na hora (o markup vem vazio) e revela a copy.
+      paths.forEach((p) => {
+        p.style.fill = strokeColor;
+        p.style.stroke = "rgba(0,0,0,0)";
+      });
+      if (copyBlock) gsap.set(copyBlock, { autoAlpha: 1, y: 0 });
+      return;
+    }
+
+    // Estado inicial do "desenho" aplicado AINDA neste useLayoutEffect (roda
+    // antes do paint): o markup já chega com fill transparente (scopeSvg), e aqui
+    // setamos o dash/offset. Assim o primeiro paint já é o contorno se desenhando
+    // — sem flash de logo cheio antes da animação.
     paths.forEach((p) => {
       p.style.fill = "rgba(0,0,0,0)";
       p.style.stroke = strokeColor;
@@ -68,16 +71,9 @@ export function ThresholdHero() {
     });
     if (copyBlock) gsap.set(copyBlock, { autoAlpha: 0, y: 8 });
 
-    if (prefersReducedMotion) {
-      paths.forEach((p) => {
-        p.style.fill = strokeColor;
-        p.style.stroke = "rgba(0,0,0,0)";
-      });
-      if (copyBlock) gsap.set(copyBlock, { autoAlpha: 1, y: 0 });
-      return;
-    }
-
-    const FALLBACK_MS = 1600;
+    // Fallback curto: a animação começa logo, sem ficar presa esperando o evento
+    // de transição (que pode demorar). O evento, se chegar antes, só adianta.
+    const FALLBACK_MS = 250;
 
     let alive = true;
     let started = false;
@@ -93,9 +89,9 @@ export function ThresholdHero() {
 
         tl.to(paths, {
           strokeDashoffset: 0,
-          duration: 1.45,
+          duration: 1.2,
           ease: "power3.in",
-          stagger: paths.length > 1 ? 0.05 : 0,
+          stagger: paths.length > 1 ? 0.04 : 0,
         })
           .to(
             paths,
@@ -116,11 +112,13 @@ export function ThresholdHero() {
             "<",
           );
         if (copyBlock) {
+          // Copy sobe de baixo pra cima (y maior = entrada mais marcada), perto
+          // do fim do desenho do logo.
           tl.fromTo(
             copyBlock,
-            { autoAlpha: 0, y: 8 },
-            { autoAlpha: 1, y: 0, duration: 0.55, ease: "power2.out" },
-            "-=0.08",
+            { autoAlpha: 0, y: 24 },
+            { autoAlpha: 1, y: 0, duration: 0.7, ease: "power3.out" },
+            1.8,
           );
         }
 
@@ -162,7 +160,7 @@ export function ThresholdHero() {
       if (fallbackId !== null) window.clearTimeout(fallbackId);
       ctx?.revert();
     };
-  }, [svgMarkup]);
+  }, []);
 
   return (
     <section
@@ -176,13 +174,7 @@ export function ThresholdHero() {
         aria-label="W.VIANA — Arquitetura | Interiores"
         role="img"
         style={{ minHeight: "38vh" }}
-        dangerouslySetInnerHTML={
-          svgMarkup
-            ? {
-                __html: scopeSvg(svgMarkup),
-              }
-            : undefined
-        }
+        dangerouslySetInnerHTML={{ __html: scopeSvg(logoSvg) }}
       />
 
       <div
@@ -246,10 +238,16 @@ export function ThresholdHero() {
 }
 
 function scopeSvg(raw: string): string {
+  // Remove qualquer <style> embutido e injeta dimensões + fill transparente
+  // direto no <svg>. O markup chega "vazio" (sem preenchimento), pra que o
+  // useLayoutEffect (pré-paint) configure o desenho do traço sem flash de logo
+  // cheio. Fallback p/ no-JS: se a animação não rodar, o foreground entra como
+  // fill pela cascata do CSS abaixo (path:not([style]) não se aplica; cobrimos
+  // o caso comum — com JS — que é o que importa visualmente).
   return raw
     .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
     .replace(
       /<svg([^>]*)>/i,
-      `<svg$1 style="width:min(82vw,1100px); height:auto; max-height:60vh; display:block;">`,
+      `<svg$1 style="width:min(82vw,1100px); height:auto; max-height:60vh; display:block; fill:transparent;">`,
     );
 }
