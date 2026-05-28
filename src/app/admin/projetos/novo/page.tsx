@@ -15,6 +15,7 @@ const EMPTY: ProjectFormValues = {
   client: null,
   image_src: "",
   image_alt: null,
+  image_blur_hash: null,
   og_image_src: null,
   summary: "",
   scope: [],

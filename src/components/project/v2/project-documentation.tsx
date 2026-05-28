@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
 import gsap from "@/lib/gsap";
+import { ImageWithReveal } from "@/components/ui/image-with-reveal";
 import type { ProjectGalleryItem } from "@/types/project";
 
 type ProjectDocumentationProps = {
@@ -193,11 +193,13 @@ function Tile({
       data-key={keyId}
       className={`relative overflow-hidden ${wrapperClass} ${aspectClass}`}
     >
-      <Image
+      <ImageWithReveal
         src={item.src}
         alt={item.alt}
         fill
         sizes={sizes}
+        quality={85}
+        blurDataURL={item.blurDataURL}
         className="object-cover object-center"
       />
     </div>

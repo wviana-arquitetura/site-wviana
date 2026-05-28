@@ -256,6 +256,71 @@
     transform: translateZ(0);
   }
 
+  /* ── Image-with-reveal: fundo da marca + plano de luz ──
+     Aparece enquanto a foto carrega; some por fade quando data-loaded="true".
+     O sweep é um gradiente quente passando por cima, 2 ciclos só (não vira
+     decoração eterna). prefers-reduced-motion suprime o sweep. */
+  .iwr-skeleton {
+    background-color: hsl(var(--accent));
+    opacity: 1;
+    transition: opacity 600ms cubic-bezier(0.22, 1, 0.36, 1);
+    overflow: hidden;
+  }
+
+  .iwr-skeleton[data-loaded="true"] {
+    opacity: 0;
+  }
+
+  .iwr-sweep {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+      100deg,
+      hsl(var(--accent)) 0%,
+      hsl(var(--accent)) 35%,
+      hsl(var(--background) / 0.6) 50%,
+      hsl(var(--accent)) 65%,
+      hsl(var(--accent)) 100%
+    );
+    background-size: 220% 100%;
+    background-position: 120% 0;
+    animation: iwr-sweep 2400ms cubic-bezier(0.45, 0, 0.55, 1) 200ms 2 forwards;
+    opacity: 0.55;
+    mix-blend-mode: screen;
+    will-change: background-position;
+  }
+
+  @keyframes iwr-sweep {
+    from {
+      background-position: 120% 0;
+    }
+    to {
+      background-position: -20% 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .iwr-sweep {
+      animation: none;
+      display: none;
+    }
+    .iwr-skeleton {
+      transition: opacity 200ms linear;
+    }
+  }
+
+  /* ── Painel admin: placeholders mais leves ──
+     `--muted-foreground` é preto 35% SÓLIDO (#595959) — adequado pra legendas
+     e hints, mas pesado demais pra placeholder de formulário (quase indistinguível
+     do texto digitado). Aqui aplicamos preto a 38% de OPACIDADE, que perceptualmente
+     fica claramente mais leve e ainda legível. Restrito a [data-admin] pra não
+     afetar o site público (form de contato). */
+  [data-admin] input::placeholder,
+  [data-admin] textarea::placeholder {
+    color: hsl(var(--foreground) / 0.38);
+    opacity: 1; /* Firefox aplica opacity 0.54 por default em ::placeholder */
+  }
+
   /* ── Split text line-by-line reveal ── */
   .split-line-wrapper {
     display: block;

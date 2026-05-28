@@ -33,6 +33,7 @@ export function GalleryProjectCardGrid({
   const isMobileRef = useRef(false);
   const zoomRafRef = useRef<number | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [coverLoaded, setCoverLoaded] = useState(false);
   const [shouldRotate, setShouldRotate] = useState(false);
   const [hasLoadedExtra, setHasLoadedExtra] = useState(false);
   const [hasStartedZoom, setHasStartedZoom] = useState(false);
@@ -50,10 +51,12 @@ export function GalleryProjectCardGrid({
     {
       src: project.imageSrc,
       alt: project.imageAlt ?? `Capa do projeto ${project.title}`,
+      blurDataURL: project.imageBlurDataURL,
     },
     ...project.gallery.slice(0, 3).map((image) => ({
       src: image.src,
       alt: image.alt,
+      blurDataURL: image.blurDataURL,
     })),
   ];
 
@@ -159,6 +162,16 @@ export function GalleryProjectCardGrid({
             ref={imageWrapperRef}
             className="reveal-curtain relative aspect-[3/4] w-full overflow-hidden md:aspect-auto md:h-[68vh]"
           >
+            {/* Fallback de fundo neutro: aparece só enquanto a CAPA não carrega
+                E não tem blurDataURL (caso de imagem legada sem backfill). Quando
+                tem blurDataURL, o placeholder="blur" do Next cobre tudo. */}
+            {!coverLoaded && !images[0]?.blurDataURL && (
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 z-0"
+                style={{ backgroundColor: "hsl(var(--accent))" }}
+              />
+            )}
             {images.map((image, idx) => {
               // Só monta o <Image> da capa de cara; as extras só quando hover ativa.
               const shouldRender = idx === 0 || hasLoadedExtra;
@@ -171,6 +184,11 @@ export function GalleryProjectCardGrid({
                   fill
                   priority={idx === 0 && priority}
                   sizes="(max-width: 768px) 100vw, 22vw"
+                  quality={78}
+                  onLoad={idx === 0 ? () => setCoverLoaded(true) : undefined}
+                  {...(image.blurDataURL
+                    ? { placeholder: "blur" as const, blurDataURL: image.blurDataURL }
+                    : {})}
                   className="object-cover object-top"
                   style={{
                     opacity: activeIndex === idx ? 1 : 0,

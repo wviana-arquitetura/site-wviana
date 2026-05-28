@@ -4,14 +4,20 @@ import { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
 import { uploadImageAction } from "@/app/admin/_actions/upload";
+import {
+  compressImageForUpload,
+  formatUploadSizeError,
+  MAX_UPLOAD_BYTES,
+} from "@/lib/image-compress";
 
 type ImageUploaderProps = {
   /** Slug do projeto, usado como pasta no Storage. */
   pathPrefix: string;
   /** URL atual (se já tem imagem). */
   value?: string | null;
-  /** Callback quando upload finaliza com sucesso. */
-  onUploaded: (url: string) => void;
+  /** Callback quando upload finaliza com sucesso. `blurHash` pode ser null
+   *  se a geração falhar (não bloqueia upload — front cai pra fundo neutro). */
+  onUploaded: (url: string, blurHash: string | null) => void;
   /** Label exibido no botão / dropzone. */
   label?: string;
   /** Aspect ratio CSS (ex: "16/9", "4/5"). */
@@ -36,9 +42,21 @@ export function ImageUploader({
         return;
       }
 
+      // Valida ANTES da compressão: se a foto é grande demais nem o canvas
+      // dá conta (memória) e o body limit do Next recusa mais à frente. Aqui
+      // dá feedback amigável em vez de erro genérico de rede.
+      if (file.size > MAX_UPLOAD_BYTES) {
+        toast.error(formatUploadSizeError(file));
+        return;
+      }
+
       setUploading(true);
+      // Comprime no navegador antes de enviar: a foto original pode ter 10-20MB
+      // e estourar o limite de body da Server Action (erro 400). Aqui já sai
+      // como WebP ~300KB.
+      const compressed = await compressImageForUpload(file);
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", compressed);
       formData.append("pathPrefix", pathPrefix);
 
       const result = await uploadImageAction(formData);
@@ -49,7 +67,7 @@ export function ImageUploader({
         return;
       }
       toast.success("Imagem enviada");
-      onUploaded(result.url);
+      onUploaded(result.url, result.blurHash);
     },
     [pathPrefix, onUploaded],
   );
@@ -109,7 +127,7 @@ export function ImageUploader({
               {uploading ? "Enviando..." : label}
             </span>
             <span className="mt-2 text-micro uppercase tracking-[0.18em] text-muted-foreground">
-              WebP, JPEG ou PNG · até 8MB
+              WebP, JPEG ou PNG · até 15MB
             </span>
           </div>
         )}

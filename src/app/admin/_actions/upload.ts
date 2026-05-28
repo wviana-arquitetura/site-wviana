@@ -1,13 +1,22 @@
 "use server";
 
+import sharp from "sharp";
+import { generateBlurHash } from "@/lib/blurhash-server";
 import { createSupabaseServerClient, createSupabaseServiceRoleClient } from "@/lib/supabase/server";
 
 const STORAGE_BUCKET = "project-images";
 const ALLOWED_MIMES = ["image/webp", "image/jpeg", "image/png"];
-const MAX_SIZE = 8 * 1024 * 1024; // 8MB
+const MAX_SIZE = 15 * 1024 * 1024; // 15MB — arquivo pós-canvas q0.95 a 3200px pode pesar bem mais que antes (q0.8 a 2400px).
+
+// O sharp é a ÚNICA fonte de verdade da compressão final. O canvas no navegador
+// só redimensiona (ver image-compress.ts). Portfolio de arquitetura → q85 + teto
+// 3200px (telas retina/4K servidas com folga; calibrado pelo diagnóstico).
+const MAX_DIMENSION = 3200;
+const WEBP_QUALITY = 85;
+const CACHE_CONTROL_SECONDS = "31536000";
 
 export type UploadResult =
-  | { ok: true; url: string }
+  | { ok: true; url: string; blurHash: string | null }
   | { ok: false; error: string };
 
 async function requireAdminId(): Promise<string | null> {
@@ -60,32 +69,53 @@ export async function uploadImageAction(
   if (file.size > MAX_SIZE) {
     return {
       ok: false,
-      error: `Arquivo muito grande (${(file.size / 1024 / 1024).toFixed(1)}MB). Máximo 8MB.`,
+      error: `Arquivo muito grande (${(file.size / 1024 / 1024).toFixed(1)}MB). Máximo 15MB.`,
     };
   }
 
   const safePrefix = sanitizeFilename(pathPrefix);
-  const originalName = sanitizeFilename(file.name) || "image";
+  // Sempre recodificamos pra WebP, então o nome final leva extensão .webp
+  // (independente do upload ter sido jpg/png).
+  const baseName =
+    sanitizeFilename(file.name.replace(/\.[^.]+$/, "")) || "image";
   const timestamp = Date.now();
-  const storagePath = `${safePrefix}/${timestamp}-${originalName}`;
+  const storagePath = `${safePrefix}/${timestamp}-${baseName}.webp`;
 
   const supabase = createSupabaseServiceRoleClient();
-  const buffer = Buffer.from(await file.arrayBuffer());
+  const original = Buffer.from(await file.arrayBuffer());
 
-  const { error: uploadError } = await supabase.storage
-    .from(STORAGE_BUCKET)
-    .upload(storagePath, buffer, {
-      contentType: file.type,
+  // Comprime: reescala o lado maior pra no máx 2400px (sem ampliar) e recodifica
+  // em WebP q80 — mesma política do script de migração.
+  const compressed = await sharp(original)
+    .rotate()
+    .resize({
+      width: MAX_DIMENSION,
+      height: MAX_DIMENSION,
+      fit: "inside",
+      withoutEnlargement: true,
+    })
+    .webp({ quality: WEBP_QUALITY })
+    .toBuffer();
+
+  // BlurHash em paralelo ao upload: a partir do mesmo Buffer comprimido, mas
+  // gerado pelo sharp interno (sample 32px). Se falhar, devolve null e o front
+  // mostra fundo neutro — não bloqueia o upload.
+  const [uploadResult, blurHash] = await Promise.all([
+    supabase.storage.from(STORAGE_BUCKET).upload(storagePath, compressed, {
+      contentType: "image/webp",
+      cacheControl: CACHE_CONTROL_SECONDS,
       upsert: false,
-    });
+    }),
+    generateBlurHash(compressed),
+  ]);
 
-  if (uploadError) {
-    return { ok: false, error: uploadError.message };
+  if (uploadResult.error) {
+    return { ok: false, error: uploadResult.error.message };
   }
 
   const { data } = supabase.storage
     .from(STORAGE_BUCKET)
     .getPublicUrl(storagePath);
 
-  return { ok: true, url: data.publicUrl };
+  return { ok: true, url: data.publicUrl, blurHash };
 }

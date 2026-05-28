@@ -35,7 +35,7 @@ export function ProjectEditClient({
   async function saveGallery(items: GalleryItem[]) {
     const result = await replaceProjectGalleryAction(
       projectId,
-      items.map((i) => ({ src: i.src, alt: i.alt })),
+      items.map((i) => ({ src: i.src, alt: i.alt, blurHash: i.blurHash ?? null })),
     );
     if (!result.ok) {
       throw new Error(result.error);

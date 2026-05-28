@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { ImageWithReveal } from "@/components/ui/image-with-reveal";
 import type { Project } from "@/types/project";
 
 type ProjectCoverProps = {
@@ -10,11 +10,13 @@ type ProjectCoverProps = {
 export function ProjectCover({ project }: ProjectCoverProps) {
   return (
     <section className="relative h-[var(--svh)] w-full overflow-hidden">
-      <Image
+      <ImageWithReveal
         src={project.imageSrc}
         alt={project.imageAlt ?? `Capa do projeto ${project.title}`}
         fill
         sizes="100vw"
+        quality={82}
+        blurDataURL={project.imageBlurDataURL}
         className="object-cover object-center"
         priority
       />

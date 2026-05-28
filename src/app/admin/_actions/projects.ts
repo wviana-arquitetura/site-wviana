@@ -48,6 +48,7 @@ const projectSchema = z.object({
   client: z.string().optional().nullable(),
   image_src: z.string().min(1, "Imagem de capa é obrigatória"),
   image_alt: z.string().optional().nullable(),
+  image_blur_hash: z.string().optional().nullable(),
   og_image_src: z.string().optional().nullable(),
   summary: z.string().min(1, "Resumo é obrigatório"),
   scope: z.array(z.string()).default([]),
@@ -310,7 +311,7 @@ export async function reorderProjectsAction(
  */
 export async function replaceProjectGalleryAction(
   projectId: string,
-  items: Array<{ src: string; alt: string }>,
+  items: Array<{ src: string; alt: string; blurHash?: string | null }>,
 ): Promise<ActionResult> {
   try {
     await requireAdmin();
@@ -338,6 +339,7 @@ export async function replaceProjectGalleryAction(
     project_id: projectId,
     src: item.src,
     alt: item.alt,
+    blur_hash: item.blurHash ?? null,
     position: index,
   }));
 

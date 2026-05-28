@@ -4,8 +4,8 @@ import { getAllProjects } from "@/services/projects.service";
 
 /**
  * Sitemap gerado a partir dos projetos do Supabase (mesma fonte das páginas),
- * pra que projetos criados/editados no painel admin apareçam aqui sem depender
- * do projects.json legado. Cacheado junto com getAllProjects (revalidate/tags).
+ * pra que projetos criados/editados no painel admin apareçam aqui automaticamente.
+ * Cacheado junto com getAllProjects (revalidate/tags).
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const projects = await getAllProjects();

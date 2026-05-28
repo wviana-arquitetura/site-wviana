@@ -18,7 +18,7 @@ export default async function AdminEditProjectPage({ params }: Props) {
     supabase.from("projects").select("*").eq("id", id).maybeSingle(),
     supabase
       .from("project_gallery_images")
-      .select("id, src, alt, position")
+      .select("id, src, alt, blur_hash, position")
       .eq("project_id", id)
       .order("position", { ascending: true }),
   ]);
@@ -40,6 +40,7 @@ export default async function AdminEditProjectPage({ params }: Props) {
     client: project.client,
     image_src: project.image_src,
     image_alt: project.image_alt,
+    image_blur_hash: project.image_blur_hash,
     og_image_src: project.og_image_src,
     summary: project.summary,
     scope: project.scope ?? [],
@@ -54,6 +55,7 @@ export default async function AdminEditProjectPage({ params }: Props) {
     id: row.id,
     src: row.src,
     alt: row.alt,
+    blurHash: row.blur_hash,
   }));
 
   return (

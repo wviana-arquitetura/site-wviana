@@ -17,6 +17,7 @@ export type ProjectRow = {
   client: string | null;
   image_src: string;
   image_alt: string | null;
+  image_blur_hash: string | null;
   og_image_src: string | null;
   summary: string;
   scope: string[];
@@ -36,6 +37,7 @@ export type ProjectGalleryRow = {
   project_id: string;
   src: string;
   alt: string;
+  blur_hash: string | null;
   position: number;
 };
 
@@ -53,9 +55,8 @@ export type AdminUserRow = {
 };
 
 /**
- * Converte uma linha do banco + galeria em um objeto `Project` (mesmo formato
- * do `projects.json` legado). Mantemos a forma do tipo Project intacta para
- * que o site público não precise mudar nada na renderização.
+ * Converte uma linha do banco + galeria no objeto `Project` que o site público
+ * consome (ver src/types/project.ts).
  */
 export function rowToProject(
   project: ProjectRow,
@@ -74,6 +75,7 @@ export function rowToProject(
     client: project.client ?? undefined,
     imageSrc: project.image_src,
     imageAlt: project.image_alt ?? undefined,
+    imageBlurHash: project.image_blur_hash ?? undefined,
     ogImageSrc: project.og_image_src ?? undefined,
     summary: project.summary,
     scope: project.scope,
@@ -84,7 +86,11 @@ export function rowToProject(
     chapters: project.chapters,
     gallery: gallery
       .sort((a, b) => a.position - b.position)
-      .map((g) => ({ src: g.src, alt: g.alt })),
+      .map((g) => ({
+        src: g.src,
+        alt: g.alt,
+        blurHash: g.blur_hash ?? undefined,
+      })),
     updatedAt: project.updated_at,
   };
 }

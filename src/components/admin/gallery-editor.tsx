@@ -19,6 +19,11 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { uploadImageAction } from "@/app/admin/_actions/upload";
+import {
+  compressImageForUpload,
+  formatUploadSizeError,
+  MAX_UPLOAD_BYTES,
+} from "@/lib/image-compress";
 import { Textarea } from "@/components/ui/textarea";
 
 export type GalleryItem = {
@@ -26,6 +31,9 @@ export type GalleryItem = {
   id: string;
   src: string;
   alt: string;
+  /** BlurHash gerado no upload; null se não foi possível. Persiste no banco
+   *  via replaceProjectGalleryAction. */
+  blurHash?: string | null;
 };
 
 type GalleryEditorProps = {
@@ -34,8 +42,18 @@ type GalleryEditorProps = {
   onChange: (items: GalleryItem[]) => void;
 };
 
+/** Tile temporário renderizado enquanto o arquivo correspondente sobe.
+ *  `status: "uploading"` → fundo taupe + sweep + label. Some quando o upload
+ *  termina e o GalleryItem real entra na lista. */
+type PendingTile = {
+  id: string;
+  label: string;
+  status: "uploading" | "failed";
+};
+
 export function GalleryEditor({ pathPrefix, items, onChange }: GalleryEditorProps) {
   const [uploading, setUploading] = useState(false);
+  const [pending, setPending] = useState<PendingTile[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const sensors = useSensors(
@@ -52,38 +70,96 @@ export function GalleryEditor({ pathPrefix, items, onChange }: GalleryEditorProp
   };
 
   const onSelectFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files ?? []);
+    const allFiles = Array.from(e.target.files ?? []);
     e.target.value = "";
 
-    if (files.length === 0) return;
+    if (allFiles.length === 0) return;
     if (!pathPrefix) {
       toast.error("Salve o projeto primeiro pra subir imagens");
       return;
     }
 
+    // Filtra arquivos acima do limite ANTES de começar o upload — assim o
+    // usuário vê de uma vez quais foram rejeitados, em vez de descobrir um
+    // a um durante o lote. Cada rejeitado vira um toast (até 3 visíveis).
+    const files: File[] = [];
+    const rejected: File[] = [];
+    for (const f of allFiles) {
+      if (f.size > MAX_UPLOAD_BYTES) rejected.push(f);
+      else files.push(f);
+    }
+    for (const f of rejected.slice(0, 3)) toast.error(formatUploadSizeError(f));
+    if (rejected.length > 3) {
+      toast.error(`+ ${rejected.length - 3} arquivo(s) acima de 20 MB ignorados`);
+    }
+    if (files.length === 0) return;
+
     setUploading(true);
-    const newItems: GalleryItem[] = [];
-    for (const file of files) {
+
+    // Cria um pending tile por arquivo já no início — o usuário vê todos
+    // os "espaços" aparecerem imediatamente, com o fundo da marca e sweep,
+    // em vez de só "..." durante 30s.
+    const pendingIds = files.map(
+      (_, i) => `pending-${Date.now()}-${i}-${Math.random().toString(36).slice(2, 6)}`,
+    );
+    setPending(
+      files.map((file, i) => ({
+        id: pendingIds[i],
+        label: file.name,
+        status: "uploading" as const,
+      })),
+    );
+
+    // Snapshot dos items reais no início — adicionamos cima dele e re-emitimos
+    // a lista a cada sucesso (incremental). Usar `items` direto dentro do loop
+    // daria stale closure.
+    let runningItems = items;
+    let successCount = 0;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const pendingId = pendingIds[i];
+
+      const compressed = await compressImageForUpload(file);
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", compressed);
       formData.append("pathPrefix", pathPrefix);
       const result = await uploadImageAction(formData);
+
       if (!result.ok) {
         toast.error(`${file.name}: ${result.error}`);
+        // Marca o pending como failed pra dar feedback (o usuário pode fechar).
+        setPending((prev) =>
+          prev.map((p) =>
+            p.id === pendingId ? { ...p, status: "failed" as const } : p,
+          ),
+        );
         continue;
       }
-      newItems.push({
-        id: `temp-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-        src: result.url,
-        alt: "",
-      });
-    }
-    setUploading(false);
 
-    if (newItems.length > 0) {
-      onChange([...items, ...newItems]);
-      toast.success(`${newItems.length} imagem(ns) adicionada(s)`);
+      // Sucesso: remove o pending, adiciona o item real e emite a lista atualizada.
+      runningItems = [
+        ...runningItems,
+        {
+          id: `temp-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+          src: result.url,
+          alt: "",
+          blurHash: result.blurHash,
+        },
+      ];
+      onChange(runningItems);
+      setPending((prev) => prev.filter((p) => p.id !== pendingId));
+      successCount++;
     }
+
+    setUploading(false);
+    if (successCount > 0) {
+      toast.success(`${successCount} imagem(ns) adicionada(s)`);
+    }
+  };
+
+  const dismissFailedPending = (id: string) => {
+    setPending((prev) => prev.filter((p) => p.id !== id));
   };
 
   const removeItem = (id: string) => {
@@ -119,7 +195,7 @@ export function GalleryEditor({ pathPrefix, items, onChange }: GalleryEditorProp
         />
       </div>
 
-      {items.length === 0 ? (
+      {items.length === 0 && pending.length === 0 ? (
         <div
           className="flex h-48 items-center justify-center border-2 border-dashed"
           style={{ borderColor: "hsl(var(--accent) / 0.4)" }}
@@ -143,6 +219,13 @@ export function GalleryEditor({ pathPrefix, items, onChange }: GalleryEditorProp
                   index={index}
                   onRemove={removeItem}
                   onAltChange={updateAlt}
+                />
+              ))}
+              {pending.map((p) => (
+                <PendingGalleryTile
+                  key={p.id}
+                  tile={p}
+                  onDismiss={() => dismissFailedPending(p.id)}
                 />
               ))}
             </div>
@@ -213,6 +296,65 @@ function GallerySortableItem({
       >
         Remover
       </button>
+    </div>
+  );
+}
+
+/** Renderiza o "espaço reservado" enquanto um arquivo está subindo, usando o
+ *  mesmo idioma visual do site público (fundo taupe + sweep). Em caso de
+ *  falha, vira um aviso clicável que se descarta. */
+function PendingGalleryTile({
+  tile,
+  onDismiss,
+}: {
+  tile: PendingTile;
+  onDismiss: () => void;
+}) {
+  const isFailed = tile.status === "failed";
+  return (
+    <div className="border p-3 space-y-3" aria-busy={!isFailed}>
+      <div className="relative aspect-[4/3] w-full overflow-hidden">
+        <span
+          aria-hidden="true"
+          data-loaded={isFailed ? "true" : "false"}
+          className="iwr-skeleton pointer-events-none absolute inset-0"
+        >
+          {!isFailed && <span className="iwr-sweep" />}
+        </span>
+        {isFailed ? (
+          <div
+            className="absolute inset-0 flex flex-col items-center justify-center gap-2 px-3 text-center"
+            style={{ background: "hsl(var(--background) / 0.85)" }}
+          >
+            <span className="text-caption uppercase tracking-[0.18em] text-foreground">
+              Falhou
+            </span>
+            <button
+              type="button"
+              onClick={onDismiss}
+              className="text-micro uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground"
+            >
+              Dispensar
+            </button>
+          </div>
+        ) : (
+          <span
+            className="absolute left-2 top-2 px-2 py-1 text-micro uppercase tracking-[0.18em]"
+            style={{
+              background: "hsl(var(--background) / 0.9)",
+              color: "hsl(var(--foreground))",
+            }}
+          >
+            Enviando…
+          </span>
+        )}
+      </div>
+      <p
+        className="truncate text-caption text-muted-foreground"
+        title={tile.label}
+      >
+        {tile.label}
+      </p>
     </div>
   );
 }
