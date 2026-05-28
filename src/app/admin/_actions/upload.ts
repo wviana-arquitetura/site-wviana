@@ -1,10 +1,17 @@
 "use server";
 
+import sharp from "sharp";
 import { createSupabaseServerClient, createSupabaseServiceRoleClient } from "@/lib/supabase/server";
 
 const STORAGE_BUCKET = "project-images";
 const ALLOWED_MIMES = ["image/webp", "image/jpeg", "image/png"];
 const MAX_SIZE = 8 * 1024 * 1024; // 8MB
+
+// Mesma compressão do script de migração: o que o cliente sobe pelo painel fica
+// consistente com as imagens migradas (WebP, máx 2400px, q80, cache de 1 ano).
+const MAX_DIMENSION = 2400;
+const WEBP_QUALITY = 80;
+const CACHE_CONTROL_SECONDS = "31536000";
 
 export type UploadResult =
   | { ok: true; url: string }
@@ -65,17 +72,34 @@ export async function uploadImageAction(
   }
 
   const safePrefix = sanitizeFilename(pathPrefix);
-  const originalName = sanitizeFilename(file.name) || "image";
+  // Sempre recodificamos pra WebP, então o nome final leva extensão .webp
+  // (independente do upload ter sido jpg/png).
+  const baseName =
+    sanitizeFilename(file.name.replace(/\.[^.]+$/, "")) || "image";
   const timestamp = Date.now();
-  const storagePath = `${safePrefix}/${timestamp}-${originalName}`;
+  const storagePath = `${safePrefix}/${timestamp}-${baseName}.webp`;
 
   const supabase = createSupabaseServiceRoleClient();
-  const buffer = Buffer.from(await file.arrayBuffer());
+  const original = Buffer.from(await file.arrayBuffer());
+
+  // Comprime: reescala o lado maior pra no máx 2400px (sem ampliar) e recodifica
+  // em WebP q80 — mesma política do script de migração.
+  const compressed = await sharp(original)
+    .rotate()
+    .resize({
+      width: MAX_DIMENSION,
+      height: MAX_DIMENSION,
+      fit: "inside",
+      withoutEnlargement: true,
+    })
+    .webp({ quality: WEBP_QUALITY })
+    .toBuffer();
 
   const { error: uploadError } = await supabase.storage
     .from(STORAGE_BUCKET)
-    .upload(storagePath, buffer, {
-      contentType: file.type,
+    .upload(storagePath, compressed, {
+      contentType: "image/webp",
+      cacheControl: CACHE_CONTROL_SECONDS,
       upsert: false,
     });
 

@@ -53,9 +53,8 @@ export type AdminUserRow = {
 };
 
 /**
- * Converte uma linha do banco + galeria em um objeto `Project` (mesmo formato
- * do `projects.json` legado). Mantemos a forma do tipo Project intacta para
- * que o site público não precise mudar nada na renderização.
+ * Converte uma linha do banco + galeria no objeto `Project` que o site público
+ * consome (ver src/types/project.ts).
  */
 export function rowToProject(
   project: ProjectRow,

@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "format": "prettier --write .",
-    "migrate:projects": "tsx scripts/migrate-projects-to-supabase.ts"
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -45,13 +44,11 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.27",
-    "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.1.7",
     "postcss": "^8.5.8",
     "prettier": "^3.8.1",
     "tailwindcss": "^3.4.19",
-    "tsx": "^4.22.3",
     "typescript": "^5"
   }
 }
