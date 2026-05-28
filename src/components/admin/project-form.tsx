@@ -328,7 +328,21 @@ export function ProjectForm({
                 <ImageUploader
                   pathPrefix={values.slug || "novo-projeto"}
                   value={values.image_src || null}
-                  onUploaded={(url) => update("image_src", url)}
+                  onUploaded={(url, blurHash) => {
+                    // Grava src e blur_hash juntos: o setValues do React garante
+                    // que ambos entram no mesmo render (sem stale closure).
+                    setValues((v) => ({
+                      ...v,
+                      image_src: url,
+                      image_blur_hash: blurHash,
+                    }));
+                    setFieldErrors((e) => {
+                      if (!e.image_src) return e;
+                      const rest = { ...e };
+                      delete rest.image_src;
+                      return rest;
+                    });
+                  }}
                   label="Imagem de capa do projeto"
                   aspect="4/5"
                 />

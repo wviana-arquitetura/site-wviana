@@ -1,20 +1,22 @@
 "use server";
 
 import sharp from "sharp";
+import { generateBlurHash } from "@/lib/blurhash-server";
 import { createSupabaseServerClient, createSupabaseServiceRoleClient } from "@/lib/supabase/server";
 
 const STORAGE_BUCKET = "project-images";
 const ALLOWED_MIMES = ["image/webp", "image/jpeg", "image/png"];
-const MAX_SIZE = 8 * 1024 * 1024; // 8MB
+const MAX_SIZE = 15 * 1024 * 1024; // 15MB — arquivo pós-canvas q0.95 a 3200px pode pesar bem mais que antes (q0.8 a 2400px).
 
-// Mesma compressão do script de migração: o que o cliente sobe pelo painel fica
-// consistente com as imagens migradas (WebP, máx 2400px, q80, cache de 1 ano).
-const MAX_DIMENSION = 2400;
-const WEBP_QUALITY = 80;
+// O sharp é a ÚNICA fonte de verdade da compressão final. O canvas no navegador
+// só redimensiona (ver image-compress.ts). Portfolio de arquitetura → q85 + teto
+// 3200px (telas retina/4K servidas com folga; calibrado pelo diagnóstico).
+const MAX_DIMENSION = 3200;
+const WEBP_QUALITY = 85;
 const CACHE_CONTROL_SECONDS = "31536000";
 
 export type UploadResult =
-  | { ok: true; url: string }
+  | { ok: true; url: string; blurHash: string | null }
   | { ok: false; error: string };
 
 async function requireAdminId(): Promise<string | null> {
@@ -67,7 +69,7 @@ export async function uploadImageAction(
   if (file.size > MAX_SIZE) {
     return {
       ok: false,
-      error: `Arquivo muito grande (${(file.size / 1024 / 1024).toFixed(1)}MB). Máximo 8MB.`,
+      error: `Arquivo muito grande (${(file.size / 1024 / 1024).toFixed(1)}MB). Máximo 15MB.`,
     };
   }
 
@@ -95,21 +97,25 @@ export async function uploadImageAction(
     .webp({ quality: WEBP_QUALITY })
     .toBuffer();
 
-  const { error: uploadError } = await supabase.storage
-    .from(STORAGE_BUCKET)
-    .upload(storagePath, compressed, {
+  // BlurHash em paralelo ao upload: a partir do mesmo Buffer comprimido, mas
+  // gerado pelo sharp interno (sample 32px). Se falhar, devolve null e o front
+  // mostra fundo neutro — não bloqueia o upload.
+  const [uploadResult, blurHash] = await Promise.all([
+    supabase.storage.from(STORAGE_BUCKET).upload(storagePath, compressed, {
       contentType: "image/webp",
       cacheControl: CACHE_CONTROL_SECONDS,
       upsert: false,
-    });
+    }),
+    generateBlurHash(compressed),
+  ]);
 
-  if (uploadError) {
-    return { ok: false, error: uploadError.message };
+  if (uploadResult.error) {
+    return { ok: false, error: uploadResult.error.message };
   }
 
   const { data } = supabase.storage
     .from(STORAGE_BUCKET)
     .getPublicUrl(storagePath);
 
-  return { ok: true, url: data.publicUrl };
+  return { ok: true, url: data.publicUrl, blurHash };
 }

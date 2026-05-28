@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import { ImageWithReveal } from "@/components/ui/image-with-reveal";
 import type { Project } from "@/types/project";
 import { trackEvent } from "@/lib/analytics";
 
@@ -27,12 +27,13 @@ export function GalleryProjectCardCompact({ project }: GalleryProjectCardCompact
       {/* Foto vertical alta — preenche a maior parte da altura disponível,
           com título sobreposto no canto inferior (mix-blend-mode garante contraste) */}
       <div className="reveal-curtain relative aspect-[3/4] w-full min-h-0 overflow-hidden md:aspect-auto md:flex-1">
-        <Image
+        <ImageWithReveal
           src={project.imageSrc}
           alt={project.imageAlt ?? project.title}
           fill
           className="object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
           sizes="(max-width: 768px) 100vw, 50vw"
+          blurDataURL={project.imageBlurDataURL}
         />
 
         {/* Título dentro da foto, no canto inferior */}

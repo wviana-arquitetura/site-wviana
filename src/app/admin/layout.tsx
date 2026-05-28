@@ -42,7 +42,13 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    // data-admin marca a sub-árvore do painel pra ajustes finos de UI
+    // específicos do admin (ex.: placeholders mais leves em formulários),
+    // sem vazar pro site público. Ver globals.css.
+    <div
+      data-admin
+      className="min-h-screen bg-background text-foreground"
+    >
       <AdminNav userEmail={user.email ?? ""} />
       <main className="md:ml-72">{children}</main>
       <Toaster position="bottom-right" theme="light" richColors />

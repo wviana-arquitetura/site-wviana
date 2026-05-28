@@ -1,8 +1,8 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import { ImageWithReveal } from "@/components/ui/image-with-reveal";
 import type { Project } from "@/types/project";
 import { trackEvent } from "@/lib/analytics";
 
@@ -43,13 +43,15 @@ export function GalleryProjectCard({
           onClick={() => handleProjectClick("home_gallery_image")}
         >
           <div className="reveal-curtain relative aspect-[3/4] w-full overflow-hidden md:aspect-auto md:h-[88vh]">
-            <Image
+            <ImageWithReveal
               src={project.imageSrc}
               alt={project.imageAlt ?? project.title}
               fill
               priority={priority}
               className="object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
               sizes="(max-width: 768px) 100vw, 42vw"
+              quality={82}
+              blurDataURL={project.imageBlurDataURL}
             />
 
             {/* Título ancorado no canto inferior, sobreposto à foto */}

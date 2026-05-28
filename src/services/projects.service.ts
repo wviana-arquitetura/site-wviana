@@ -1,4 +1,5 @@
 import { unstable_cache } from "next/cache";
+import { blurHashToDataURLServer } from "@/lib/blurhash-server";
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/server";
 import { rowToProject } from "@/lib/supabase/types";
 import type {
@@ -81,7 +82,29 @@ async function fetchProjectsFromDb(): Promise<Project[]> {
     (p) => !featuredProjectIds.has((projectRows as ProjectRow[]).find((r) => r.slug === p.slug)?.id ?? ""),
   );
 
-  return [...featuredProjects, ...remainingProjects];
+  const ordered = [...featuredProjects, ...remainingProjects];
+  // Decodifica blurHash → data:image/png no server, uma vez por revalidação
+  // (a função inteira é cacheada via unstable_cache). O resultado vai pro HTML
+  // inicial — placeholder aparece antes da hidratação.
+  return Promise.all(ordered.map(hydrateBlurDataURLs));
+}
+
+/** Decodifica todos os blurHashes do projeto pra dataURL em paralelo. */
+async function hydrateBlurDataURLs(project: Project): Promise<Project> {
+  const [imageBlurDataURL, galleryWithDataURLs] = await Promise.all([
+    blurHashToDataURLServer(project.imageBlurHash),
+    Promise.all(
+      project.gallery.map(async (g) => ({
+        ...g,
+        blurDataURL: await blurHashToDataURLServer(g.blurHash),
+      })),
+    ),
+  ]);
+  return {
+    ...project,
+    imageBlurDataURL,
+    gallery: galleryWithDataURLs,
+  };
 }
 
 const getCachedProjects = unstable_cache(

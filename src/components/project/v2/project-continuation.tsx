@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import { ImageWithReveal } from "@/components/ui/image-with-reveal";
 import type { Project } from "@/types/project";
 
 type ProjectContinuationProps = {
@@ -31,11 +31,13 @@ export function ProjectContinuation({ nextProject }: ProjectContinuationProps) {
 
         {/* Imagem ocupa o restante da viewport, sem vazar */}
         <div className="relative mt-6 min-h-0 flex-1 overflow-hidden md:mt-8">
-          <Image
+          <ImageWithReveal
             src={nextProject.imageSrc}
             alt={nextProject.imageAlt ?? nextProject.title}
             fill
             sizes="100vw"
+            quality={80}
+            blurDataURL={nextProject.imageBlurDataURL}
             className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.02]"
           />
         </div>
