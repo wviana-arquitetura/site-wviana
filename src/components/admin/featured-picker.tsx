@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ChangesPreviewDialog } from "./changes-preview-dialog";
+import { AdminBody, AdminFooterBar } from "./admin-page-shell";
 import type { ChangeEntry } from "./project-changes-diff";
 import { useUnsavedChangesGuard } from "@/hooks/use-unsaved-changes-guard";
 import { useAdminDirtyStore } from "@/store/use-admin-dirty-store";
@@ -111,8 +112,10 @@ export function FeaturedPicker({ options, initial }: FeaturedPickerProps) {
   useEffect(() => () => clearDirty(), [clearDirty]);
 
   return (
-    <div className="space-y-8">
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+    <>
+      <AdminBody>
+        <div className="mx-auto flex w-full max-w-[1100px] flex-1 flex-col justify-center py-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {[0, 1, 2].map((slotIdx) => {
           const currentId = selected[slotIdx as 0 | 1 | 2];
           const current = currentId ? optionsById.get(currentId) : null;
@@ -168,8 +171,10 @@ export function FeaturedPicker({ options, initial }: FeaturedPickerProps) {
           );
         })}
       </div>
+        </div>
+      </AdminBody>
 
-      <div className="flex items-center justify-between gap-4">
+      <AdminFooterBar>
         <span className="text-micro uppercase tracking-[0.18em] text-muted-foreground">
           {hasChanges
             ? `${changes.length} alteração(ões) pendente(s)`
@@ -184,7 +189,7 @@ export function FeaturedPicker({ options, initial }: FeaturedPickerProps) {
         >
           {isPending ? "Salvando..." : "Revisar e publicar"}
         </button>
-      </div>
+      </AdminFooterBar>
 
       <ChangesPreviewDialog
         open={previewOpen}
@@ -196,6 +201,6 @@ export function FeaturedPicker({ options, initial }: FeaturedPickerProps) {
         loading={isPending}
         onConfirm={confirmSave}
       />
-    </div>
+    </>
   );
 }

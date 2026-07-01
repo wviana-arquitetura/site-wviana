@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/server";
 import type { ProjectFormValues } from "@/app/admin/_actions/projects";
 import { GuardedLink } from "@/components/admin/guarded-link";
+import { AdminShell, AdminHeader } from "@/components/admin/admin-page-shell";
 import { ProjectEditClient } from "./edit-client";
 
 export const dynamic = "force-dynamic";
@@ -59,40 +60,26 @@ export default async function AdminEditProjectPage({ params }: Props) {
   }));
 
   return (
-    <div className="px-8 py-12 md:px-16 lg:px-24">
-      <div className="mx-auto max-w-[1100px]">
-        <GuardedLink
-          href="/admin/projetos"
-          className="text-micro uppercase tracking-[0.22em] text-muted-foreground transition-colors hover:text-foreground"
-        >
-          ← Voltar para projetos
-        </GuardedLink>
-        <div className="mt-8 flex flex-wrap items-end justify-between gap-6">
-          <div>
-            <span
-              className="block text-micro uppercase tracking-[0.32em]"
-              style={{ color: "hsl(var(--accent-strong))" }}
-            >
-              Editar projeto
-            </span>
-            <h1 className="mt-3 text-architectural font-light text-foreground leading-[1.05]">
-              {project.title}
-            </h1>
-            <p className="mt-3 text-micro uppercase tracking-[0.22em] text-muted-foreground">
-              /{project.slug} · {project.typology} · {project.published_status === "published" ? "publicado" : "rascunho"}
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-12">
-          <ProjectEditClient
-            projectId={id}
-            initial={initial}
-            galleryInitial={gallery}
-            currentStatus={project.published_status}
-          />
-        </div>
-      </div>
-    </div>
+    <AdminShell>
+      <AdminHeader
+        back={
+          <GuardedLink
+            href="/admin/projetos"
+            className="text-micro uppercase tracking-[0.22em] text-muted-foreground transition-colors hover:text-foreground"
+          >
+            ← Voltar
+          </GuardedLink>
+        }
+        eyebrow="Editar projeto"
+        title={project.title}
+        meta={`/${project.slug} · ${project.typology} · ${project.published_status === "published" ? "publicado" : "rascunho"}`}
+      />
+      <ProjectEditClient
+        projectId={id}
+        initial={initial}
+        galleryInitial={gallery}
+        currentStatus={project.published_status}
+      />
+    </AdminShell>
   );
 }

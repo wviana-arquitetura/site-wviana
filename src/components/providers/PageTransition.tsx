@@ -30,7 +30,11 @@ export function PageTransition({ children }: Readonly<PageTransitionProps>) {
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    if (prefersReducedMotion) {
+    // O painel admin não usa a cortina taupe — é exagerada pra uma área de
+    // trabalho. Aparece direto, como no reduced-motion.
+    const isAdmin = pathname?.startsWith("/admin");
+
+    if (prefersReducedMotion || isAdmin) {
       gsap.set(root, { autoAlpha: 1 });
       gsap.set(overlay, { scaleX: 0 });
       queueMicrotask(dispatchPageTransitionComplete);

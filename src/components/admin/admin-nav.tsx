@@ -95,7 +95,7 @@ export function AdminNav({ userEmail }: AdminNavProps) {
         style={{ borderColor: "hsl(var(--accent) / 0.3)" }}
       >
         {/* Header */}
-        <div className="px-8 py-10">
+        <div className="px-8 py-7">
           <Link
             href="/admin"
             className="block transition-opacity hover:opacity-60"
@@ -121,8 +121,8 @@ export function AdminNav({ userEmail }: AdminNavProps) {
         />
 
         {/* Navigation */}
-        <nav className="flex-1 px-8 py-8">
-          <ul className="space-y-6">
+        <nav className="flex-1 px-8 py-6">
+          <ul className="space-y-4">
             {NAV_ITEMS.map((item) => {
               const active = isActive(item.href);
               return (
@@ -170,7 +170,7 @@ export function AdminNav({ userEmail }: AdminNavProps) {
         />
 
         {/* Footer */}
-        <div className="px-8 py-8 space-y-5">
+        <div className="px-8 py-6 space-y-4">
           <div>
             <span
               className="block text-micro uppercase tracking-[0.22em]"

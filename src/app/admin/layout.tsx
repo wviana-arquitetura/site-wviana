@@ -45,12 +45,23 @@ export default async function AdminLayout({
     // data-admin marca a sub-árvore do painel pra ajustes finos de UI
     // específicos do admin (ex.: placeholders mais leves em formulários),
     // sem vazar pro site público. Ver globals.css.
+    //
+    // O painel trava a altura na viewport (h-screen + overflow-hidden) e rola
+    // DENTRO do <main>. Isso é o que faz o `position: sticky` (header/abas/aside/
+    // footer) funcionar: o `overflow-x: hidden` global em html/body quebraria o
+    // sticky relativo à janela. `data-lenis-prevent` impede o Lenis (scroll suave
+    // do site público) de sequestrar o scroll do painel.
     <div
       data-admin
-      className="min-h-screen bg-background text-foreground"
+      className="h-screen overflow-hidden bg-background text-foreground"
     >
       <AdminNav userEmail={user.email ?? ""} />
-      <main className="md:ml-72">{children}</main>
+      <main
+        data-lenis-prevent
+        className="h-screen overflow-y-auto overflow-x-hidden md:ml-72"
+      >
+        {children}
+      </main>
       <Toaster position="bottom-right" theme="light" richColors />
     </div>
   );

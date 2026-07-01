@@ -26,6 +26,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { reorderProjectsAction } from "@/app/admin/_actions/projects";
 import type { AdminProjectListItem } from "@/services/projects.service";
 import { ChangesPreviewDialog } from "./changes-preview-dialog";
+import { AdminBody, AdminFooterBar } from "./admin-page-shell";
 import type { ChangeEntry } from "./project-changes-diff";
 
 type Props = {
@@ -103,20 +104,38 @@ export function SortableProjectsList({ initialProjects }: Props) {
   useEffect(() => () => clearDirty(), [clearDirty]);
 
   return (
-    <div>
-      {/* Barra de ação flutuante */}
+    <>
+      <AdminBody>
+        <div className="mx-auto w-full max-w-[1400px]">
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={projects.map((p) => p.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <ul
+                className="border-t"
+                style={{ borderColor: "hsl(var(--accent) / 0.3)" }}
+              >
+                {projects.map((project) => (
+                  <SortableRow key={project.id} project={project} />
+                ))}
+              </ul>
+            </SortableContext>
+          </DndContext>
+        </div>
+      </AdminBody>
+
+      {/* Barra de ação fixa no rodapé — só aparece com mudanças pendentes */}
       {dirty ? (
-        <div
-          className="sticky top-0 z-10 -mx-2 mb-4 flex items-center justify-between gap-4 border bg-background px-4 py-3"
-          style={{
-            borderColor: "hsl(var(--accent-strong))",
-            background: "hsl(var(--accent) / 0.08)",
-          }}
-        >
+        <AdminFooterBar>
           <span className="text-caption uppercase tracking-[0.18em] text-foreground">
             {moves.length} projeto(s) movido(s)
           </span>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <button
               type="button"
               onClick={reset}
@@ -129,13 +148,13 @@ export function SortableProjectsList({ initialProjects }: Props) {
               type="button"
               onClick={() => setPreviewOpen(true)}
               disabled={isPending}
-              className="border px-4 py-2 text-micro uppercase tracking-[0.18em] text-foreground transition-colors hover:bg-secondary disabled:opacity-60"
+              className="border px-6 py-3 text-caption uppercase tracking-[0.18em] text-foreground transition-colors hover:bg-secondary disabled:opacity-60"
               style={{ borderColor: "hsl(var(--accent-strong))" }}
             >
               {isPending ? "Salvando..." : "Revisar e salvar"}
             </button>
           </div>
-        </div>
+        </AdminFooterBar>
       ) : null}
 
       <ChangesPreviewDialog
@@ -148,27 +167,7 @@ export function SortableProjectsList({ initialProjects }: Props) {
         loading={isPending}
         onConfirm={confirmSave}
       />
-
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-      >
-        <SortableContext
-          items={projects.map((p) => p.id)}
-          strategy={verticalListSortingStrategy}
-        >
-          <ul
-            className="border-t"
-            style={{ borderColor: "hsl(var(--accent) / 0.3)" }}
-          >
-            {projects.map((project) => (
-              <SortableRow key={project.id} project={project} />
-            ))}
-          </ul>
-        </SortableContext>
-      </DndContext>
-    </div>
+    </>
   );
 }
 
