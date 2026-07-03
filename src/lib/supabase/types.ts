@@ -54,6 +54,19 @@ export type AdminUserRow = {
   created_at: string;
 };
 
+export type AuditLogRow = {
+  id: string;
+  created_at: string;
+  actor_id: string | null;
+  actor_email: string | null;
+  action: string;
+  entity_type: string;
+  entity_id: string | null;
+  entity_label: string | null;
+  summary: string;
+  details: unknown | null;
+};
+
 /**
  * Converte uma linha do banco + galeria no objeto `Project` que o site público
  * consome (ver src/types/project.ts).

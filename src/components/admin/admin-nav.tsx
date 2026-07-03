@@ -16,6 +16,7 @@ type NavItem = {
 const NAV_ITEMS: NavItem[] = [
   { href: "/admin/projetos", label: "Projetos", description: "Listagem, edição e criação" },
   { href: "/admin/home", label: "Home", description: "Os 3 destaques da página inicial" },
+  { href: "/admin/logs", label: "Atividade", description: "Histórico de alterações" },
 ];
 
 type AdminNavProps = {
