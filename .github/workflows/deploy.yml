@@ -1,3 +1,22 @@
+# =============================================================================
+# ⚠️  WORKFLOW DESATIVADO (disabled em 2026-07-03, via GitHub → Actions → ⋯ →
+#     "Disable workflow"). O arquivo é mantido de propósito, como plano B.
+#
+#     O deploy de produção HOJE é feito pela INTEGRAÇÃO NATIVA da Vercel (a cada
+#     push na main). Isso funciona no plano Hobby porque o repositório é PÚBLICO.
+#     Este workflow (deploy via CLI + VERCEL_TOKEN) só volta a ser necessário se
+#     o repo for tornado PRIVADO — aí a Vercel Hobby bloqueia a integração nativa
+#     de repositório de organização.
+#
+#     Para REATIVAR: GitHub → Actions → "Deploy Vercel (produção)" → "Enable
+#     workflow", e desconectar a integração Git nativa na Vercel. Editar este
+#     arquivo NÃO reativa — o liga/desliga é pela UI do Actions.
+#
+#     Obs.: quando rodou (jul/2026) falhou no passo `vercel build` — provável
+#     conflito de lockfiles (package-lock.json + pnpm-lock.yaml) e/ou versão de
+#     Node do runner. Se reativar, fixar o Node e deixar só o pnpm-lock.yaml.
+# =============================================================================
+
 name: Deploy Vercel (produção)
 
 # Sobe pra produção na Vercel a cada merge/push na main. Usa a CLI da Vercel
