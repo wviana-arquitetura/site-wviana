@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
+import { useArchitecturalReveal } from "@/hooks/use-architectural-reveal";
 import type { Project } from "@/types/project";
 import { Void } from "@/components/ui/void";
-import { ProjectCover } from "./v2/project-cover";
-import { ProjectBrief } from "./v2/project-brief";
-import { ProjectNarrative } from "./v2/project-narrative";
-import { ProjectDocumentation } from "./v2/project-documentation";
-import { ProjectContinuation } from "./v2/project-continuation";
+import { ProjectCover } from "./project-cover";
+import { ProjectBrief } from "./project-brief";
+import { ProjectNarrative } from "./project-narrative";
+import { ProjectDocumentation } from "./project-documentation";
+import { ProjectContinuation } from "./project-continuation";
 import { trackEvent } from "@/lib/analytics";
 
 type ProjectDetailContentProps = {

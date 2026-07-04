@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
+import { useArchitecturalReveal } from "@/hooks/use-architectural-reveal";
 import { getAboutPageJsonLd, getBreadcrumbJsonLd } from "@/lib/seo";
 
 const capabilities = [

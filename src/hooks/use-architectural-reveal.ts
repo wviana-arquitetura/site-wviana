@@ -4,14 +4,12 @@ import { useLayoutEffect, type RefObject } from "react";
 import gsap, { ScrollTrigger } from "@/lib/gsap";
 
 /**
- * v2 architectural reveal hook.
- *
- * CSS classes:
- *  .reveal-illuminate  → opacity 0.06 → 1        (1.0s)
- *  .reveal-rise        → y:20 + opacity 0 → 1     (0.7s)
- *  .reveal-curtain     → clipPath horizontal wipe  (0.85s)
- *  .reveal-draw        → scaleX 0 → 1             (0.8s)
- *  .reveal-stagger     → same as rise, 80ms stagger between siblings
+ * Reveals de entrada acionados por classe CSS:
+ *  .reveal-illuminate  → opacity 0.06 → 1          (1.0s)
+ *  .reveal-rise        → y:20 + opacity 0 → 1      (0.7s)
+ *  .reveal-curtain     → wipe horizontal de clipPath (0.85s)
+ *  .reveal-draw        → scaleX 0 → 1              (0.8s)
+ *  .reveal-stagger     → igual ao rise, 80ms de stagger entre irmãos
  */
 export function useArchitecturalReveal(
   rootRef: RefObject<HTMLElement | null>,

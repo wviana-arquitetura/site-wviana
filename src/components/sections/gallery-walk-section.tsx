@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import { GalleryProjectCard } from "@/components/project/v2/gallery-project-card";
+import { GalleryProjectCard } from "@/components/project/gallery-project-card";
 import { Void } from "@/components/ui/void";
-import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
+import { useArchitecturalReveal } from "@/hooks/use-architectural-reveal";
 import { getLenis } from "@/lib/scroll";
 import type { Project } from "@/types/project";
 

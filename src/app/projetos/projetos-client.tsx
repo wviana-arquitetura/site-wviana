@@ -2,8 +2,8 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { GalleryProjectCardGrid } from "@/components/project/v2/gallery-project-card-grid";
-import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
+import { GalleryProjectCardGrid } from "@/components/project/gallery-project-card-grid";
+import { useArchitecturalReveal } from "@/hooks/use-architectural-reveal";
 import { useDesktopMailtoBlankTarget } from "@/hooks/use-desktop-mailto-target";
 import { BRAND } from "@/lib/brand";
 import { trackEvent } from "@/lib/analytics";

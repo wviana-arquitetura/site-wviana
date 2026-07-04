@@ -3,7 +3,7 @@
 import { FormEvent, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
+import { useArchitecturalReveal } from "@/hooks/use-architectural-reveal";
 import { useDesktopMailtoBlankTarget } from "@/hooks/use-desktop-mailto-target";
 import { BRAND } from "@/lib/brand";
 import { trackEvent } from "@/lib/analytics";
