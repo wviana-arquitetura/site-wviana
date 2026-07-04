@@ -148,7 +148,6 @@ Alem do tracking, o form de `/contato` envia o lead para um endpoint proprio:
 - Eventos granulares demais (scroll por secao, view de cada imagem, etc.).
 - Enhanced conversions (hash de e-mail no client / server-side).
 - CMP de terceiro (Cookiebot, Iubenda) — usamos banner proprio simples.
-- Politica de privacidade dedicada (item pendente, ver `docs/IMPROVEMENTS.md`).
 
 ## 10. Glossario rapido
 
