@@ -200,9 +200,8 @@ export function ProjectForm({
       <Tabs defaultValue="geral">
         <TabsList className="sticky top-16 z-20 bg-background pt-3">
           <TabsTrigger value="geral">Geral</TabsTrigger>
-          <TabsTrigger value="capa">Capa</TabsTrigger>
+          <TabsTrigger value="imagens">Imagens</TabsTrigger>
           <TabsTrigger value="conteudo">Conteúdo</TabsTrigger>
-          {mode === "edit" ? <TabsTrigger value="galeria">Galeria</TabsTrigger> : null}
           <TabsTrigger value="seo">SEO</TabsTrigger>
         </TabsList>
 
@@ -335,55 +334,85 @@ export function ProjectForm({
           </FormField>
         </TabsContent>
 
-        {/* ABA 2 — CAPA */}
-        <TabsContent value="capa" className="space-y-4">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-[1fr_320px]">
-            <div className="space-y-4">
-              <FormField label="Imagem de capa" error={fieldErrors.image_src}>
-                <ImageUploader
-                  pathPrefix={values.slug || "novo-projeto"}
-                  value={values.image_src || null}
-                  onUploaded={(url, blurHash) => {
-                    // Grava src e blur_hash juntos: o setValues do React garante
-                    // que ambos entram no mesmo render (sem stale closure).
-                    setValues((v) => ({
-                      ...v,
-                      image_src: url,
-                      image_blur_hash: blurHash,
-                    }));
-                    setFieldErrors((e) => {
-                      if (!e.image_src) return e;
-                      const rest = { ...e };
-                      delete rest.image_src;
-                      return rest;
-                    });
-                  }}
-                  label="Imagem de capa do projeto"
-                  aspect="4/5"
-                />
-              </FormField>
+        {/* ABA 2 — IMAGENS (capa + galeria no mesmo fluxo) */}
+        <TabsContent value="imagens" className="space-y-8">
+          {/* — Capa — */}
+          <section className="space-y-4">
+            <SectionHeading
+              title="Capa"
+              hint="A imagem principal do projeto (cards, topo da página e compartilhamento)."
+            />
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,260px)_1fr]">
+              <div className="space-y-4">
+                <FormField label="Imagem de capa" error={fieldErrors.image_src}>
+                  <ImageUploader
+                    pathPrefix={values.slug || "novo-projeto"}
+                    value={values.image_src || null}
+                    onUploaded={(url, blurHash) => {
+                      // Grava src e blur_hash juntos: o setValues do React garante
+                      // que ambos entram no mesmo render (sem stale closure).
+                      setValues((v) => ({
+                        ...v,
+                        image_src: url,
+                        image_blur_hash: blurHash,
+                      }));
+                      setFieldErrors((e) => {
+                        if (!e.image_src) return e;
+                        const rest = { ...e };
+                        delete rest.image_src;
+                        return rest;
+                      });
+                    }}
+                    label="Imagem de capa do projeto"
+                    aspect="4/5"
+                  />
+                </FormField>
+              </div>
+              <div className="space-y-4">
+                <FormField label="Alt da capa" hint="Descrição da imagem para SEO/acessibilidade">
+                  <Textarea
+                    value={values.image_alt ?? ""}
+                    onChange={(e) => update("image_alt", e.target.value || null)}
+                    rows={3}
+                    placeholder="Sala principal do residencial..."
+                  />
+                </FormField>
+                <FormField
+                  label="URL OG image (opcional)"
+                  hint="Use uma imagem específica para redes sociais. Em branco usa a capa."
+                >
+                  <Input
+                    value={values.og_image_src ?? ""}
+                    onChange={(e) => update("og_image_src", e.target.value || null)}
+                    placeholder=""
+                  />
+                </FormField>
+              </div>
             </div>
-            <div className="space-y-4">
-              <FormField label="Alt da capa" hint="Descrição da imagem para SEO/acessibilidade">
-                <Textarea
-                  value={values.image_alt ?? ""}
-                  onChange={(e) => update("image_alt", e.target.value || null)}
-                  rows={3}
-                  placeholder="Sala principal do residencial..."
-                />
-              </FormField>
-              <FormField
-                label="URL OG image (opcional)"
-                hint="Use uma imagem específica para redes sociais. Em branco usa a capa."
-              >
-                <Input
-                  value={values.og_image_src ?? ""}
-                  onChange={(e) => update("og_image_src", e.target.value || null)}
-                  placeholder=""
-                />
-              </FormField>
-            </div>
-          </div>
+          </section>
+
+          {/* — Galeria — */}
+          <section
+            className="space-y-4 border-t pt-8"
+            style={{ borderColor: "hsl(var(--accent) / 0.3)" }}
+          >
+            <SectionHeading
+              title="Galeria"
+              hint="Demais fotos do projeto, na ordem em que aparecem na página."
+            />
+            {mode === "edit" ? (
+              <GalleryEditor
+                pathPrefix={values.slug}
+                items={gallery}
+                onChange={setGallery}
+              />
+            ) : (
+              <p className="text-body text-muted-foreground">
+                A galeria fica disponível depois de criar o projeto — salve como
+                rascunho e volte aqui para subir as fotos.
+              </p>
+            )}
+          </section>
         </TabsContent>
 
         {/* ABA 3 — CONTEÚDO */}
@@ -454,18 +483,7 @@ export function ProjectForm({
           </button>
         </TabsContent>
 
-        {/* ABA 4 — GALERIA (apenas em edit) */}
-        {mode === "edit" ? (
-          <TabsContent value="galeria">
-            <GalleryEditor
-              pathPrefix={values.slug}
-              items={gallery}
-              onChange={setGallery}
-            />
-          </TabsContent>
-        ) : null}
-
-        {/* ABA 5 — SEO */}
+        {/* ABA 4 — SEO */}
         <TabsContent value="seo" className="space-y-4">
           <FormField label="SEO Title" hint="Em branco usa o título do projeto">
             <Input
@@ -585,6 +603,22 @@ export function ProjectForm({
       onConfirm={confirmLeave}
     />
     </>
+  );
+}
+
+function SectionHeading({ title, hint }: { title: string; hint?: string }) {
+  return (
+    <div className="space-y-1">
+      <h3
+        className="text-micro uppercase tracking-[0.22em]"
+        style={{ color: "hsl(var(--accent-strong))" }}
+      >
+        {title}
+      </h3>
+      {hint ? (
+        <p className="text-body text-muted-foreground">{hint}</p>
+      ) : null}
+    </div>
   );
 }
 

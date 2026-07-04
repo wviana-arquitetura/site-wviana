@@ -18,7 +18,9 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Maximize2 } from "lucide-react";
 import { uploadImageAction } from "@/app/admin/_actions/upload";
+import { GalleryLightbox } from "./gallery-lightbox";
 import {
   compressImageForUpload,
   formatUploadSizeError,
@@ -54,6 +56,7 @@ type PendingTile = {
 export function GalleryEditor({ pathPrefix, items, onChange }: GalleryEditorProps) {
   const [uploading, setUploading] = useState(false);
   const [pending, setPending] = useState<PendingTile[]>([]);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const sensors = useSensors(
@@ -219,6 +222,7 @@ export function GalleryEditor({ pathPrefix, items, onChange }: GalleryEditorProp
                   index={index}
                   onRemove={removeItem}
                   onAltChange={updateAlt}
+                  onExpand={() => setLightboxIndex(index)}
                 />
               ))}
               {pending.map((p) => (
@@ -232,6 +236,12 @@ export function GalleryEditor({ pathPrefix, items, onChange }: GalleryEditorProp
           </SortableContext>
         </DndContext>
       )}
+
+      <GalleryLightbox
+        items={items}
+        index={lightboxIndex}
+        onIndexChange={setLightboxIndex}
+      />
     </div>
   );
 }
@@ -241,11 +251,13 @@ function GallerySortableItem({
   index,
   onRemove,
   onAltChange,
+  onExpand,
 }: {
   item: GalleryItem;
   index: number;
   onRemove: (id: string) => void;
   onAltChange: (id: string, alt: string) => void;
+  onExpand: () => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({ id: item.id });
@@ -258,7 +270,7 @@ function GallerySortableItem({
         transition,
         opacity: isDragging ? 0.4 : 1,
       }}
-      className="border p-3 space-y-3"
+      className="group border p-3 space-y-3"
     >
       <div
         className="relative aspect-[4/3] w-full overflow-hidden bg-secondary cursor-grab active:cursor-grabbing"
@@ -281,6 +293,31 @@ function GallerySortableItem({
         >
           {index + 1}
         </span>
+        {/* Ampliar. Discreto: só aparece no hover do card (group) ou via foco
+            por teclado. Fica fora da alça de arrastar — o pointer-down para de
+            propagar pro dnd-kit, então o clique nunca vira um drag. */}
+        <div className="absolute right-2 top-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
+          <button
+            type="button"
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={onExpand}
+            aria-label={`Ampliar imagem ${index + 1}`}
+            className="peer flex h-7 w-7 items-center justify-center rounded-sm text-foreground/80 backdrop-blur-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground/40"
+            style={{ background: "hsl(var(--background) / 0.75)" }}
+          >
+            <Maximize2 className="h-3.5 w-3.5" />
+          </button>
+          {/* Tooltip: aparece ao passar o mouse no botão. */}
+          <span
+            className="pointer-events-none absolute right-0 top-full mt-1.5 whitespace-nowrap rounded-sm px-2 py-1 text-micro uppercase tracking-[0.18em] opacity-0 transition-opacity duration-150 peer-hover:opacity-100"
+            style={{
+              background: "hsl(var(--foreground))",
+              color: "hsl(var(--background))",
+            }}
+          >
+            Ampliar
+          </span>
+        </div>
       </div>
       <Textarea
         value={item.alt}
