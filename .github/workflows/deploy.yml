@@ -1,0 +1,43 @@
+name: Deploy Vercel (produção)
+
+# Sobe pra produção na Vercel a cada merge/push na main. Usa a CLI da Vercel
+# com token (VERCEL_TOKEN) em vez da integração nativa do Git — assim o deploy
+# funciona mesmo com o repositório sob uma Organization do GitHub no plano Hobby,
+# sem tirar a posse do repo da organização do cliente.
+#
+# Também dá pra disparar manualmente pela aba Actions (workflow_dispatch).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Evita deploys concorrentes; se um novo push chegar, cancela o anterior em andamento.
+concurrency:
+  group: vercel-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Instala a CLI da Vercel
+        run: npm install --global vercel@latest
+
+      # Puxa as variáveis de ambiente e configs de produção do projeto na Vercel.
+      # Assim os segredos (Supabase, Resend, GTM…) ficam só na Vercel — não
+      # precisam ser duplicados nos secrets do GitHub.
+      - name: Puxa configs de produção da Vercel
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build de produção
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy do build pra produção
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
