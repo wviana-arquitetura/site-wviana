@@ -42,7 +42,7 @@ export function useArchitecturalReveal(
         return;
       }
 
-      // ── Illuminate: light entering a room ──
+      // Illuminate: luz entrando no ambiente
       const illuminateItems =
         gsap.utils.toArray<HTMLElement>(".reveal-illuminate");
       illuminateItems.forEach((el) => {
@@ -58,7 +58,7 @@ export function useArchitecturalReveal(
         );
       });
 
-      // ── Rise: subtle upward emergence ──
+      // Rise: emerge de baixo, sutil
       const riseItems = gsap.utils.toArray<HTMLElement>(".reveal-rise");
       riseItems.forEach((el) => {
         gsap.fromTo(
@@ -74,7 +74,7 @@ export function useArchitecturalReveal(
         );
       });
 
-      // ── Curtain: horizontal clip-path reveal ──
+      // Curtain: wipe horizontal de clip-path
       const curtainItems =
         gsap.utils.toArray<HTMLElement>(".reveal-curtain");
       curtainItems.forEach((el) => {
@@ -90,7 +90,7 @@ export function useArchitecturalReveal(
         );
       });
 
-      // ── Draw: line extension from left ──
+      // Draw: linha que se estende da esquerda
       const drawItems = gsap.utils.toArray<HTMLElement>(".reveal-draw");
       drawItems.forEach((el) => {
         gsap.fromTo(
@@ -105,7 +105,7 @@ export function useArchitecturalReveal(
         );
       });
 
-      // ── Stagger: rise with sibling delay ──
+      // Stagger: rise com atraso entre irmãos
       const staggerGroups =
         gsap.utils.toArray<HTMLElement>(".reveal-stagger");
       if (staggerGroups.length > 0) {
