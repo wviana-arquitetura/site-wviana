@@ -1,10 +1,10 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import type { Metadata } from "next";
-import { ThresholdHero } from "@/components/sections/v2/threshold-hero";
-import { StatementSection } from "@/components/sections/v2/statement-section";
-import { GalleryWalkSection } from "@/components/sections/v2/gallery-walk-section";
-import { HorizonSection } from "@/components/sections/v2/horizon-section";
+import { ThresholdHero } from "@/components/sections/threshold-hero";
+import { StatementSection } from "@/components/sections/statement-section";
+import { GalleryWalkSection } from "@/components/sections/gallery-walk-section";
+import { HorizonSection } from "@/components/sections/horizon-section";
 import { Void } from "@/components/ui/void";
 import {
   defaultOgDescription,

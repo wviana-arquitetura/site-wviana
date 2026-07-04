@@ -2,7 +2,7 @@
 
 import { useRef, useLayoutEffect } from "react";
 import gsap from "@/lib/gsap";
-import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
+import { useArchitecturalReveal } from "@/hooks/use-architectural-reveal";
 import { getBreadcrumbJsonLd, getFaqJsonLd } from "@/lib/seo";
 
 const phases = [

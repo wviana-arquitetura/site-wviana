@@ -4,14 +4,12 @@ import { useLayoutEffect, type RefObject } from "react";
 import gsap, { ScrollTrigger } from "@/lib/gsap";
 
 /**
- * v2 architectural reveal hook.
- *
- * CSS classes:
- *  .reveal-illuminate  → opacity 0.06 → 1        (1.0s)
- *  .reveal-rise        → y:20 + opacity 0 → 1     (0.7s)
- *  .reveal-curtain     → clipPath horizontal wipe  (0.85s)
- *  .reveal-draw        → scaleX 0 → 1             (0.8s)
- *  .reveal-stagger     → same as rise, 80ms stagger between siblings
+ * Reveals de entrada acionados por classe CSS:
+ *  .reveal-illuminate  → opacity 0.06 → 1          (1.0s)
+ *  .reveal-rise        → y:20 + opacity 0 → 1      (0.7s)
+ *  .reveal-curtain     → wipe horizontal de clipPath (0.85s)
+ *  .reveal-draw        → scaleX 0 → 1              (0.8s)
+ *  .reveal-stagger     → igual ao rise, 80ms de stagger entre irmãos
  */
 export function useArchitecturalReveal(
   rootRef: RefObject<HTMLElement | null>,
@@ -44,7 +42,7 @@ export function useArchitecturalReveal(
         return;
       }
 
-      // ── Illuminate: light entering a room ──
+      // Illuminate: luz entrando no ambiente
       const illuminateItems =
         gsap.utils.toArray<HTMLElement>(".reveal-illuminate");
       illuminateItems.forEach((el) => {
@@ -60,7 +58,7 @@ export function useArchitecturalReveal(
         );
       });
 
-      // ── Rise: subtle upward emergence ──
+      // Rise: emerge de baixo, sutil
       const riseItems = gsap.utils.toArray<HTMLElement>(".reveal-rise");
       riseItems.forEach((el) => {
         gsap.fromTo(
@@ -76,7 +74,7 @@ export function useArchitecturalReveal(
         );
       });
 
-      // ── Curtain: horizontal clip-path reveal ──
+      // Curtain: wipe horizontal de clip-path
       const curtainItems =
         gsap.utils.toArray<HTMLElement>(".reveal-curtain");
       curtainItems.forEach((el) => {
@@ -92,7 +90,7 @@ export function useArchitecturalReveal(
         );
       });
 
-      // ── Draw: line extension from left ──
+      // Draw: linha que se estende da esquerda
       const drawItems = gsap.utils.toArray<HTMLElement>(".reveal-draw");
       drawItems.forEach((el) => {
         gsap.fromTo(
@@ -107,7 +105,7 @@ export function useArchitecturalReveal(
         );
       });
 
-      // ── Stagger: rise with sibling delay ──
+      // Stagger: rise com atraso entre irmãos
       const staggerGroups =
         gsap.utils.toArray<HTMLElement>(".reveal-stagger");
       if (staggerGroups.length > 0) {

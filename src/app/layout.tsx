@@ -4,11 +4,10 @@ import { Suspense } from "react";
 import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
-import { GlobalIntroLoader } from "@/components/providers/GlobalIntroLoader";
+import { GlobalIntroLoader } from "@/components/providers/global-intro-loader";
 import { SiteChrome } from "@/components/layout/site-chrome";
 import "./globals.css";
-import { QueryProvider } from "@/components/providers/query-provider";
-import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
+import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { PageViewTracker } from "@/components/analytics/page-view-tracker";
 import { CookieConsent } from "@/components/analytics/cookie-consent";
@@ -187,14 +186,12 @@ export default function RootLayout({
           <PageViewTracker />
         </Suspense>
         <GlobalIntroLoader />
-        <QueryProvider>
-          <Suspense>
-            <SmoothScrollProvider>
-              <ScrollProgress />
-              <SiteChrome>{children}</SiteChrome>
-            </SmoothScrollProvider>
-          </Suspense>
-        </QueryProvider>
+        <Suspense>
+          <SmoothScrollProvider>
+            <ScrollProgress />
+            <SiteChrome>{children}</SiteChrome>
+          </SmoothScrollProvider>
+        </Suspense>
         <CookieConsent />
         <SpeedInsights />
         <Analytics />

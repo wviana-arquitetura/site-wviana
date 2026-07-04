@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     // Next 16: a prop `quality` em <Image> só aceita valores que estejam aqui.
-    // Padronizamos por contexto (ver components em src/components/project/v2/*).
+    // Padronizamos por contexto (ver components em src/components/project/*).
     // Default do Next é [75]; pra portfólio de arquitetura precisamos de mais.
     qualities: [78, 80, 82, 85],
     remotePatterns: SUPABASE_HOSTNAME

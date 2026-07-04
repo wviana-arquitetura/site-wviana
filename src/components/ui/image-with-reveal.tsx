@@ -14,8 +14,8 @@ import Image, { type ImageProps } from "next/image";
  * mostrar vazio puro.
  *
  * O blurDataURL é gerado no servidor (lib/blurhash-server.ts), preferencialmente
- * dentro de um cache (ver projects.service.ts). NÃO use blurhash-client.ts aqui
- * — o decode no client só apareceria após hidratação.
+ * dentro de um cache (ver projects.service.ts) — decodificar no client não
+ * serviria: o placeholder só apareceria após a hidratação.
  */
 type ImageWithRevealProps = Omit<ImageProps, "onLoad" | "placeholder"> & {
   /** data:image/png decodado de BlurHash (32x32). Quando ausente, mostra

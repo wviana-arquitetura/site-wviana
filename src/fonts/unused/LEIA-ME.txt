@@ -1,4 +1,0 @@
-Arquivos aqui NÃO são carregados pelo site.
-
-São cópias legadas (Agrandir Grand) mantidas só para referência ou eventual troca de tipografia.
-A família em uso nos títulos está em: src/fonts/Agrandir-Narrow.otf (ver src/app/layout.tsx).

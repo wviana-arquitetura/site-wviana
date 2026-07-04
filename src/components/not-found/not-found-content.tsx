@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useArchitecturalReveal } from "@/hooks/v2/use-architectural-reveal";
+import { useArchitecturalReveal } from "@/hooks/use-architectural-reveal";
 import { trackEvent } from "@/lib/analytics";
 import type { Project } from "@/types/project";
 

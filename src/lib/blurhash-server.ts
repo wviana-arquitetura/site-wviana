@@ -27,8 +27,7 @@ const SAMPLE_MAX = 32;
 
 /**
  * Decodifica um BlurHash em data:image/png URL diretamente no servidor (sharp).
- * Diferente do decoder de client (canvas, src/lib/blurhash-client.ts), este
- * roda em Server Components — então o blur entra no HTML inicial, antes da
+ * Por rodar em Server Components, o blur entra no HTML inicial, antes da
  * hidratação. É o que faz o `placeholder="blur"` do next/image valer a pena.
  *
  * Síncrono o suficiente pra rodar em listas, mas usar com parcimônia: cada

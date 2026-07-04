@@ -89,11 +89,8 @@
     scrollbar-color: hsl(var(--accent-strong) / 0.55) transparent;
   }
 
-  /* ── Scrollbar autoral (WebKit / Chromium) ─────────────────────
-     Filosofia: instrumento sutil, não cromado.
-     Trilho transparente com fio-guia central, thumb com gradient
-     vertical, halo sutil e expansão refinada no hover.
-     ────────────────────────────────────────────────────────────── */
+  /* Scrollbar autoral (WebKit / Chromium): trilho transparente com fio-guia
+     central, thumb com gradiente vertical e expansão sutil no hover. */
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -157,7 +154,7 @@
 }
 
 @layer components {
-  /* ── v2 Intro loader — "Entrar no Edificio" ── */
+  /* Intro loader — "Entrar no Edifício" */
   .intro-loader-overlay {
     position: fixed;
     inset: 0;
@@ -215,7 +212,7 @@
     bottom: 0;
   }
 
-  /* ── v2 Page transitions — "A Cortina" ── */
+  /* Transição de rota — "A Cortina" */
   /* z-index acima do navigation-drawer (9998) — quando navegamos com o menu
      aberto, a cortina precisa cobrir o drawer enquanto ele fecha em paralelo. */
   .page-transition-overlay {
@@ -232,7 +229,7 @@
     z-index: 10;
   }
 
-  /* ── v2 Architectural reveal animations ── */
+  /* Reveals de entrada (ver hooks/use-architectural-reveal) */
   .reveal-illuminate {
     will-change: opacity;
   }
@@ -256,7 +253,7 @@
     transform: translateZ(0);
   }
 
-  /* ── Image-with-reveal: fundo da marca + plano de luz ──
+  /* Image-with-reveal: fundo da marca + plano de luz.
      Aparece enquanto a foto carrega; some por fade quando data-loaded="true".
      O sweep é um gradiente quente passando por cima, 2 ciclos só (não vira
      decoração eterna). prefers-reduced-motion suprime o sweep. */
@@ -309,7 +306,7 @@
     }
   }
 
-  /* ── Painel admin: placeholders mais leves ──
+  /* Painel admin: placeholders mais leves.
      `--muted-foreground` é preto 35% SÓLIDO (#595959) — adequado pra legendas
      e hints, mas pesado demais pra placeholder de formulário (quase indistinguível
      do texto digitado). Aqui aplicamos preto a 38% de OPACIDADE, que perceptualmente
@@ -321,7 +318,7 @@
     opacity: 1; /* Firefox aplica opacity 0.54 por default em ::placeholder */
   }
 
-  /* ── Lightbox da galeria: barra "enchendo" sob o monograma W ──
+  /* Lightbox da galeria: barra "enchendo" sob o monograma W.
      Enche da esquerda e escoa pela direita, em loop contínuo e suave — um
      indeterminado delicado enquanto a foto grande baixa. Suprimido em
      prefers-reduced-motion (fica uma linha estática). */
@@ -357,20 +354,8 @@
     }
   }
 
-  /* ── Split text line-by-line reveal ── */
-  .split-line-wrapper {
-    display: block;
-    overflow: hidden;
-  }
-
-  .split-line-inner {
-    display: block;
-  }
-
-  /* ──────────────────────────────────────────────────────────────
-     v3 Scroll Indicator — "Instrumento Arquitetônico"
-     Régua vertical refinada + barra-mestra superior + cabeça-cápsula.
-     Filosofia: instrumento de medição (escalímetro), não UI cromada.
+  /* Scroll indicator — "Instrumento Arquitetônico": régua vertical +
+     barra-mestra superior + cabeça-cápsula, como um escalímetro.
 
      Adapta-se ao tema do footer: lê --footer-dark-progress (0..1)
      e interpola entre paleta clara (preto sobre off-white) e escura
