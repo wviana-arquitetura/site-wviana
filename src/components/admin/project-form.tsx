@@ -25,13 +25,17 @@ import { GalleryEditor, type GalleryItem } from "./gallery-editor";
 import { ChangesPreviewDialog } from "./changes-preview-dialog";
 import { ConfirmLeaveDialog } from "./confirm-leave-dialog";
 import { diffProjectValues, diffGallery } from "./project-changes-diff";
+import { AdminBody, AdminFooterBar } from "./admin-page-shell";
 import { useUnsavedChangesGuard } from "@/hooks/use-unsaved-changes-guard";
+import { cn } from "@/lib/utils";
 
 type ProjectFormProps = {
   mode: "create" | "edit";
   initial: ProjectFormValues & { id?: string };
   galleryInitial?: GalleryItem[];
   onSaveGallery?: (gallery: GalleryItem[]) => Promise<void>;
+  /** Painel lateral fixo (capa, status, publicar, excluir). Só no modo edição. */
+  aside?: React.ReactNode;
 };
 
 const TYPOLOGY_OPTIONS = ["Residencial", "Comercial", "Corporativo"] as const;
@@ -53,6 +57,7 @@ export function ProjectForm({
   initial,
   galleryInitial = [],
   onSaveGallery,
+  aside,
 }: ProjectFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -181,9 +186,19 @@ export function ProjectForm({
 
   return (
     <>
-    <form onSubmit={handleSubmit} className="space-y-12">
+    <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
+      <AdminBody>
+        <div
+          className={cn(
+            "grid w-full grid-cols-1 gap-8",
+            aside
+              ? "lg:grid-cols-[minmax(0,1fr)_clamp(280px,24vw,360px)]"
+              : "mx-auto max-w-[1100px]",
+          )}
+        >
+          <div className="min-w-0">
       <Tabs defaultValue="geral">
-        <TabsList>
+        <TabsList className="sticky top-16 z-20 bg-background pt-3">
           <TabsTrigger value="geral">Geral</TabsTrigger>
           <TabsTrigger value="capa">Capa</TabsTrigger>
           <TabsTrigger value="conteudo">Conteúdo</TabsTrigger>
@@ -192,8 +207,8 @@ export function ProjectForm({
         </TabsList>
 
         {/* ABA 1 — GERAL */}
-        <TabsContent value="geral" className="space-y-6">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <TabsContent value="geral" className="space-y-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <FormField
               label="Slug (URL)"
               hint="Apenas letras minúsculas, números e hifens"
@@ -321,8 +336,8 @@ export function ProjectForm({
         </TabsContent>
 
         {/* ABA 2 — CAPA */}
-        <TabsContent value="capa" className="space-y-6">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-[1fr_320px]">
+        <TabsContent value="capa" className="space-y-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-[1fr_320px]">
             <div className="space-y-4">
               <FormField label="Imagem de capa" error={fieldErrors.image_src}>
                 <ImageUploader
@@ -348,7 +363,7 @@ export function ProjectForm({
                 />
               </FormField>
             </div>
-            <div className="space-y-6">
+            <div className="space-y-4">
               <FormField label="Alt da capa" hint="Descrição da imagem para SEO/acessibilidade">
                 <Textarea
                   value={values.image_alt ?? ""}
@@ -372,7 +387,7 @@ export function ProjectForm({
         </TabsContent>
 
         {/* ABA 3 — CONTEÚDO */}
-        <TabsContent value="conteudo" className="space-y-6">
+        <TabsContent value="conteudo" className="space-y-4">
           <p className="text-body text-muted-foreground">
             Capítulos do projeto. Cada projeto pode ter quantos capítulos quiser. O
             padrão é 2 (Contexto e Solução).
@@ -381,7 +396,7 @@ export function ProjectForm({
           {values.chapters.map((chapter, idx) => (
             <div
               key={idx}
-              className="border p-6 space-y-4"
+              className="border p-5 space-y-3"
               style={{ borderColor: "hsl(var(--accent) / 0.3)" }}
             >
               <div className="flex items-center justify-between">
@@ -451,7 +466,7 @@ export function ProjectForm({
         ) : null}
 
         {/* ABA 5 — SEO */}
-        <TabsContent value="seo" className="space-y-6">
+        <TabsContent value="seo" className="space-y-4">
           <FormField label="SEO Title" hint="Em branco usa o título do projeto">
             <Input
               value={values.seo_title ?? ""}
@@ -495,12 +510,18 @@ export function ProjectForm({
           </FormField>
         </TabsContent>
       </Tabs>
+          </div>
 
-      {/* Submit bar fixa no rodapé */}
-      <div
-        className="sticky bottom-0 -mx-8 flex flex-wrap items-center justify-between gap-4 border-t bg-background px-8 py-6 md:-mx-16 md:px-16 lg:-mx-24 lg:px-24"
-        style={{ borderColor: "hsl(var(--accent) / 0.3)" }}
-      >
+          {aside ? (
+            <aside className="order-first lg:order-none lg:sticky lg:top-20 lg:self-start">
+              {aside}
+            </aside>
+          ) : null}
+        </div>
+      </AdminBody>
+
+      {/* Submit bar fixa no rodapé (largura cheia, dentro do <form>) */}
+      <AdminFooterBar>
         {/* Indicador de mudanças pendentes (só em modo edição) */}
         {mode === "edit" ? (
           <span className="text-micro uppercase tracking-[0.18em] text-muted-foreground">
@@ -535,7 +556,7 @@ export function ProjectForm({
                 : "Revisar e salvar"}
           </button>
         </div>
-      </div>
+      </AdminFooterBar>
     </form>
 
     {/* Dialog de revisão de alterações (só em modo edição) */}
@@ -579,7 +600,7 @@ function FormField({
   children: React.ReactNode;
 }) {
   return (
-    <div className="space-y-2">
+    <div className="space-y-1.5">
       <Label>{label}</Label>
       {children}
       {error ? (

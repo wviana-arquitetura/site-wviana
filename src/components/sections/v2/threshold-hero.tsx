@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useLayoutEffect } from "react";
+import { forwardRef, memo, useRef, useLayoutEffect } from "react";
 import Link from "next/link";
 import gsap from "@/lib/gsap";
 import { PAGE_TRANSITION_COMPLETE_EVENT } from "@/lib/page-transition-events";
@@ -168,14 +168,7 @@ export function ThresholdHero({ logoSvg }: ThresholdHeroProps) {
       className="relative flex min-h-[var(--svh)] flex-col items-center justify-center bg-background"
       data-section="hero"
     >
-      <div
-        ref={logoContainerRef}
-        className="flex w-full items-center justify-center px-4 md:px-12 lg:px-20"
-        aria-label="W.VIANA — Arquitetura | Interiores"
-        role="img"
-        style={{ minHeight: "38vh" }}
-        dangerouslySetInnerHTML={{ __html: scopeSvg(logoSvg) }}
-      />
+      <HeroLogo ref={logoContainerRef} logoSvg={logoSvg} />
 
       <div
         ref={copyBlockRef}
@@ -236,6 +229,34 @@ export function ThresholdHero({ logoSvg }: ThresholdHeroProps) {
     </section>
   );
 }
+
+// O SVG é injetado via dangerouslySetInnerHTML e depois pintado imperativamente
+// pela animação (estilos inline nos <path>). Numa navegação soft pra mesma rota
+// (ex.: clicar na logo da topbar estando na home), o pai re-renderiza e o React
+// RE-INJETA o markup "vazio" (fill transparente), apagando o que a animação
+// desenhou — e como o useLayoutEffect roda só na montagem, ninguém repinta: a
+// logo some. Isolar a injeção num componente memoizado com comparador
+// sempre-igual faz o React montar este subárvore UMA vez e nunca reconciliá-la;
+// os estilos da animação sobrevivem a qualquer re-render do pai. `logoSvg` é
+// constante em runtime (lido do disco no servidor), então travar o memo é seguro.
+const HeroLogo = memo(
+  forwardRef<HTMLDivElement, { logoSvg: string }>(function HeroLogo(
+    { logoSvg },
+    ref,
+  ) {
+    return (
+      <div
+        ref={ref}
+        className="flex w-full items-center justify-center px-4 md:px-12 lg:px-20"
+        aria-label="W.VIANA — Arquitetura | Interiores"
+        role="img"
+        style={{ minHeight: "38vh" }}
+        dangerouslySetInnerHTML={{ __html: scopeSvg(logoSvg) }}
+      />
+    );
+  }),
+  () => true,
+);
 
 function scopeSvg(raw: string): string {
   // Remove qualquer <style> embutido e injeta dimensões + fill transparente

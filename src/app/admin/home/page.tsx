@@ -1,5 +1,6 @@
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/server";
 import { FeaturedPicker } from "@/components/admin/featured-picker";
+import { AdminShell, AdminHeader, AdminBody } from "@/components/admin/admin-page-shell";
 
 export const dynamic = "force-dynamic";
 
@@ -37,38 +38,27 @@ export default async function AdminHomePage() {
   const { options, initial } = await loadData();
 
   return (
-    <div className="px-8 py-12 md:px-16 lg:px-24">
-      <div className="mx-auto max-w-[1400px]">
-        <span
-          className="text-micro uppercase tracking-[0.32em]"
-          style={{ color: "hsl(var(--accent-strong))" }}
-        >
-          Página inicial
-        </span>
-        <h1 className="mt-4 text-architectural font-light text-foreground leading-[1.05]">
-          Destaques da home
-        </h1>
-        <p className="mt-6 max-w-[640px] text-body-lg text-muted-foreground">
-          Escolha os 3 projetos que aparecem na seção principal da página inicial. A
-          ordem das posições é exatamente a que aparece no site.
-        </p>
-
-        <div className="mt-12">
-          {options.length < 3 ? (
-            <div
-              className="border p-8"
-              style={{ borderColor: "hsl(var(--accent) / 0.3)" }}
-            >
-              <p className="text-body text-foreground">
-                Você precisa de pelo menos 3 projetos publicados para definir os
-                destaques. Atualmente: {options.length}.
-              </p>
-            </div>
-          ) : (
-            <FeaturedPicker options={options} initial={initial} />
-          )}
-        </div>
-      </div>
-    </div>
+    <AdminShell>
+      <AdminHeader
+        eyebrow="Página inicial"
+        title="Destaques da home"
+        meta="3 projetos da seção principal · na ordem exibida no site"
+      />
+      {options.length < 3 ? (
+        <AdminBody>
+          <div
+            className="border p-6"
+            style={{ borderColor: "hsl(var(--accent) / 0.3)" }}
+          >
+            <p className="text-body text-foreground">
+              Você precisa de pelo menos 3 projetos publicados para definir os
+              destaques. Atualmente: {options.length}.
+            </p>
+          </div>
+        </AdminBody>
+      ) : (
+        <FeaturedPicker options={options} initial={initial} />
+      )}
+    </AdminShell>
   );
 }

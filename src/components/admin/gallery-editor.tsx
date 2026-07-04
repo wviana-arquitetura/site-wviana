@@ -171,7 +171,7 @@ export function GalleryEditor({ pathPrefix, items, onChange }: GalleryEditorProp
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex items-center justify-between">
         <p className="text-body text-muted-foreground">
           {items.length} imagem(ns) · arraste para reordenar

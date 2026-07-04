@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { ProjectForm } from "@/components/admin/project-form";
@@ -77,51 +78,112 @@ export function ProjectEditClient({
 
   const isCurrentlyPublished = currentStatus === "published";
 
+  const aside = (
+    <div
+      className="space-y-5 border p-5"
+      style={{ borderColor: "hsl(var(--accent) / 0.3)" }}
+    >
+      {/* Capa (estado salvo — atualiza após salvar) */}
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-secondary/30">
+        {initial.image_src ? (
+          <Image
+            src={initial.image_src}
+            alt={initial.image_alt ?? initial.title}
+            fill
+            sizes="360px"
+            className="object-cover"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center">
+            <span className="text-micro uppercase tracking-[0.18em] text-muted-foreground">
+              Sem capa
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* Status */}
+      <div className="flex items-center justify-between gap-3">
+        <span
+          className="text-micro uppercase tracking-[0.22em]"
+          style={{ color: "hsl(var(--accent-strong))" }}
+        >
+          Status
+        </span>
+        {isCurrentlyPublished ? (
+          <span
+            className="inline-block px-3 py-1 text-micro uppercase tracking-[0.18em]"
+            style={{
+              background: "hsl(var(--accent) / 0.15)",
+              color: "hsl(var(--accent-strong))",
+            }}
+          >
+            Publicado
+          </span>
+        ) : (
+          <span
+            className="inline-block border px-3 py-1 text-micro uppercase tracking-[0.18em] text-muted-foreground"
+            style={{ borderColor: "hsl(var(--accent) / 0.3)" }}
+          >
+            Rascunho
+          </span>
+        )}
+      </div>
+
+      {/* Ações primárias */}
+      <div className="space-y-3">
+        <button
+          type="button"
+          onClick={() => setPublishDialogOpen(true)}
+          disabled={isPending}
+          className="w-full border px-6 py-3 text-caption uppercase tracking-[0.18em] text-foreground transition-colors hover:bg-secondary disabled:opacity-60"
+          style={{ borderColor: "hsl(var(--accent-strong))" }}
+        >
+          {isCurrentlyPublished ? "Tirar do ar (rascunho)" : "Publicar projeto"}
+        </button>
+        {isCurrentlyPublished ? (
+          <a
+            href={`/projetos/${initial.slug}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block text-center text-micro uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Ver no site →
+          </a>
+        ) : null}
+        <p className="text-micro uppercase tracking-[0.18em] text-muted-foreground">
+          {isCurrentlyPublished
+            ? "Mudanças nos campos só vão pro site após salvar e republicar."
+            : "Enquanto rascunho, o projeto não aparece no site."}
+        </p>
+      </div>
+
+      {/* Zona de risco */}
+      <div
+        className="border-t pt-4"
+        style={{ borderColor: "hsl(var(--accent) / 0.3)" }}
+      >
+        <button
+          type="button"
+          onClick={() => setDeleteDialogOpen(true)}
+          disabled={isPending}
+          className="text-micro uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-foreground disabled:opacity-60"
+        >
+          Excluir projeto
+        </button>
+      </div>
+    </div>
+  );
+
   return (
-    <div className="space-y-12">
+    <>
       <ProjectForm
         mode="edit"
         initial={{ ...initial, id: projectId }}
         galleryInitial={galleryInitial}
         onSaveGallery={saveGallery}
+        aside={aside}
       />
-
-      {/* Actions secundárias: publicar / despublicar / excluir */}
-      <div
-        className="border-t pt-8"
-        style={{ borderColor: "hsl(var(--accent) / 0.3)" }}
-      >
-        <span
-          className="text-micro uppercase tracking-[0.22em]"
-          style={{ color: "hsl(var(--accent-strong))" }}
-        >
-          Ações do projeto
-        </span>
-        <div className="mt-4 flex flex-wrap items-center gap-4">
-          <button
-            type="button"
-            onClick={() => setPublishDialogOpen(true)}
-            disabled={isPending}
-            className="border px-6 py-3 text-caption uppercase tracking-[0.18em] text-foreground transition-colors hover:bg-secondary disabled:opacity-60"
-            style={{ borderColor: "hsl(var(--accent-strong))" }}
-          >
-            {isCurrentlyPublished ? "Tirar do ar (rascunho)" : "Publicar projeto"}
-          </button>
-          <button
-            type="button"
-            onClick={() => setDeleteDialogOpen(true)}
-            disabled={isPending}
-            className="text-caption uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-foreground disabled:opacity-60"
-          >
-            Excluir projeto
-          </button>
-        </div>
-        <p className="mt-3 text-micro uppercase tracking-[0.18em] text-muted-foreground">
-          {isCurrentlyPublished
-            ? "Mudanças nos campos só vão pro site público após salvar e republicar."
-            : "Enquanto rascunho, o projeto não aparece no site. Publique quando estiver pronto."}
-        </p>
-      </div>
 
       {/* Dialog: publicar / tirar do ar */}
       <ChangesPreviewDialog
@@ -184,6 +246,6 @@ export function ProjectEditClient({
         loading={isPending}
         onConfirm={confirmDelete}
       />
-    </div>
+    </>
   );
 }
