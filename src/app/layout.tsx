@@ -7,7 +7,6 @@ import { Analytics } from "@vercel/analytics/next";
 import { GlobalIntroLoader } from "@/components/providers/GlobalIntroLoader";
 import { SiteChrome } from "@/components/layout/site-chrome";
 import "./globals.css";
-import { QueryProvider } from "@/components/providers/query-provider";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { PageViewTracker } from "@/components/analytics/page-view-tracker";
@@ -187,14 +186,12 @@ export default function RootLayout({
           <PageViewTracker />
         </Suspense>
         <GlobalIntroLoader />
-        <QueryProvider>
-          <Suspense>
-            <SmoothScrollProvider>
-              <ScrollProgress />
-              <SiteChrome>{children}</SiteChrome>
-            </SmoothScrollProvider>
-          </Suspense>
-        </QueryProvider>
+        <Suspense>
+          <SmoothScrollProvider>
+            <ScrollProgress />
+            <SiteChrome>{children}</SiteChrome>
+          </SmoothScrollProvider>
+        </Suspense>
         <CookieConsent />
         <SpeedInsights />
         <Analytics />
