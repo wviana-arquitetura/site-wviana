@@ -2,56 +2,93 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Commands
+## Comandos
+
+O gerenciador de pacotes é **pnpm** (só existe `pnpm-lock.yaml`).
 
 ```bash
-npm run dev       # Start dev server (Next.js)
-npm run build     # Production build
-npm run lint      # ESLint
-npm run format    # Prettier
+pnpm dev                 # dev server (Next.js)
+pnpm build               # build de produção
+pnpm lint                # ESLint
+pnpm format              # Prettier
+pnpm backfill:blurhash   # gera BlurHash pra imagens anteriores ao pipeline
 ```
 
-There are no automated tests in this project.
+Não há testes automatizados no projeto. Deploy em produção é pela integração nativa da Vercel; o workflow `.github/workflows/deploy.yml` está desativado de propósito (plano B caso o repo vire privado).
 
-## Architecture
+## Arquitetura
 
-**Next.js 16 App Router** project for the W.VIANA architecture office public website (institutional: home, projects, process, about, contact).
+**Next.js 16 App Router** com duas superfícies no mesmo app: o site público do escritório W.VIANA (home, projetos, processo, sobre, contato) e o painel de conteúdo em `/admin`, usado pelo próprio cliente.
 
-### Data Layer
-Projects are stored as static JSON in `src/data/projects.json`. The data flows:
-- `src/services/projects.service.ts` — raw access functions (getAllProjects, getProjectBySlug, getRelatedProjects, getNextProject)
-- `src/lib/projects.ts` — re-exports for use in components
-- `src/hooks/use-projects.ts` — React Query wrapper for client-side fetching
-- `src/types/project.ts` — Project type definition
+### Camada de dados (Supabase)
 
-### Animations
-GSAP with ScrollTrigger is the primary animation library. Always import from `src/lib/gsap.ts` (not directly from `gsap`) — this file handles plugin registration. Lenis is used for smooth scrolling via `src/components/providers/SmoothScrollProvider.tsx`.
+O conteúdo vive no Postgres do Supabase — tabelas `projects`, `project_gallery_images`, `home_featured`, `admin_users` e `audit_log`. Schema completo (com RLS) em `supabase/migrations/`. Não existe mais `src/data/projects.json`.
 
-### Providers (in layout.tsx)
-1. `GlobalIntroLoader` — site-wide intro/loader animation
-2. `QueryProvider` — TanStack React Query
-3. `SmoothScrollProvider` — Lenis smooth scroll
+- `src/services/projects.service.ts` — único ponto de leitura pública. Busca projetos + galerias + destaques e embrulha tudo em `unstable_cache` com tags `projects` / `home_featured` (revalidate de fallback: 3600s). Home, listagem, página de projeto e sitemap consomem a mesma função.
+- Fluxo editorial **draft → published**: a query pública filtra `published_status = 'published'`. Salvar no painel não afeta o site; as actions de publicar/despublicar/excluir/reordenar/destaques chamam `updateTag` + `revalidatePath` — publicar é invalidar cache, não redeploy.
+- `getAllProjectsForAdmin()` (mesmo arquivo) lê sem cache, incluindo drafts.
+- `rowToProject` em `src/lib/supabase/types.ts` mapeia rows → tipo `Project` (`src/types/project.ts`).
+- `src/lib/supabase/`: `client.ts` (browser), `server.ts` com dois clients — `createSupabaseServerClient` (cookies de sessão, respeita RLS) e `createSupabaseServiceRoleClient` (bypass de RLS; SÓ em código server confiável, nunca no client) — e `middleware.ts` (`updateSession`).
 
-Page transitions are handled by `src/components/providers/PageTransition.tsx` via `src/app/template.tsx`.
+### Painel `/admin`
 
-### State Management
-Zustand (`src/store/use-ui-store.ts`) manages UI state (mobile menu open/close).
+- **Auth**: Google OAuth via Supabase Auth + allowlist na tabela `admin_users`. `src/proxy.ts` (o middleware do Next 16) renova a sessão a cada request e barra `/admin` sem login; **cada server action revalida a permissão de novo** (`requireAdmin`). RLS é a última camada.
+- **Server actions** em `src/app/admin/_actions/` (`projects.ts`, `upload.ts`, `auth.ts`) — validação com zod, retorno `ActionResult` com `fieldErrors`.
+- **Auditoria**: toda escrita chama `recordAudit` (`src/lib/audit.ts`). Edições gravam diff campo a campo (`src/components/admin/project-changes-diff.ts`); exclusões gravam snapshot completo do projeto. Append-only: a tabela não tem policy de escrita via RLS, só a service role insere. UI em `/admin/logs`. Manter esse padrão em actions novas.
+- **UX de edição**: `use-admin-dirty-store` (zustand) + `use-unsaved-changes-guard` + `confirm-leave-dialog`/`guarded-link` interceptam saída com alterações não salvas; `changes-preview-dialog` mostra o diff antes de salvar; galeria com upload múltiplo, drag-and-drop (dnd-kit) e lightbox de conferência; destaques da home (3 projetos ordenados) em `/admin/home`.
+
+### Pipeline de imagens
+
+Duas etapas, uma única perda (evita generation loss em degradês de céu/sombra):
+
+1. **Client** (`src/lib/image-compress.ts`): canvas SÓ redimensiona (teto 3200px, q0.95 quase-lossless) pra não trafegar a foto crua até a action. `MAX_UPLOAD_BYTES` (20MB) casa com `serverActions.bodySizeLimit` do `next.config.ts`.
+2. **Server** (`_actions/upload.ts`): sharp é a única fonte da compressão final — WebP q85, max 3200px — e sobe pro bucket `project-images` com cache de 1 ano. Gera o BlurHash em paralelo ao upload.
+
+**BlurHash**: hash (~24 chars) gravado no banco; `src/lib/blurhash-server.ts` decodifica pra data URL PNG 32px dentro do mesmo `unstable_cache` — o placeholder vai no HTML inicial, antes da hidratação. `blurhash-client.ts` é o decoder de canvas pro client. Legados sem hash: `scripts/backfill-blurhash.mjs`.
+
+`next.config.ts`: `images.qualities` [78, 80, 82, 85] (no Next 16 a prop `quality` do `<Image>` só aceita valores listados) e `remotePatterns` pro storage do Supabase.
+
+### Animações
+
+GSAP com ScrollTrigger. Sempre importar de `src/lib/gsap.ts` (ponto único de registro de plugin), nunca de `gsap` direto. Lenis pra smooth scroll via `SmoothScrollProvider` (sincronizado: `lenis.on("scroll", ScrollTrigger.update)`). Transições de página em `src/components/providers/PageTransition.tsx` via `src/app/template.tsx`. Toda seção animada checa `prefers-reduced-motion` e desiste se o usuário pediu menos movimento — manter esse padrão em animações novas.
+
+### Providers (layout.tsx)
+
+1. Scripts inline pré-hidratação: limpeza de atributos injetados por extensões (evita hydration mismatch) e Consent Mode default `denied`
+2. `PageViewTracker` + GTM (só carrega com `NEXT_PUBLIC_GTM_ID`)
+3. `GlobalIntroLoader` — intro/loader do site
+4. `QueryProvider` — React Query (hoje só o provider; não há consumidores `useQuery` ativos)
+5. `SmoothScrollProvider` (Lenis) → `SiteChrome` → páginas
+6. `CookieConsent`, Vercel `SpeedInsights` + `Analytics`
+
+### Estado
+
+Zustand: `src/store/use-ui-store.ts` (menu mobile) e `src/store/use-admin-dirty-store.ts` (alterações não salvas do painel).
 
 ### Styling
-- Tailwind CSS + SCSS (`sass`)
-- Tipografia (manual de marca): `next/font/local` em `src/app/layout.tsx` — **Aeonik** (`src/fonts/AeonikTRIAL-*.otf`) → `--font-body` / `font-sans`; **Agrandir Narrow** (`src/fonts/Agrandir-Narrow.otf`) → `--font-display` / headings em `globals.css`
-- Brand colors: `#000000`, `#BAAEA4` (warm taupe), `#F2F2F2` (off-white)
-- shadcn/ui-style components in `src/components/ui/`
 
-### Key Routes
-- `/` — Home page with multiple animated sections
-- `/projetos` — Projects listing
-- `/projetos/[slug]` — Project detail
-- `/processo`, `/sobre`, `/contato` — Static pages
-- `/contato/obrigado` — Thank-you page (noindex, fora do sitemap; usada como URL de conversão fallback para Google Ads)
-- `/api/contact` — Endpoint que recebe o lead, envia e-mail via Resend e grava no Apps Script. Tem rate-limit (5 req/min/IP) + honeypot
+- Tailwind CSS + SCSS (`sass`); tokens em `src/styles/_tokens.scss`
+- Tipografia (manual de marca): `next/font/local` em `src/app/layout.tsx` — **Aeonik** (`src/fonts/AeonikTRIAL-*.otf`) → `--font-body` / `font-sans`; **Agrandir Narrow** (`src/fonts/Agrandir-Narrow.otf`) → `--font-display` / headings em `globals.css`
+- Cores da marca: `#000000`, `#BAAEA4` (warm taupe), `#F2F2F2` (off-white)
+- Componentes estilo shadcn/ui em `src/components/ui/`
+
+### Rotas
+
+Públicas:
+- `/` — home (seções animadas em `src/components/sections/v2/`; os 3 destaques vêm de `home_featured`)
+- `/projetos` — listagem com filtro por tipologia; `/projetos/[slug]` — detalhe (pré-renderizado via `generateStaticParams`)
+- `/processo`, `/sobre`, `/contato`, `/privacidade`, `/termos`
+- `/contato/obrigado` — noindex, fora do sitemap; URL de conversão fallback pro Google Ads
+- `/api/contact` — recebe o lead, envia e-mail (Resend) e grava na planilha (Apps Script) com `Promise.allSettled` (um destino falhar não perde o lead). Rate-limit 5 req/min/IP + honeypot silencioso
+
+Admin: `/admin/login`, `/admin/projetos` (+ `/novo`, `/[id]`), `/admin/home`, `/admin/logs`, `/auth/callback` (retorno do OAuth).
+
+### SEO
+
+Helper `pageMeta` em `src/lib/seo.ts`; imagens OG geradas por `opengraph-image.tsx` por rota; JSON-LD de organização; sitemap (`src/app/sitemap.ts`) montado a partir do banco, com `lastModified` real por projeto.
 
 ### Analytics & captura de leads
+
 Veja `docs/ANALYTICS_TRACKING.md` para o panorama de eventos, Consent Mode e responsabilidades.
 - `src/lib/analytics.ts` — `trackEvent` / `trackPageView` via `window.dataLayer` (GTM)
 - `src/lib/consent.ts` — Consent Mode v2: leitura/persistência no localStorage e `gtag('consent','update', …)`
@@ -61,7 +98,10 @@ Veja `docs/ANALYTICS_TRACKING.md` para o panorama de eventos, Consent Mode e res
 - `src/lib/rate-limit.ts` — sliding window em memória (Map); em serverless, considerar Upstash/KV se o site escalar
 
 ### Variáveis de ambiente
+
 Ver `.env.example`. Principais:
+- `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` — leitura pública e auth do painel
+- `SUPABASE_SERVICE_ROLE_KEY` — bypass de RLS; só em server actions/scripts, NUNCA no client
 - `NEXT_PUBLIC_GTM_ID` — sem isso, GTM não carrega e o tracking fica inerte (útil pra dev)
 - `RESEND_API_KEY`, `LEAD_FROM_EMAIL`, `LEAD_NOTIFICATION_EMAIL` — envio do lead por e-mail
 - `LEADS_SHEET_WEBHOOK_URL` — Apps Script que grava na planilha
