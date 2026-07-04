@@ -1,6 +1,6 @@
-# CLAUDE.md
+# Arquitetura
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Visão técnica do projeto pra quem for navegar o repositório. O README traz o panorama; aqui fica o mapa detalhado de onde cada coisa vive.
 
 ## Comandos
 
@@ -22,7 +22,7 @@ Não há testes automatizados no projeto. Deploy em produção é pela integraç
 
 ### Camada de dados (Supabase)
 
-O conteúdo vive no Postgres do Supabase — tabelas `projects`, `project_gallery_images`, `home_featured`, `admin_users` e `audit_log`. Schema completo (com RLS) em `supabase/migrations/`. Não existe mais `src/data/projects.json`.
+O conteúdo vive no Postgres do Supabase — tabelas `projects`, `project_gallery_images`, `home_featured`, `admin_users` e `audit_log`. Schema completo (com RLS) em `supabase/migrations/`.
 
 - `src/services/projects.service.ts` — único ponto de leitura pública. Busca projetos + galerias + destaques e embrulha tudo em `unstable_cache` com tags `projects` / `home_featured` (revalidate de fallback: 3600s). Home, listagem, página de projeto e sitemap consomem a mesma função.
 - Fluxo editorial **draft → published**: a query pública filtra `published_status = 'published'`. Salvar no painel não afeta o site; as actions de publicar/despublicar/excluir/reordenar/destaques chamam `updateTag` + `revalidatePath` — publicar é invalidar cache, não redeploy.
@@ -50,16 +50,15 @@ Duas etapas, uma única perda (evita generation loss em degradês de céu/sombra
 
 ### Animações
 
-GSAP com ScrollTrigger. Sempre importar de `src/lib/gsap.ts` (ponto único de registro de plugin), nunca de `gsap` direto. Lenis pra smooth scroll via `SmoothScrollProvider` (sincronizado: `lenis.on("scroll", ScrollTrigger.update)`). Transições de página em `src/components/providers/PageTransition.tsx` via `src/app/template.tsx`. Toda seção animada checa `prefers-reduced-motion` e desiste se o usuário pediu menos movimento — manter esse padrão em animações novas.
+GSAP com ScrollTrigger. Sempre importar de `src/lib/gsap.ts` (ponto único de registro de plugin), nunca de `gsap` direto. Lenis pra smooth scroll via `smooth-scroll-provider` (sincronizado: `lenis.on("scroll", ScrollTrigger.update)`). Transições de página em `src/components/providers/page-transition.tsx` via `src/app/template.tsx`. Toda seção animada checa `prefers-reduced-motion` e desiste se o usuário pediu menos movimento — manter esse padrão em animações novas.
 
 ### Providers (layout.tsx)
 
 1. Scripts inline pré-hidratação: limpeza de atributos injetados por extensões (evita hydration mismatch) e Consent Mode default `denied`
 2. `PageViewTracker` + GTM (só carrega com `NEXT_PUBLIC_GTM_ID`)
 3. `GlobalIntroLoader` — intro/loader do site
-4. `QueryProvider` — React Query (hoje só o provider; não há consumidores `useQuery` ativos)
-5. `SmoothScrollProvider` (Lenis) → `SiteChrome` → páginas
-6. `CookieConsent`, Vercel `SpeedInsights` + `Analytics`
+4. `SmoothScrollProvider` (Lenis) → `SiteChrome` → páginas
+5. `CookieConsent`, Vercel `SpeedInsights` + `Analytics`
 
 ### Estado
 
@@ -67,7 +66,7 @@ Zustand: `src/store/use-ui-store.ts` (menu mobile) e `src/store/use-admin-dirty-
 
 ### Styling
 
-- Tailwind CSS + SCSS (`sass`); tokens em `src/styles/_tokens.scss`
+- Tailwind CSS; tokens da marca como CSS custom properties em `src/app/globals.css`
 - Tipografia (manual de marca): `next/font/local` em `src/app/layout.tsx` — **Aeonik** (`src/fonts/AeonikTRIAL-*.otf`) → `--font-body` / `font-sans`; **Agrandir Narrow** (`src/fonts/Agrandir-Narrow.otf`) → `--font-display` / headings em `globals.css`
 - Cores da marca: `#000000`, `#BAAEA4` (warm taupe), `#F2F2F2` (off-white)
 - Componentes estilo shadcn/ui em `src/components/ui/`
@@ -75,7 +74,7 @@ Zustand: `src/store/use-ui-store.ts` (menu mobile) e `src/store/use-admin-dirty-
 ### Rotas
 
 Públicas:
-- `/` — home (seções animadas em `src/components/sections/v2/`; os 3 destaques vêm de `home_featured`)
+- `/` — home (seções animadas em `src/components/sections/`; os 3 destaques vêm de `home_featured`)
 - `/projetos` — listagem com filtro por tipologia; `/projetos/[slug]` — detalhe (pré-renderizado via `generateStaticParams`)
 - `/processo`, `/sobre`, `/contato`, `/privacidade`, `/termos`
 - `/contato/obrigado` — noindex, fora do sitemap; URL de conversão fallback pro Google Ads

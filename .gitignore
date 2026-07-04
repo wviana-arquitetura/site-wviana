@@ -60,3 +60,6 @@ next-env.d.ts
 *.swp
 *.swo
 *~
+
+# notas locais de trabalho (não versionadas)
+/CLAUDE.md

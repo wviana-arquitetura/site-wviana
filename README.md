@@ -26,7 +26,7 @@ A base visual vem do manual da marca: Aeonik no corpo, Agrandir Narrow nos títu
 - **GSAP + ScrollTrigger e Lenis** — animações dirigidas por scroll; registro de plugin centralizado em `src/lib/gsap.ts`.
 - **Supabase** — Postgres (conteúdo), Auth (login Google do painel) e Storage (fotos) num serviço só. RLS garante que o público lê apenas o que está publicado.
 - **sharp + blurhash** — pipeline de imagem no servidor: recompressão WebP e placeholders (detalhes nas decisões abaixo).
-- **Tailwind CSS + SCSS** — utilitários no dia a dia, tokens da marca em SCSS.
+- **Tailwind CSS** — utilitários no dia a dia; tokens da marca em CSS custom properties no `globals.css`.
 - **Resend** — e-mail transacional de leads.
 - **dnd-kit, Radix UI, zod, zustand** — reordenação drag-and-drop no painel, primitivos de UI, validação das Server Actions, estado de UI.
 
@@ -49,6 +49,7 @@ flowchart LR
 - `src/services/projects.service.ts` é o único ponto de leitura de conteúdo. Ele busca projetos, galerias e destaques do Supabase e entrega tudo já cacheado — home, listagem, página de projeto e sitemap consomem a mesma função.
 - `src/proxy.ts` (o middleware do Next 16) renova a sessão do Supabase a cada request e barra `/admin` sem login. Cada Server Action revalida a permissão de novo (`requireAdmin` consulta a tabela `admin_users`), então a proteção não depende só do middleware — e o RLS do banco é a última camada.
 - O schema completo está em `supabase/migrations/` (projetos, galeria, destaques da home, usuários admin e trilha de auditoria).
+- Um mapa mais detalhado de onde cada coisa vive está em [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ### O painel
 
@@ -128,8 +129,8 @@ src/
 │   └── ...               # páginas públicas (/, projetos, processo, sobre, contato)
 ├── components/
 │   ├── admin/            # form de projeto, editor de galeria, lightbox, diff
-│   ├── sections/v2/      # seções animadas da home
-│   ├── project/v2/       # blocos da página de projeto
+│   ├── sections/         # seções animadas da home
+│   ├── project/          # blocos da página de projeto
 │   ├── layout/, ui/      # chrome do site e primitivos de UI
 │   └── providers/        # intro loader, page transition, smooth scroll
 ├── hooks/                # use-architectural-reveal e guardas do admin
@@ -137,7 +138,7 @@ src/
 │                         # rate-limit, image-compress
 ├── services/             # leitura de dados (projects, audit)
 ├── proxy.ts              # middleware: sessão Supabase + gate do /admin
-└── store/, types/, styles/
+└── store/, types/
 supabase/migrations/      # schema: projects, galeria, destaques, admin, audit_log
 scripts/                  # backfill de BlurHash
 ```
