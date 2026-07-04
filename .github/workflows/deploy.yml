@@ -12,9 +12,11 @@
 #     workflow", e desconectar a integração Git nativa na Vercel. Editar este
 #     arquivo NÃO reativa — o liga/desliga é pela UI do Actions.
 #
-#     Obs.: quando rodou (jul/2026) falhou no passo `vercel build` — provável
-#     conflito de lockfiles (package-lock.json + pnpm-lock.yaml) e/ou versão de
-#     Node do runner. Se reativar, fixar o Node e deixar só o pnpm-lock.yaml.
+#     Obs.: quando rodou (jul/2026) falhou no passo `vercel build` (exit 1;
+#     token/IDs OK, pois o `vercel pull` passou). Causa exata não confirmada
+#     (o log exige autenticação) — provável diferença de ambiente do runner
+#     em relação à Vercel (ex.: versão de Node). Se reativar, checar o log do
+#     build e, se for o caso, fixar a versão de Node com actions/setup-node.
 # =============================================================================
 
 name: Deploy Vercel (produção)
