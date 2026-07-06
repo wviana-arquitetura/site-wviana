@@ -22,7 +22,7 @@ Não há testes automatizados no projeto. Deploy em produção é pela integraç
 
 ### Camada de dados (Supabase)
 
-O conteúdo vive no Postgres do Supabase — tabelas `projects`, `project_gallery_images`, `home_featured`, `admin_users` e `audit_log`. Schema completo (com RLS) em `supabase/migrations/`.
+O conteúdo vive no Postgres do Supabase — tabelas `projects`, `project_gallery_images`, `home_featured`, `admin_users`, `admin_invites`, `admin_access_requests` e `audit_log`. Schema completo (com RLS) em `supabase/migrations/`.
 
 - `src/services/projects.service.ts` — único ponto de leitura pública. Busca projetos + galerias + destaques e embrulha tudo em `unstable_cache` com tags `projects` / `home_featured` (revalidate de fallback: 3600s). Home, listagem, página de projeto e sitemap consomem a mesma função.
 - Fluxo editorial **draft → published**: a query pública filtra `published_status = 'published'`. Salvar no painel não afeta o site; as actions de publicar/despublicar/excluir/reordenar/destaques chamam `updateTag` + `revalidatePath` — publicar é invalidar cache, não redeploy.
@@ -32,8 +32,11 @@ O conteúdo vive no Postgres do Supabase — tabelas `projects`, `project_galler
 
 ### Painel `/admin`
 
-- **Auth**: Google OAuth via Supabase Auth + allowlist na tabela `admin_users`. `src/proxy.ts` (o middleware do Next 16) renova a sessão a cada request e barra `/admin` sem login; **cada server action revalida a permissão de novo** (`requireAdmin`). RLS é a última camada.
-- **Server actions** em `src/app/admin/_actions/` (`projects.ts`, `upload.ts`, `auth.ts`) — validação com zod, retorno `ActionResult` com `fieldErrors`.
+- **Auth**: Google OAuth via Supabase Auth + allowlist na tabela `admin_users`. `src/proxy.ts` (o middleware do Next 16) renova a sessão a cada request e barra `/admin` sem login; **cada server action revalida a permissão de novo** (`requireAdmin`/`requireOwner` em `_actions/guards.ts`). RLS é a última camada.
+- **Papéis**: `owner` gerencia usuários em `/admin/usuarios` (área invisível pra `editor`); `editor` só edita conteúdo.
+- **Convites** (migration 0004): `admin_users.id` tem FK pra `auth.users.id`, então ninguém pode ser cadastrado antes do primeiro login. O owner convida pelo e-mail (`admin_invites`, RLS sem policies — só service role enxerga); no primeiro login, o `/auth/callback` chama `promotePendingInvite` (`src/services/admin-users.service.ts`), que insere em `admin_users` com o papel do convite, apaga o convite e audita (`first_login`). Proteções: actions impedem auto-remoção e remover/rebaixar o último owner; o trigger `protect_last_owner` garante isso no banco mesmo via service role.
+- **Solicitações de acesso** (migration 0005): quem entra com o Google e é barrado pode pedir acesso na tela de login (`requestAccessAction` em `_actions/auth.ts` — usa o uuid/e-mail da sessão, nada digitado; tabela `admin_access_requests`, service-role only, um pedido por conta). Como o uuid já existe em `auth.users`, aprovar em `/admin/usuarios` insere direto em `admin_users` (como editor) e o acesso vale na hora, sem novo login.
+- **Server actions** em `src/app/admin/_actions/` (`projects.ts`, `users.ts`, `upload.ts`, `auth.ts`) — validação com zod, retorno `ActionResult` com `fieldErrors`.
 - **Auditoria**: toda escrita chama `recordAudit` (`src/lib/audit.ts`). Edições gravam diff campo a campo (`src/components/admin/project-changes-diff.ts`); exclusões gravam snapshot completo do projeto. Append-only: a tabela não tem policy de escrita via RLS, só a service role insere. UI em `/admin/logs`. Manter esse padrão em actions novas.
 - **UX de edição**: `use-admin-dirty-store` (zustand) + `use-unsaved-changes-guard` + `confirm-leave-dialog`/`guarded-link` interceptam saída com alterações não salvas; `changes-preview-dialog` mostra o diff antes de salvar; galeria com upload múltiplo, drag-and-drop (dnd-kit) e lightbox de conferência; destaques da home (3 projetos ordenados) em `/admin/home`.
 
@@ -80,7 +83,7 @@ Públicas:
 - `/contato/obrigado` — noindex, fora do sitemap; URL de conversão fallback pro Google Ads
 - `/api/contact` — recebe o lead, envia e-mail (Resend) e grava na planilha (Apps Script) com `Promise.allSettled` (um destino falhar não perde o lead). Rate-limit 5 req/min/IP + honeypot silencioso
 
-Admin: `/admin/login`, `/admin/projetos` (+ `/novo`, `/[id]`), `/admin/home`, `/admin/logs`, `/auth/callback` (retorno do OAuth).
+Admin: `/admin/login`, `/admin/projetos` (+ `/novo`, `/[id]`), `/admin/home`, `/admin/usuarios` (só owner), `/admin/logs`, `/auth/callback` (retorno do OAuth + promoção de convites).
 
 ### SEO
 

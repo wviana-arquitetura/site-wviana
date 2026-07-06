@@ -4,17 +4,35 @@ import { useState } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+import { requestAccessAction } from "@/app/admin/_actions/auth";
 
 const ERROR_MESSAGES: Record<string, string> = {
-  unauthorized: "Sua conta não tem acesso ao painel. Fale com o administrador.",
+  unauthorized:
+    "Sua conta não tem acesso ao painel. Solicite acesso abaixo ou peça a um administrador para convidar seu e-mail.",
   oauth_failed: "Não foi possível concluir o login com o Google. Tente novamente.",
 };
+
+type RequestStatus = "idle" | "sending" | "sent" | "already";
 
 export default function AdminLoginPage() {
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
+  const [requestStatus, setRequestStatus] = useState<RequestStatus>("idle");
+  const [requestError, setRequestError] = useState<string | null>(null);
   const errorCode = searchParams.get("error");
   const errorMessage = errorCode ? ERROR_MESSAGES[errorCode] : null;
+
+  const handleRequestAccess = async () => {
+    setRequestStatus("sending");
+    setRequestError(null);
+    const result = await requestAccessAction();
+    if (!result.ok) {
+      setRequestError(result.error);
+      setRequestStatus("idle");
+      return;
+    }
+    setRequestStatus(result.already ? "already" : "sent");
+  };
 
   const handleGoogleLogin = async () => {
     setLoading(true);
@@ -92,6 +110,40 @@ export default function AdminLoginPage() {
             Acesso restrito a usuários autorizados.
           </p>
         )}
+
+        {errorCode === "unauthorized" ? (
+          <div className="mt-4 flex w-full max-w-[420px] flex-col items-center gap-3">
+            {requestStatus === "sent" || requestStatus === "already" ? (
+              <p className="text-center text-body text-muted-foreground">
+                {requestStatus === "already"
+                  ? "Você já tem um pedido pendente. Assim que for aprovado, é só entrar com o Google."
+                  : "Pedido enviado! Assim que for aprovado, é só entrar com o Google."}
+              </p>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={handleRequestAccess}
+                  disabled={requestStatus === "sending"}
+                  className="w-full border py-3 text-caption uppercase tracking-[0.18em] text-muted-foreground transition-all hover:bg-secondary hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
+                  style={{ borderColor: "hsl(var(--accent) / 0.4)" }}
+                >
+                  {requestStatus === "sending"
+                    ? "Enviando pedido..."
+                    : "Solicitar acesso"}
+                </button>
+                {requestError ? (
+                  <p
+                    className="text-center text-caption"
+                    style={{ color: "hsl(0 60% 50%)" }}
+                  >
+                    {requestError}
+                  </p>
+                ) : null}
+              </>
+            )}
+          </div>
+        ) : null}
       </div>
     </div>
   );

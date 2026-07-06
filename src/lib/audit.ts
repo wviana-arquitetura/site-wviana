@@ -8,7 +8,15 @@ export type AuditAction =
   | "unpublish"
   | "reorder"
   | "gallery"
-  | "featured";
+  | "featured"
+  | "invite"
+  | "invite_revoke"
+  | "user_remove"
+  | "role_change"
+  | "first_login"
+  | "access_request"
+  | "access_approve"
+  | "access_reject";
 
 export type AuditInput = {
   actorId: string | null;

@@ -58,6 +58,7 @@ flowchart LR
 - Editor de galeria com upload múltiplo, reordenação por drag-and-drop, alt text por imagem e lightbox de conferência com navegação por teclado.
 - Destaques da home: o cliente escolhe e ordena os 3 projetos da vitrine.
 - Diff das alterações antes de salvar e guarda de alterações não salvas — cobre fechar aba, F5, voltar do navegador e links internos do painel.
+- Gestão de acesso em `/admin/usuarios`, visível só para o papel **dono**: convida por e-mail (a pessoa entra sozinha no primeiro login com Google), aprova ou recusa pedidos de acesso feitos na tela de login e controla papéis (dono/editor) — sem SQL manual (detalhes nas decisões abaixo).
 - `/admin/logs`: trilha de auditoria navegável.
 
 ## Decisões de engenharia
@@ -77,6 +78,10 @@ Cada upload gera um BlurHash (~24 caracteres) gravado junto da imagem, em parale
 ### Publicar invalida cache, não gera redeploy
 
 O conteúdo vive no Postgres, mas nenhuma request pública espera o banco: a leitura passa por `unstable_cache` com tags (`projects`, `home_featured`) e revalidação de fallback em 1h. A ação Publicar chama `updateTag`/`revalidatePath` e o conteúdo entra no ar em segundos. O site mantém a latência de páginas servidas de cache e o cliente não depende de rebuild. Rascunho não vaza nem com cache frio — a query já filtra `published_status = 'published'`.
+
+### Acesso gerenciado de dentro do painel
+
+`admin_users.id` tem FK para `auth.users.id`, o que cria uma armadilha: ninguém pode ser cadastrado antes do primeiro login, porque o uuid ainda não existe. Em vez de derrubar a FK, o cadastro virou dois fluxos que a contornam. O dono **convida** por e-mail — uma tabela de convites que o `/auth/callback` promove a linha em `admin_users` no primeiro login. E quem foi barrado **pede acesso** na própria tela de login: como já passou pelo OAuth, o pedido usa o uuid e o e-mail da sessão (nada digitado, nada falsificável), e a aprovação insere direto em `admin_users`, valendo na hora, sem novo login. As duas tabelas auxiliares têm RLS ligado sem nenhuma policy — só a service role as enxerga — e um trigger no Postgres impede remover ou rebaixar o último dono, proteção que vale até para a service role, que ignora RLS mas não triggers.
 
 ### Trilha de auditoria append-only
 
@@ -106,7 +111,7 @@ O `.env.example` documenta cada variável. Em resumo:
 | Leads | `RESEND_API_KEY`, `LEAD_FROM_EMAIL`, `LEAD_NOTIFICATION_EMAIL`, `LEADS_SHEET_WEBHOOK_URL` | o formulário funciona, mas a captura só loga erro no server |
 | Analytics | `NEXT_PUBLIC_GTM_ID` | GTM não carrega e os eventos ficam inertes no dataLayer (bom para dev) |
 
-Para o painel completo: crie um projeto no Supabase, aplique as migrations de `supabase/migrations/` na ordem, habilite o provider Google no Auth e insira seu usuário na tabela `admin_users` após o primeiro login.
+Para o painel completo: crie um projeto no Supabase, aplique as migrations de `supabase/migrations/` na ordem, habilite o provider Google no Auth e, após o primeiro login, insira seu usuário na tabela `admin_users` com `role = 'owner'`. Só esse primeiro cadastro é manual — os seguintes o dono convida ou aprova pelo próprio painel, em `/admin/usuarios`.
 
 Outros scripts:
 
@@ -124,7 +129,7 @@ Deploy em produção: Vercel, via integração nativa com o repositório. Não h
 ```
 src/
 ├── app/                  # rotas (App Router)
-│   ├── admin/            # painel: login, projetos, destaques, logs + _actions/
+│   ├── admin/            # painel: login, projetos, destaques, usuários, logs + _actions/
 │   ├── api/contact/      # endpoint de leads
 │   └── ...               # páginas públicas (/, projetos, processo, sobre, contato)
 ├── components/
@@ -136,10 +141,11 @@ src/
 ├── hooks/                # use-architectural-reveal e guardas do admin
 ├── lib/                  # gsap, supabase, blurhash, seo, analytics, consent,
 │                         # rate-limit, image-compress
-├── services/             # leitura de dados (projects, audit)
+├── services/             # leitura de dados (projects, audit, admin-users)
 ├── proxy.ts              # middleware: sessão Supabase + gate do /admin
 └── store/, types/
-supabase/migrations/      # schema: projects, galeria, destaques, admin, audit_log
+supabase/migrations/      # schema: projects, galeria, destaques, admin (usuários,
+                          # convites, pedidos de acesso), audit_log
 scripts/                  # backfill de BlurHash
 ```
 

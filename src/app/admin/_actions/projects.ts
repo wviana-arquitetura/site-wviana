@@ -3,39 +3,13 @@
 import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import {
-  createSupabaseServerClient,
-  createSupabaseServiceRoleClient,
-} from "@/lib/supabase/server";
+import { createSupabaseServiceRoleClient } from "@/lib/supabase/server";
 import { recordAudit } from "@/lib/audit";
 import {
   diffProjectValues,
   diffGallery,
 } from "@/components/admin/project-changes-diff";
-
-/**
- * Garante que o usuário atual é admin. Lança se não for.
- */
-async function requireAdmin() {
-  const supabase = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) {
-    throw new Error("Não autenticado");
-  }
-
-  const { data: adminRow } = await supabase
-    .from("admin_users")
-    .select("id")
-    .eq("id", user.id)
-    .maybeSingle();
-  if (!adminRow) {
-    throw new Error("Não autorizado");
-  }
-
-  return { userId: user.id, email: user.email ?? null, supabase };
-}
+import { requireAdmin } from "./guards";
 
 // Colunas que compõem um ProjectFormValues — usadas pra buscar o estado
 // anterior de um projeto e computar o diff da auditoria.
