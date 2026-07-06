@@ -11,19 +11,23 @@ type NavItem = {
   href: string;
   label: string;
   description?: string;
+  /** Visível só para role 'owner'. */
+  ownerOnly?: boolean;
 };
 
 const NAV_ITEMS: NavItem[] = [
   { href: "/admin/home", label: "Home", description: "Os 3 destaques da página inicial" },
   { href: "/admin/projetos", label: "Projetos", description: "Listagem, edição e criação" },
+  { href: "/admin/usuarios", label: "Usuários", description: "Quem acessa o painel", ownerOnly: true },
   { href: "/admin/logs", label: "Atividade", description: "Histórico de alterações" },
 ];
 
 type AdminNavProps = {
   userEmail: string;
+  isOwner: boolean;
 };
 
-export function AdminNav({ userEmail }: AdminNavProps) {
+export function AdminNav({ userEmail, isOwner }: AdminNavProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -124,7 +128,7 @@ export function AdminNav({ userEmail }: AdminNavProps) {
         {/* Navigation */}
         <nav className="flex-1 px-8 py-6">
           <ul className="space-y-4">
-            {NAV_ITEMS.map((item) => {
+            {NAV_ITEMS.filter((item) => !item.ownerOnly || isOwner).map((item) => {
               const active = isActive(item.href);
               return (
                 <li key={item.href}>

@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { promotePendingInvite } from "@/services/admin-users.service";
 
 const NEXT_COOKIE = "admin_login_next";
 
@@ -25,9 +26,18 @@ export async function GET(request: Request) {
 
   if (code) {
     const supabase = await createSupabaseServerClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
+      // Primeiro login de alguém convidado? Promove o convite a acesso real
+      // (linha em admin_users) antes de o middleware checar a permissão.
+      if (data.user) {
+        await promotePendingInvite({
+          id: data.user.id,
+          email: data.user.email ?? null,
+        });
+      }
+
       const response = NextResponse.redirect(`${origin}${next}`);
       response.cookies.delete(NEXT_COOKIE);
       return response;

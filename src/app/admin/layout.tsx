@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 import { Toaster } from "sonner";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { AdminNav } from "@/components/admin/admin-nav";
@@ -19,26 +18,27 @@ export default async function AdminLayout({
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Sem sessão? Mostra direto o conteúdo (será a tela de login ou middleware
-  // já redirecionou). Não renderizamos nav nem checamos admin_users.
-  if (!user) {
+  const { data: adminRow } = user
+    ? await supabase
+        .from("admin_users")
+        .select("role")
+        .eq("id", user.id)
+        .maybeSingle()
+    : { data: null };
+
+  // Sem sessão OU com sessão mas fora de admin_users: renderiza só o conteúdo
+  // (na prática, a tela de login — o middleware já barrou as demais rotas do
+  // painel e mandou pra /admin/login?error=unauthorized). Importante NÃO
+  // redirecionar daqui: este layout também envolve o /admin/login, então um
+  // redirect pro próprio login criaria loop infinito — e a sessão do barrado
+  // precisa continuar viva pro botão "Solicitar acesso" funcionar.
+  if (!user || !adminRow) {
     return (
       <>
         {children}
         <Toaster position="bottom-right" theme="light" richColors />
       </>
     );
-  }
-
-  const { data: adminRow } = await supabase
-    .from("admin_users")
-    .select("role")
-    .eq("id", user.id)
-    .maybeSingle();
-
-  // Tem sessão mas não é admin? Manda pro login com erro.
-  if (!adminRow) {
-    redirect("/admin/login?error=unauthorized");
   }
 
   return (
@@ -55,7 +55,7 @@ export default async function AdminLayout({
       data-admin
       className="h-screen overflow-hidden bg-background text-foreground"
     >
-      <AdminNav userEmail={user.email ?? ""} />
+      <AdminNav userEmail={user.email ?? ""} isOwner={adminRow.role === "owner"} />
       <main
         data-lenis-prevent
         className="h-screen overflow-y-auto overflow-x-hidden md:ml-72"

@@ -54,6 +54,27 @@ export type AdminUserRow = {
   created_at: string;
 };
 
+export type AdminInviteRow = {
+  id: string;
+  email: string;
+  role: AdminRole;
+  invited_by: string | null;
+  invited_by_email: string | null;
+  created_at: string;
+};
+
+export type AdminAccessRequestRow = {
+  id: string;
+  user_id: string;
+  email: string;
+  created_at: string;
+};
+
+export const ADMIN_ROLE_LABEL: Record<AdminRole, string> = {
+  owner: "Dono",
+  editor: "Editor",
+};
+
 export type AuditLogRow = {
   id: string;
   created_at: string;

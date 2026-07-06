@@ -15,6 +15,14 @@ const ACTION_LABEL: Record<string, string> = {
   reorder: "Reordenação",
   gallery: "Galeria",
   featured: "Destaques",
+  invite: "Convite",
+  invite_revoke: "Convite cancelado",
+  user_remove: "Acesso removido",
+  role_change: "Papel alterado",
+  first_login: "Primeiro acesso",
+  access_request: "Pedido de acesso",
+  access_approve: "Acesso aprovado",
+  access_reject: "Pedido recusado",
 };
 
 const dateFmt = new Intl.DateTimeFormat("pt-BR", {
@@ -79,7 +87,7 @@ function DetailsBlock({ details }: { details: unknown }) {
 
 function LogRow({ entry }: { entry: AuditLogRow }) {
   const actionLabel = ACTION_LABEL[entry.action] ?? entry.action;
-  const isDelete = entry.action === "delete";
+  const isDelete = entry.action === "delete" || entry.action === "user_remove";
 
   return (
     <li
