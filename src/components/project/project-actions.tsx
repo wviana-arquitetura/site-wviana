@@ -141,7 +141,12 @@ export function ProjectContactCta({
           link_path: "/whatsapp",
         })
       }
-      className={`group/wa inline-flex min-h-[44px] items-center gap-2.5 whitespace-nowrap text-caption uppercase tracking-[0.18em] text-foreground transition-opacity active:opacity-60 ${FOCUS_RING}`}
+      // Mesmo taupe do "Ver projeto". O que distingue os dois passa a ser o
+      // fio embaixo e o glifo — por isso os fios usam `bg-current`, pra
+      // acompanhar a cor do rótulo em vez de fixar preto. Sem `hover:opacity`
+      // aqui: apagar o rótulo enquanto o fio se desenha embaralha os dois sinais.
+      className={`group/wa inline-flex min-h-[44px] items-center gap-2.5 whitespace-nowrap text-caption uppercase tracking-[0.18em] transition-opacity active:opacity-60 ${FOCUS_RING}`}
+      style={{ color: "hsl(var(--accent-strong))" }}
     >
       {/* Glifo depois do rótulo: empilhado no mobile, um ícone à frente
           recuaria só este rótulo e quebraria a margem esquerda da coluna. */}
@@ -153,11 +158,11 @@ export function ProjectContactCta({
         </span>
         <span
           aria-hidden="true"
-          className="absolute -bottom-[4px] left-0 h-px w-full bg-foreground/20"
+          className="absolute -bottom-[4px] left-0 h-px w-full bg-current opacity-30"
         />
         <span
           aria-hidden="true"
-          className="absolute -bottom-[4px] left-0 h-px w-full origin-left scale-x-0 bg-foreground transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/wa:scale-x-100 group-focus-visible/wa:scale-x-100 motion-reduce:transition-none"
+          className="absolute -bottom-[4px] left-0 h-px w-full origin-left scale-x-0 bg-current transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/wa:scale-x-100 group-focus-visible/wa:scale-x-100 motion-reduce:transition-none"
         />
       </span>
       <WhatsappGlyph />
