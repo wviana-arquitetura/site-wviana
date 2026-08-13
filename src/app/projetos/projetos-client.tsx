@@ -92,19 +92,28 @@ export function ProjetosClient({ allProjects, typologies }: ProjetosClientProps)
       <section className="bg-background px-8 pb-24 md:px-16 md:pb-32 lg:px-24">
         <div className="mx-auto max-w-[1800px]">
           {chunkPairs(filtered).map((row, rowIdx) => (
+            // Dois níveis de propósito. O externo reserva a viewport e
+            // centraliza o PAR; o grid interno tem altura de conteúdo e, com o
+            // stretch padrão, dá aos dois cards a altura do mais alto. Assim as
+            // duas fotos começam no mesmo topo mesmo quando um resumo é maior
+            // que o outro. Centralizar cada card (como antes) desalinhava as
+            // fotos pela metade da diferença de altura entre eles.
             <div
               key={`row-${rowIdx}`}
               data-snap
-              className="grid grid-cols-1 items-center gap-y-16 py-12 md:grid-cols-2 md:gap-x-12 md:min-h-[calc(var(--dvh)-var(--header-height))] md:py-0 lg:gap-x-16"
+              className="flex items-center py-12 md:min-h-[calc(var(--dvh)-var(--header-height))] md:py-0"
             >
-              {row.map((project, colIdx) => (
-                <GalleryProjectCardGrid
-                  key={project.slug}
-                  project={project}
-                  imageLeft={colIdx === 0}
-                  priority={rowIdx === 0}
-                />
-              ))}
+              <div className="grid w-full grid-cols-1 gap-y-16 md:grid-cols-2 md:gap-x-12 lg:gap-x-16">
+                {row.map((project, colIdx) => (
+                  <GalleryProjectCardGrid
+                    key={project.slug}
+                    project={project}
+                    imageLeft={colIdx === 0}
+                    priority={rowIdx === 0}
+                    position={rowIdx * 2 + colIdx + 1}
+                  />
+                ))}
+              </div>
             </div>
           ))}
         </div>

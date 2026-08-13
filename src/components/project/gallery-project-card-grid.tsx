@@ -5,11 +5,14 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "@/types/project";
 import { trackEvent } from "@/lib/analytics";
+import { ProjectActions } from "@/components/project/project-actions";
 
 type GalleryProjectCardGridProps = {
   project: Project;
   imageLeft?: boolean;
   priority?: boolean;
+  /** Posição na listagem, 1-based — vai pro analytics dos CTAs. */
+  position?: number;
 };
 
 const ROTATE_INTERVAL_MS = 2800;
@@ -28,6 +31,7 @@ export function GalleryProjectCardGrid({
   project,
   imageLeft = false,
   priority = false,
+  position,
 }: GalleryProjectCardGridProps) {
   const imageWrapperRef = useRef<HTMLDivElement>(null);
   const isMobileRef = useRef(false);
@@ -43,6 +47,7 @@ export function GalleryProjectCardGrid({
       project_slug: project.slug,
       project_name: project.title,
       project_type: project.typology,
+      project_position: position,
       cta_location: ctaLocation,
     });
 
@@ -144,7 +149,15 @@ export function GalleryProjectCardGrid({
 
   return (
     <div
-      className={`flex h-full w-full flex-col gap-6 md:flex-row md:items-center md:gap-6 lg:gap-8 ${
+      // `items-stretch` (e não center): a coluna de texto passa a ter a altura
+      // da foto, o que permite ancorar as ações no pé. Sem isso a coluna tem a
+      // altura do conteúdo e os botões sobem ou descem conforme o resumo,
+      // desalinhando os dois cards da linha.
+      // Sem `h-full` de propósito: a linha do grid tem min-height de ~100dvh e
+      // `h-full` faria o card ocupar tudo isso — as ações desceriam pro pé da
+      // LINHA, longe da foto e coladas no projeto seguinte. Sem ele o card tem
+      // a altura da foto (68vh) e o grid o centraliza na linha.
+      className={`flex w-full flex-col gap-6 md:flex-row md:items-stretch md:gap-6 lg:gap-8 ${
         imageLeft ? "md:flex-row-reverse" : ""
       }`}
     >
@@ -292,29 +305,13 @@ export function GalleryProjectCardGrid({
           {project.summary}
         </p>
 
-        <Link
-          href={`/projetos/${project.slug}`}
-          className="group/link mt-1 inline-flex items-center gap-2 text-caption uppercase tracking-[0.18em] transition-opacity hover:opacity-60"
-          style={{ color: "hsl(var(--accent-strong))" }}
-          onClick={() => handleProjectClick("projects_grid_link")}
-        >
-          Ver projeto
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            className="transition-transform group-hover/link:translate-x-1"
-          >
-            <path
-              d="M3 8h10M9 4l4 4-4 4"
-              stroke="currentColor"
-              strokeWidth="1"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </Link>
+        <ProjectActions
+          project={project}
+          location="projects_grid"
+          position={position}
+          layout="stacked"
+          className="md:mt-auto"
+        />
       </div>
     </div>
   );

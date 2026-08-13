@@ -9,6 +9,7 @@ import { ProjectBrief } from "./project-brief";
 import { ProjectNarrative } from "./project-narrative";
 import { ProjectDocumentation } from "./project-documentation";
 import { ProjectContinuation } from "./project-continuation";
+import { ProjectContactCta } from "./project-actions";
 import { trackEvent } from "@/lib/analytics";
 
 type ProjectDetailContentProps = {
@@ -50,6 +51,22 @@ export function ProjectDetailContent({
       ) : null}
       <Void height="8vh" />
       <ProjectDocumentation gallery={project.gallery} slug={project.slug} />
+
+      {/* Fecho do capítulo: acabaram as fotos, antes de empurrar pro próximo
+          projeto. É onde o interesse está no pico. Mesmo fio da página de
+          contato para assentar o CTA entre a galeria e a seção escura. */}
+      <section className="bg-background px-8 pb-16 md:px-16 md:pb-24 lg:px-24">
+        <div className="mx-auto max-w-[1800px]">
+          <div
+            className="reveal-draw h-px w-full"
+            style={{ background: "hsl(var(--accent) / 0.3)" }}
+          />
+          <div className="reveal-illuminate mt-6 md:mt-8">
+            <ProjectContactCta project={project} location="project_detail" />
+          </div>
+        </div>
+      </section>
+
       <ProjectContinuation nextProject={nextProject} />
     </main>
   );
