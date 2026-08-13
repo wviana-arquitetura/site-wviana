@@ -72,7 +72,7 @@ export function FloatingContact() {
           href={BRAND.whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Conversar com a W.VIANA pelo WhatsApp"
+          aria-label="Entre em contato com a W.VIANA pelo WhatsApp"
           onClick={() =>
             trackEvent("whatsapp_click", {
               cta_location: "floating_bar_mobile",
@@ -94,23 +94,29 @@ export function FloatingContact() {
               aria-hidden="true"
               className="h-1.5 w-1.5 rounded-full bg-[#BAAEA4]"
             />
-            <span className="text-[10px] font-medium tracking-[0.24em] text-white/55 uppercase">
+            {/* Abaixo de 375px não cabe junto com "Entre em contato" — os dois
+                rótulos se encostam. Fica só o ponto, que já sinaliza o status. */}
+            <span className="hidden text-[10px] font-medium tracking-[0.24em] text-white/55 uppercase min-[375px]:inline">
               Disponível
             </span>
           </span>
 
-          <span className="text-[11px] font-medium tracking-[0.22em] text-white uppercase">
-            Conversar
-          </span>
+          {/* Rótulo e seta viajam juntos, colados na direita — o status fica
+              sozinho na esquerda e o `justify-between` separa os dois grupos. */}
+          <span className="flex items-center gap-2">
+            <span className="text-[11px] font-medium tracking-[0.22em] text-white uppercase">
+              Entre em contato
+            </span>
 
-          <span
-            aria-hidden="true"
-            className="flex h-8 w-8 items-center justify-center"
-          >
-            <ArrowRight
-              className="h-4 w-4 text-white"
-              strokeWidth={1.5}
-            />
+            <span
+              aria-hidden="true"
+              className="flex h-8 w-8 items-center justify-center"
+            >
+              <ArrowRight
+                className="h-4 w-4 text-white"
+                strokeWidth={1.5}
+              />
+            </span>
           </span>
         </a>
       </div>
@@ -130,7 +136,7 @@ export function FloatingContact() {
           href={BRAND.whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Conversar com a W.VIANA pelo WhatsApp"
+          aria-label="Entre em contato com a W.VIANA pelo WhatsApp"
           onClick={() =>
             trackEvent("whatsapp_click", {
               cta_location: "floating_pill_desktop",
@@ -156,7 +162,7 @@ export function FloatingContact() {
           />
 
           <span className="text-[10px] font-medium tracking-[0.24em] text-white uppercase transition-colors duration-500 group-hover:text-black">
-            Conversar
+            Entre em contato
           </span>
 
           <span

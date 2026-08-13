@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { ImageWithReveal } from "@/components/ui/image-with-reveal";
+import { ProjectActions } from "@/components/project/project-actions";
 import type { Project } from "@/types/project";
 import { trackEvent } from "@/lib/analytics";
 
@@ -11,12 +12,15 @@ type GalleryProjectCardProps = {
   imageLeft?: boolean;
   /** Marca a imagem como prioritária (LCP). Use só quando o card está acima da dobra. */
   priority?: boolean;
+  /** Posição do card na seção, 1-based — vai pro analytics dos CTAs. */
+  position?: number;
 };
 
 export function GalleryProjectCard({
   project,
   imageLeft = false,
   priority = false,
+  position,
 }: GalleryProjectCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const handleProjectClick = (ctaLocation: string) =>
@@ -24,6 +28,7 @@ export function GalleryProjectCard({
       project_slug: project.slug,
       project_name: project.title,
       project_type: project.typology,
+      project_position: position,
       cta_location: ctaLocation,
     });
 
@@ -103,29 +108,11 @@ export function GalleryProjectCard({
           {project.summary}
         </p>
 
-        <Link
-          href={`/projetos/${project.slug}`}
-          className="group/link mt-2 inline-flex items-center gap-2 text-caption uppercase tracking-[0.18em] transition-opacity hover:opacity-60"
-          style={{ color: "hsl(var(--accent-strong))" }}
-          onClick={() => handleProjectClick("home_gallery_link")}
-        >
-          Ver projeto
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            className="transition-transform group-hover/link:translate-x-1"
-          >
-            <path
-              d="M3 8h10M9 4l4 4-4 4"
-              stroke="currentColor"
-              strokeWidth="1"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </Link>
+        <ProjectActions
+          project={project}
+          location="home_gallery"
+          position={position}
+        />
       </div>
     </div>
   );

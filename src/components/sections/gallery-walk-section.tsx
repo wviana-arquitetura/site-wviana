@@ -114,6 +114,7 @@ export function GalleryWalkSection({ projects }: GalleryWalkSectionProps) {
               <GalleryProjectCard
                 project={project}
                 imageLeft={i % 2 === 0}
+                position={i + 1}
               />
             </div>
             {i < projects.length - 1 && <Void height="12vh" />}

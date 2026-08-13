@@ -63,3 +63,18 @@ next-env.d.ts
 
 # notas locais de trabalho (não versionadas)
 /CLAUDE.md
+.claude/
+
+# ---------------------------------------------------------------------------
+# Repositório PÚBLICO: nada aqui embaixo pode ser versionado.
+# ---------------------------------------------------------------------------
+
+# Material de entrega / documentos comerciais do cliente. O guia do site cita a
+# conta Google que entra no painel, o e-mail que recebe os leads, a planilha de
+# contatos e canais de suporte — mapa de acesso ao /admin, não vai pro público.
+/WVIANA_apresentacao_guia_site.html
+/docs/APRESENTACAO_DO_SITE.md
+/docs/*.pdf
+
+# Dados coletados de cliente/visitante em runtime (respostas de revisão, leads).
+/data/

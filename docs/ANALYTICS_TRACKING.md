@@ -25,13 +25,31 @@ Este documento explica o que foi implementado, para que serve, quando utilizar e
 - Deve ser o **key event principal no GA4** e a **conversion principal no Google Ads**.
 
 ### 3.2 Eventos secundarios
-- **whatsapp_click**: clique em qualquer CTA de WhatsApp (flutuante, footer, drawer, contato).
+- **whatsapp_click**: clique em qualquer CTA de WhatsApp (flutuante, footer, drawer, contato, card de projeto).
 - **email_click**: clique em qualquer mailto.
 - Estes eventos sao sinais de intencao, mas **nao devem ser usados para otimizacao principal no inicio**.
 
 ### 3.3 Eventos de interesse em projetos
 - **project_view**: visualizacao de pagina de projeto (slug).
 - **project_cta_click**: clique em "Ver projeto" em cards/listagens.
+
+### 3.4 Qual projeto gera intencao de contato
+O CTA "Quero um projeto assim" nos cards da home dispara o **mesmo** `whatsapp_click`
+dos demais canais — nao um evento novo — para nao quebrar a conversao ja importada
+no Ads. O recorte por projeto vem nos parametros:
+
+| Parametro | Exemplo |
+| --- | --- |
+| `cta_location` | `home_gallery_whatsapp` |
+| `project_slug` | `residencial-rc` |
+| `project_name` | `Residencial RC` |
+| `project_type` | `Residencial` |
+| `project_position` | `1` (ordem do destaque na home) |
+
+No GA4, registrar `project_slug` e `cta_location` como dimensoes personalizadas e
+filtrar `whatsapp_click` por `cta_location = home_gallery_whatsapp` responde
+"quais projetos puxam mais contato". Dispositivo ja vem do GA4, nao precisa ser enviado.
+O mesmo `project_position` foi adicionado ao `project_cta_click` dos cards.
 
 ## 4. Page view no Next.js (App Router)
 
