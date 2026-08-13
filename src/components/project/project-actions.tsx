@@ -49,12 +49,7 @@ export function ProjectActions({
   location,
   position,
   layout = "inline-lg",
-  className = "",
-}: ProjectActionsProps & {
-  layout?: ProjectActionsLayout;
-  /** Posicionamento no container do card (ex.: `md:mt-auto` pra ancorar no pé). */
-  className?: string;
-}) {
+}: ProjectActionsProps & { layout?: ProjectActionsLayout }) {
   const projectParams = projectAnalyticsParams(project, position);
 
   return (
@@ -62,7 +57,7 @@ export function ProjectActions({
     // coluna de texto é estreita demais e os dois rótulos quebram no meio.
     // Sem `items-start` no mobile, o stretch dá área de toque de largura total;
     // do md pra cima a área volta a ser do tamanho do texto (mouse).
-    <div className={`reveal-illuminate ${ROW_LAYOUT[layout]} ${className}`}>
+    <div className={`reveal-illuminate ${ROW_LAYOUT[layout]}`}>
       <Link
         href={`/projetos/${project.slug}`}
         onClick={() =>

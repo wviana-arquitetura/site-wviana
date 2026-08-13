@@ -149,14 +149,12 @@ export function GalleryProjectCardGrid({
 
   return (
     <div
-      // `items-stretch` (e não center): a coluna de texto passa a ter a altura
-      // da foto, o que permite ancorar as ações no pé. Sem isso a coluna tem a
-      // altura do conteúdo e os botões sobem ou descem conforme o resumo,
-      // desalinhando os dois cards da linha.
+      // `items-stretch` (e não center): mantém a coluna de texto ancorada no
+      // topo da foto. Centralizada, ela subia ou descia conforme o tamanho do
+      // resumo e desalinhava os metadados dos dois cards da linha.
       // Sem `h-full` de propósito: a linha do grid tem min-height de ~100dvh e
-      // `h-full` faria o card ocupar tudo isso — as ações desceriam pro pé da
-      // LINHA, longe da foto e coladas no projeto seguinte. Sem ele o card tem
-      // a altura da foto (68vh) e o grid o centraliza na linha.
+      // `h-full` faria o card ocupar tudo isso, descolando o conteúdo da foto.
+      // Sem ele o card tem a altura da foto (68vh) e o grid o centraliza.
       className={`flex w-full flex-col gap-6 md:flex-row md:items-stretch md:gap-6 lg:gap-8 ${
         imageLeft ? "md:flex-row-reverse" : ""
       }`}
@@ -310,7 +308,6 @@ export function GalleryProjectCardGrid({
           location="projects_grid"
           position={position}
           layout="stacked"
-          className="md:mt-auto"
         />
       </div>
     </div>
